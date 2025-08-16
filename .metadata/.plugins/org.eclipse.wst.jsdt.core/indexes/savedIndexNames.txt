@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+/Users/charanteja/Desktop/VSCODE/SKILLPROJECT/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-2079299654.index
-1946322353.index
-2961858301.index
-1829119889.index
-2531030895.index
-3860892301.index
