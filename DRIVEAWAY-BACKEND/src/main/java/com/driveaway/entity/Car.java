@@ -1,0 +1,17 @@
+package com.driveaway.entity;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Document
+@Data
+@AllArgsConstructor
+public class Car {
+	@Id
+	private String car_id;
+	private String car_company;
+	private String car_model;
+}
