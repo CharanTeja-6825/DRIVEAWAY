@@ -2,6 +2,7 @@ package com.driveaway.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class CarServiceImpl implements CarService{
 	
 	@Override
 	public String addCar(Car car) {
+		car.setCar_id(UUID.randomUUID().toString().split("-")[0]);
 		repo.save(car);
 		return car.toString()+"\nBooked Successfully!";
 	}

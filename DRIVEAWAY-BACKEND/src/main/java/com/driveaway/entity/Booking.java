@@ -17,7 +17,5 @@ public class Booking {
 	@DocumentReference
 	private Customer customer;
 	@DocumentReference
-	private Dealer dealer;
-	@DocumentReference
-	private Car car_id;
+	private Car car;
 }
