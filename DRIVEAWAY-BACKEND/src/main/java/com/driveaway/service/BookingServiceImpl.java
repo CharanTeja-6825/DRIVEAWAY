@@ -1,5 +1,6 @@
 package com.driveaway.service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public String addBooking(Booking booking) {
 		booking.setBooking_id(UUID.randomUUID().toString().split("-")[0]);
+		booking.setBooked_at(Instant.now());
 		repo.save(booking);
 		return booking.toString()+"\nBooked Successfully!";
 	}
