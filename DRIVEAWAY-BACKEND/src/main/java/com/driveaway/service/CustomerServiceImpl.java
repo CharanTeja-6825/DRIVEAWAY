@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.driveaway.entity.Customer;
@@ -20,6 +21,8 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public String addCustomer(Customer customer) {
 		customer.setCustomer_id(UUID.randomUUID().toString().split("-")[0]);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		customer.setPassword(encoder.encode(customer.getPassword()));
 		repo.save(customer);
 		return customer.toString()+"\n added successfully !";
 	}

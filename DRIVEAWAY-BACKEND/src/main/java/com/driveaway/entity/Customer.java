@@ -20,4 +20,5 @@ public class Customer {
 	private int customer_age;
 	@Indexed(unique = true)
 	private String customer_license_no;
+	private String password;
 }

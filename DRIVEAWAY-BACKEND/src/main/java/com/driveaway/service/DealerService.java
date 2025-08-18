@@ -9,4 +9,5 @@ public interface DealerService {
 	public String approveDealer(String dealerid);
 	public List<Dealer> allDealers();
 	public String deleteDealer(String dealerid);
+	public String approveBooking(String bookingid);
 }

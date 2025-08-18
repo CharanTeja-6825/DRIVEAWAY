@@ -21,4 +21,5 @@ public class Booking {
 	@DocumentReference
 	private Car car;
 	private Instant booked_at;
+	private boolean booking_status;
 }

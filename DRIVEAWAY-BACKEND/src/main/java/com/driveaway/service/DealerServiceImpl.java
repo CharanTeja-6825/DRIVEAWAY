@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Dealer;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.DealerRepository;
 
 @Service
@@ -15,6 +17,9 @@ public class DealerServiceImpl implements DealerService{
 
 	@Autowired
 	private DealerRepository repo;
+	
+	@Autowired
+	private BookingRepository brepo;
 	
 	@Override
 	public String addDealer(Dealer dealer) {
@@ -49,6 +54,19 @@ public class DealerServiceImpl implements DealerService{
 			return dealer.getDealer_oname()+" is deleted !";
 		}else {
 			return "Dealer not found !";
+		}
+	}
+
+	@Override
+	public String approveBooking(String bookingid) {
+		Optional<Booking> boj = brepo.findById(bookingid);
+		if(boj.isPresent()) {
+			Booking obj = boj.get();
+			obj.setBooking_status(true);
+			brepo.save(obj);
+			return "Booking Approved Success !";
+		}else {
+			return "Booking ID not found";
 		}
 	}
 	

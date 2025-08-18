@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.driveaway.entity.Dealer;
@@ -42,5 +44,10 @@ public class DealerController {
 	@DeleteMapping("/delete/{did}")
 	public String deleteDealer(@PathVariable String did) {
 		return dealerService.deleteDealer(did);
+	}
+	
+	@PutMapping("/approve")
+	public String approveBooking(@RequestParam String bid) {
+		return dealerService.approveBooking(bid);
 	}
 }

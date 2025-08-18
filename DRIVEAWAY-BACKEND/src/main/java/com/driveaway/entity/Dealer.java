@@ -21,4 +21,5 @@ public class Dealer {
 	@Indexed(unique = true)
 	private String dealer_gst_in;
 	private String dealer_phone;
+	private String password;
 }
