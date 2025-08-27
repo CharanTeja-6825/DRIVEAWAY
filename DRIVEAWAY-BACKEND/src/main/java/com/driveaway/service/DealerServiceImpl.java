@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.management.relation.RoleNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.driveaway.entity.Booking;
 import com.driveaway.entity.Dealer;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.DealerRepository;
+import com.driveaway.roles.Roles;
 
 @Service
 public class DealerServiceImpl implements DealerService{
@@ -23,9 +26,17 @@ public class DealerServiceImpl implements DealerService{
 	
 	@Override
 	public String addDealer(Dealer dealer) {
-		dealer.setDealer_id(UUID.randomUUID().toString().split("-")[0]);
-		repo.save(dealer);
-		return dealer.toString()+"\n added successfully !";
+		try {
+			dealer.setDealer_id(UUID.randomUUID().toString().split("-")[0]);
+			if(!dealer.getRole().equals(Roles.DEALER)) {
+				return "Role is not set Properly";
+			}else {
+				repo.save(dealer);
+				return dealer.toString()+"\n added successfully !";
+			}
+		} catch (Exception e) {
+			return "GST IN already exists";
+		}
 	}
 
 	@Override

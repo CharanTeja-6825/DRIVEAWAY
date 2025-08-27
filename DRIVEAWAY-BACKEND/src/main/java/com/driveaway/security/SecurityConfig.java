@@ -18,7 +18,7 @@ public class SecurityConfig {
             .httpBasic(Customizer.withDefaults())
             .formLogin(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
-            	.requestMatchers("/customer/**").permitAll()
+            	.requestMatchers("/**").permitAll()
                 .anyRequest().permitAll()
             );
 

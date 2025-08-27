@@ -20,30 +20,35 @@ import com.driveaway.service.DealerService;
 @CrossOrigin("*")
 @RequestMapping("/admin")
 public class AdminController {
-	
-	@Autowired
-	private AdminService adminService;
-	
-//	@Autowired
-//	private CustomerService customerService;
-//	
-//	@Autowired
-//	private DealerService dealerService;
-//	
-//	@Autowired
-//	private BookingService bookingService;
-//	
-//	@Autowired
-//	private CarService carService;
-	
-	@GetMapping("/")
-	public String adminHome() {
-		return "this is root uri for admin";
-	}
-	
-	@PutMapping("/approve")
-	public String approveDealer(@RequestParam("did") String did) {
-		return adminService.approveDealer(did);
-	}
-	
+
+  @Autowired
+  private AdminService adminService;
+
+  // @Autowired
+  // private CustomerService customerService;
+  //
+  // @Autowired
+  // private DealerService dealerService;
+  //
+  // @Autowired
+  // private BookingService bookingService;
+  //
+  // @Autowired
+  // private CarService carService;
+
+  @GetMapping("/")
+  public String adminHome() {
+    return "this is root uri for admin";
+  }
+
+  @GetMapping("/test url")
+  public String testHome() {
+    return "this url is added from NeoVim";
+  }
+
+  @PutMapping("/approve")
+  public String approveDealer(@RequestParam("did") String did) {
+    return adminService.approveDealer(did);
+  }
+
 }
