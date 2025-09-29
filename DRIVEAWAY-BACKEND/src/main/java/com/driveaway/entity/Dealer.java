@@ -1,5 +1,7 @@
 package com.driveaway.entity;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,5 +26,7 @@ public class Dealer {
 	private String dealer_gst_in;
 	private String dealer_phone;
 	private String password;
+	private String location;
 	private Roles role;
+	private Instant created_at;
 }

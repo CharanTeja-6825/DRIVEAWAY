@@ -1,5 +1,7 @@
 package com.driveaway.entity;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,4 +15,5 @@ public class Admin {
 	@Id
 	private String username;
 	private String password;
+	private Instant created_at;
 }

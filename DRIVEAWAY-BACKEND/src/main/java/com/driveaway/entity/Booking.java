@@ -3,6 +3,7 @@ package com.driveaway.entity;
 import java.time.Instant;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -22,4 +23,5 @@ public class Booking {
 	private Car car;
 	private Instant booked_at;
 	private boolean booking_status;
+	private String booking_date;
 }
