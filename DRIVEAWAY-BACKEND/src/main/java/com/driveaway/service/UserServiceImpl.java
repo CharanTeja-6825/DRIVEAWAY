@@ -18,11 +18,14 @@ public class UserServiceImpl implements UserService{
 	
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 	
+	@Autowired
+	private JWTService jwtService;
+	
 	@Override
 	public String userLogin(String email, String password) {
 		User user = userRepository.findByUserEmail(email);
 		if(user == null) return "NOT_FOUND";
-		else if(encoder.matches(password, user.getPassword())) return "SUCCESS";
+		else if(encoder.matches(password, user.getPassword())) return jwtService.generateToken(email);
 		else return "INVALID";
 	}
 	

@@ -36,7 +36,7 @@ public class UserController {
 		case "NOT_FOUND":
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 		default:
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Network Error");
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(message);
 		}
 		
 	}
