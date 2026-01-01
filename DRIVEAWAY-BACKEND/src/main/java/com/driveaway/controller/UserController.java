@@ -1,7 +1,11 @@
 package com.driveaway.controller;
 
-import org.springdoc.core.properties.SwaggerUiConfigProperties.Csrf;
+import java.net.http.HttpResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +27,12 @@ public class UserController {
 	private UserService service;
 	
 	@PostMapping("/login")
-	public User login(@RequestBody User user) {
-		return service.userLogin(user.getUserEmail(), user.getPassword());
+	public ResponseEntity<?> login(@RequestBody User user) {
+		User u = service.userLogin(user.getUserEmail(), user.getPassword());
+		if(u == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
+		}
+		return ResponseEntity.ok(u);
 	}
 	
 	@GetMapping("/csrf-token")

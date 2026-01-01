@@ -1,16 +1,17 @@
 package com.driveaway.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // Turns the plain java file into a configuration file.
 @EnableWebSecurity // Intimates SpringBoot to not follow the default flow.
 public class SecurityConfig {
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
@@ -28,9 +29,9 @@ public class SecurityConfig {
 		
 		return http
 					.csrf(customizer -> customizer.disable())
-					.authorizeHttpRequests(request -> request.anyRequest().authenticated())
-					.formLogin(Customizer.withDefaults())
-					.httpBasic(Customizer.withDefaults())
+					.authorizeHttpRequests(request -> request.anyRequest().permitAll())
+//					.formLogin(Customizer.withDefaults())
+//					.httpBasic(Customizer.withDefaults())
 //					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 					.build();
 		

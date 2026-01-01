@@ -36,7 +36,9 @@ function UserLogin() {
 
             setMessage("Login Success");
             setError("");
-          };
+          }else{
+            setMessage(JSON.stringify(data));
+          }
 
 //      Role Based Navigation
           switch (data.role) {
