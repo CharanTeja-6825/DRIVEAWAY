@@ -2,8 +2,8 @@ package com.driveaway.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.driveaway.entity.Admin;
+import com.driveaway.entity.User;
 
-public interface AdminRepository extends MongoRepository<Admin, String>{
+public interface AdminRepository extends MongoRepository<User, String>{
 
 }
