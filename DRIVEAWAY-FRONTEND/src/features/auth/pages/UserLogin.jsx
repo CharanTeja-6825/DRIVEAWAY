@@ -29,6 +29,7 @@ function UserLogin() {
 
             setUser(data);
             setIsLoggedIn(true);
+            setMessage("Login Success");
 
 //        Saving creds to localstorage
             localStorage.setItem("user", JSON.stringify(data));
@@ -56,8 +57,7 @@ function UserLogin() {
           };
 
       } catch (err) {
-          setError(err.message);
-          console.error(err);
+          setError(err.response.data);
       }
     }
 

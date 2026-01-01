@@ -1,14 +1,8 @@
 package com.driveaway.service;
 
 import java.time.Instant;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +19,27 @@ public class UserServiceImpl implements UserService{
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 	
 	@Override
-	public User userLogin(String email, String password) {
+	public String userLogin(String email, String password) {
 		User user = userRepository.findByUserEmail(email);
-		if(user != null && encoder.matches(password, user.getPassword())) return user;
-		return null;
+		if(user == null) return "NOT_FOUND";
+		else if(encoder.matches(password, user.getPassword())) return "SUCCESS";
+		else return "INVALID";
+	}
+	
+	public User getUser(String email) {
+		return userRepository.findByUserEmail(email);
 	}
 
 	@Override
-	public User registerUser(User user) {
+	public User registerUser(User user) throws Exception{
+		
+		User existingUser = userRepository.findByUserEmail(user.getUserEmail());
+		if(existingUser != null) throw new Exception("User already exists with given email");
+		
 		user.setCreatedAt(Instant.now());
 		user.setRole(Roles.CUSTOMER);
 		user.setPassword(encoder.encode(user.getPassword()));
+		
 		return userRepository.save(user);
 	}
 	

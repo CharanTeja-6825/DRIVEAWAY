@@ -1,10 +1,7 @@
 package com.driveaway.controller;
 
-import java.net.http.HttpResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,11 +25,20 @@ public class UserController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user) {
-		User u = service.userLogin(user.getUserEmail(), user.getPassword());
-		if(u == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
+		String message = service.userLogin(user.getUserEmail(), user.getPassword());
+		
+		switch(message) {
+		case "SUCCESS":
+			User u = service.getUser(user.getUserEmail());
+			return ResponseEntity.ok(u);
+		case "INVALID":
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+		case "NOT_FOUND":
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+		default:
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Network Error");
 		}
-		return ResponseEntity.ok(u);
+		
 	}
 	
 	@GetMapping("/csrf-token")
@@ -41,7 +47,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/register")
-	public User register(@RequestBody User user) {
+	public User register(@RequestBody User user) throws Exception {
 		return service.registerUser(user);
 	}
 }

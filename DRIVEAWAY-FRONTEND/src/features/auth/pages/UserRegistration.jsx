@@ -27,8 +27,7 @@ function UserRegistration() {
             if(response.data) setMessage("Registration Success");
             setError("");
         } catch (err) {
-            setError(err.message);
-            console.error(err);
+            setError(err.response.data.message);
         }
     }
 
