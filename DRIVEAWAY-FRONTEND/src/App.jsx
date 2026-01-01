@@ -11,16 +11,15 @@ import DealerHome from './features/dealer/pages/DealerHome';
 import AdminHome from './features/admin/pages/AdminHome';
 import Home from './app/Home';
 import PageNotFound from './shared/components/PageNotFound';
+import { useAuth } from './shared/hooks/AuthContext';
 
 function App() {
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  // console.log(currentUser);
-  const [isLoggedIn, setIsLoggedIn] = useState(JSON.parse(localStorage.getItem("isLoggedIn")));
+  const {user, setUser, isLoggedIn, setIsLoggedIn} = useAuth();
 
   return (
     <div>
-      <Navbar isLoggedIn={isLoggedIn} user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>
+      <Navbar />
       <Routes>
 
         {/* Public */}

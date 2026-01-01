@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { login } from '../services';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../shared/hooks/AuthContext';
 
-function UserLogin({setUserState, setIsLoggedIn}) {
-    const [user, setUser] = useState({
+function UserLogin() {
+    const {user, setUser, setIsLoggedIn} = useAuth();
+    const [localUser, setLocalUser] = useState({
       userEmail : '',
       password : ''
     });
@@ -19,18 +21,14 @@ function UserLogin({setUserState, setIsLoggedIn}) {
       try {
 
 //      Fetching Login Response from Backend  
-          const { data } = await login(user);
+          const { data } = await login(localUser);
           console.log(data);
 
 //      Response Validation
           if(data) {
 
-            setUserState(data);
+            setUser(data);
             setIsLoggedIn(true);
-
-            localStorage.setItem("user", JSON.stringify(data));
-            localStorage.setItem("isLoggedIn", JSON.stringify(true));
-
             setMessage("Login Success");
             setError("");
           };
@@ -58,7 +56,7 @@ function UserLogin({setUserState, setIsLoggedIn}) {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setUser((prev) => ({
+        setLocalUser((prev) => ({
             ...prev,
             [name]:value
         }));
@@ -79,14 +77,14 @@ function UserLogin({setUserState, setIsLoggedIn}) {
         onChange={handleChange} 
         type="email" 
         name='userEmail'
-        value={user.userEmail}
+        value={localUser.userEmail}
         placeholder='Enter Email'
       />
         <input 
           onChange={handleChange} 
-          type="text" 
+          type="password" 
           name='password'
-          value={user.password}
+          value={localUser.password}
           placeholder='Enter password'
         />
         <button 
