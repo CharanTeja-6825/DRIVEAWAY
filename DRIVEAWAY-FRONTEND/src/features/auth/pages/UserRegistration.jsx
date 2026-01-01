@@ -8,7 +8,6 @@ function UserRegistration() {
         userAge : 0,
         userEmail : '',
         password : '',
-        role : 'CUSTOMER',
     });
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');

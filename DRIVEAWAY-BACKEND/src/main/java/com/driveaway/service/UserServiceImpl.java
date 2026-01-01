@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
+import com.driveaway.roles.Roles;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User registerUser(User user) {
 		user.setCreatedAt(Instant.now());
+		user.setRole(Roles.CUSTOMER);
 		return userRepository.save(user);
 	}
 	

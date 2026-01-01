@@ -23,26 +23,34 @@ function App() {
       <Routes>
 
         {/* Public */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<UserLogin setIsLoggedIn={setIsLoggedIn} setUserState={setUser}/>} />
-        <Route path="/register" element={<UserRegistration />} />
+        {!isLoggedIn && (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<UserLogin />} />
+            <Route path="/register" element={<UserRegistration />} />
+          </>
+        )}
 
-        {/* Customer */}
-        <Route element={<ProtectedRoute user={user} isLoggedIn={isLoggedIn} allowedRoles={["CUSTOMER"]} />}>
-          <Route path="/customer" element={<CustomerHome />} />
-        </Route>
+        {isLoggedIn && (
+          <>
+            {/* Customer */}
+            <Route element={<ProtectedRoute allowedRoles={["CUSTOMER"]} />}>
+              <Route path="/customer" element={<CustomerHome />} />
+            </Route>
 
-        {/* Dealer */}
-        <Route element={<ProtectedRoute user={user} isLoggedIn={isLoggedIn} allowedRoles={["DEALER"]} />}>
-          <Route path="/dealer" element={<DealerHome />} />
-        </Route>
+            {/* Dealer */}
+            <Route element={<ProtectedRoute allowedRoles={["DEALER"]} />}>
+              <Route path="/dealer" element={<DealerHome />} />
+            </Route>
 
-        {/* Admin */}
-        <Route element={<ProtectedRoute user={user} isLoggedIn={isLoggedIn} allowedRoles={["ADMIN"]} />}>
-          <Route path="/admin" element={<AdminHome />} />
-        </Route>
+            {/* Admin */}
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/admin" element={<AdminHome />} />
+            </Route>
+          </>
+        )}
 
-        {/* <Route path="*" element={<PageNotFound />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   )

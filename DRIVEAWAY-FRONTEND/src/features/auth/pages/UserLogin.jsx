@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../shared/hooks/AuthContext';
 
 function UserLogin() {
-    const {user, setUser, setIsLoggedIn} = useAuth();
+    const { setUser, setIsLoggedIn} = useAuth();
     const [localUser, setLocalUser] = useState({
       userEmail : '',
       password : ''
@@ -29,6 +29,11 @@ function UserLogin() {
 
             setUser(data);
             setIsLoggedIn(true);
+
+//        Saving creds to localstorage
+            localStorage.setItem("user", JSON.stringify(data));
+            localStorage.setItem("isLoggedIn", JSON.stringify(true));
+
             setMessage("Login Success");
             setError("");
           };
