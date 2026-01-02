@@ -38,13 +38,14 @@ public class JWTServiceImpl implements JWTService{
 	}
 	
 	@Override
-	public String generateToken(String subject) {
+	public String generateToken(User user) {
 		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", user.getRole().name());
 		
 		return Jwts.builder() // method to build the JWT token
 				   .claims() // specifying that we are adding claims
 				   .add(claims) // adds the details regarding user
-				   .subject(subject) // subject specification
+				   .subject(user.getUserEmail()) // subject specification
 				   .issuedAt(new Date(System.currentTimeMillis())) // issued time
 				   .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
 				   .and()
@@ -81,7 +82,8 @@ public class JWTServiceImpl implements JWTService{
 	@Override
 	public boolean validateToken(String token, User user) {
 		final String email = extractEmail(token);
-		return (email.equals(user.getUserEmail()) && !isTokenExpired(token));
+		final String role = extractRole(token);
+		return (email.equals(user.getUserEmail()) && role.equals(user.getRole().name()) && !isTokenExpired(token));
 	}
 
 	private boolean isTokenExpired(String token) {
@@ -91,7 +93,10 @@ public class JWTServiceImpl implements JWTService{
 	private Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
 	}
-	
-	
+
+	@Override
+	public String extractRole(String token) {
+	    return extractClaim(token, claims -> claims.get("role", String.class));
+	}
 	
 }

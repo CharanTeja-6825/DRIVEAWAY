@@ -17,19 +17,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		// perform all the customization over here, lets play with the simple ones.
-		
-//		http.csrf(customizer -> customizer.disable()); // disables the CSRF 
-//		http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
-		// permits only authenticated client to access the resource of the server.
-		
-//		http.formLogin(Customizer.withDefaults()); // enables form access
-//		http.httpBasic(Customizer.withDefaults()); // gives access to REST
-		
-//		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		// Does not maintain a session ID and generates a new ID on every reload.
-		
+	
 		return http
 					.csrf(customizer -> customizer.disable())
 					.authorizeHttpRequests(request -> request

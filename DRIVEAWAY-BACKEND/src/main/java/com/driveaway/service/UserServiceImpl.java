@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
 	public String userLogin(String email, String password) {
 		User user = userRepository.findByUserEmail(email);
 		if(user == null) return "NOT_FOUND";
-		else if(encoder.matches(password, user.getPassword())) return jwtService.generateToken(email);
+		else if(encoder.matches(password, user.getPassword())) return jwtService.generateToken(user);
 		else return "INVALID";
 	}
 	
