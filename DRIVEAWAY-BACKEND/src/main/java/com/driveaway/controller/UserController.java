@@ -21,7 +21,7 @@ public class UserController {
 	private UserService service;
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user) throws Exception {
+	public ResponseEntity<AuthResponse> login(@RequestBody User user) throws Exception {
 		AuthResponse response = service.userLogin(user.getUserEmail(), user.getPassword());
 		return ResponseEntity.ok(response);
 	}

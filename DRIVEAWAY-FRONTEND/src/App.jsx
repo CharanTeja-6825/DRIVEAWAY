@@ -15,7 +15,7 @@ import { useAuth } from './shared/hooks/AuthContext';
 
 function App() {
 
-  const { user, setUser, isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <div>
