@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.driveaway.DTO.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
 import com.driveaway.roles.Roles;
@@ -22,11 +23,13 @@ public class UserServiceImpl implements UserService{
 	private JWTService jwtService;
 	
 	@Override
-	public String userLogin(String email, String password) {
+	public ResponseDTO userLogin(String email, String password) {
 		User user = userRepository.findByUserEmail(email);
-		if(user == null) return "NOT_FOUND";
-		else if(encoder.matches(password, user.getPassword())) return jwtService.generateToken(user);
-		else return "INVALID";
+		if(user != null && encoder.matches(password, user.getPassword())) {
+			String token = jwtService.generateToken(user);
+			return new ResponseDTO(email, user.getRole().name(), token);
+		}
+		else return null;
 	}
 	
 	public User getUser(String email) {
