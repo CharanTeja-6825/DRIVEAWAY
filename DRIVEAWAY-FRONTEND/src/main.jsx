@@ -4,11 +4,13 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import AuthProvider from './shared/hooks/AuthContext.jsx'
+import AllUsers from './features/admin/pages/AllUsers.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
         <App />
     </BrowserRouter>
+    {/* <AllUsers /> */}
   </AuthProvider>,
 )

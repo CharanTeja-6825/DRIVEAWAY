@@ -43,7 +43,6 @@ public class JwtFilter extends OncePerRequestFilter{
 			token = authHeader.substring(7);
 			email = jwtService.extractEmail(token);
 			role = jwtService.extractRole(token);
-			
 		}
 		
 		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
