@@ -1,105 +1,62 @@
-import React, { useState } from 'react'
-import { login } from '../services';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../shared/hooks/AuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login as loginApi } from "../services";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
 
 function UserLogin() {
-  const { setUser, setIsLoggedIn } = useAuth();
-  const [localUser, setLocalUser] = useState({
-    userEmail: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
-
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleUser = async (e) => {
+  const [credentials, setCredentials] = useState({
+    userEmail: "",
+    password: ""
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //    Exception Handling
     try {
+      const { data } = await loginApi(credentials);
 
-      //      Fetching Login Response from Backend  
-      const { data } = await login(localUser);
-      console.log(data);
+      login(data); // 🔥 one line
 
-      //      Response Validation
-      if (data) {
-
-        setUser(data);
-        setIsLoggedIn(true);
-        setMessage("Login Success");
-
-        //        Saving creds to localstorage
-        localStorage.setItem("user", JSON.stringify(data));
-        localStorage.setItem("isLoggedIn", JSON.stringify(true));
-
-        setMessage("Login Success");
-        setError("");
-      } else {
-        setMessage(JSON.stringify(data));
-      }
-
-      //      Role Based Navigation
       switch (data.role) {
-        case "CUSTOMER":
-          navigate("/customer");
+        case "ADMIN":
+          navigate("/admin");
           break;
         case "DEALER":
           navigate("/dealer");
           break;
-        case "ADMIN":
-          navigate("/admin");
-          break;
         default:
-          navigate("/login");
-      };
-
+          navigate("/customer");
+      }
     } catch (err) {
-      setError(err.response.data);
+      console.error(err);
     }
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setLocalUser((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  }
+  };
 
   return (
-    <div>
-      {
-        error.length > 0 ? (
-          <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
-        ) : message.length > 0 ?
-          (
-            <p style={{ color: 'green', fontWeight: 'bold' }}>{message}</p>
-          ) : null
-      }
-      <form onSubmit={handleUser}>
+    <div className="flex justify-center items-center h-100 bg-purple-500">
+      <form onSubmit={handleSubmit} className="">
         <input
-          onChange={handleChange}
-          type="email"
-          name='userEmail'
-          value={localUser.userEmail}
-          placeholder='Enter Email'
+          name="userEmail"
+          value={credentials.userEmail}
+          onChange={(e) =>
+            setCredentials({ ...credentials, userEmail: e.target.value })
+          }
         />
         <input
-          onChange={handleChange}
           type="password"
-          name='password'
-          value={localUser.password}
-          placeholder='Enter password'
+          name="password"
+          value={credentials.password}
+          onChange={(e) =>
+            setCredentials({ ...credentials, password: e.target.value })
+          }
         />
-        <button
-          type="submit"
-        >Submit</button>
+        <button type="submit">Login</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default UserLogin
+export default UserLogin;

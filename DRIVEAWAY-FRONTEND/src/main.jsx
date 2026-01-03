@@ -3,14 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
-import AuthProvider from './shared/hooks/AuthContext.jsx'
-import AllUsers from './features/admin/pages/AllUsers.jsx'
+import AuthContext from './shared/hooks/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
+  <AuthContext>
     <BrowserRouter>
         <App />
     </BrowserRouter>
     {/* <AllUsers /> */}
-  </AuthProvider>,
+  </AuthContext>,
 )

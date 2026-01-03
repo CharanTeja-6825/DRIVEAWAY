@@ -1,16 +1,22 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useLogout from '../shared/hooks/useLogout';
-import { useAuth } from '../shared/hooks/AuthContext';
+import { useAuth } from '../shared/hooks/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
 
-    const {user, setUser, isLoggedIn, setIsLoggedIn} = useAuth();
+    const {user, isLoggedIn, logout} = useAuth();
 
-    const logout = useLogout(setUser, setIsLoggedIn);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();                  
+        navigate("/", { replace: true });
+    };
 
     return (
-        <div>
+        <div className='flex gap-5 bg-blue-500 text-white p-4 font-bold'>
             {!isLoggedIn && (
                 <>
                 <Link to={'/'}>Home</Link>
@@ -42,7 +48,7 @@ function Navbar() {
                 </>
             )}
 
-            <button onClick={logout}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
                 </>
             )}
         </div>

@@ -11,7 +11,7 @@ import DealerHome from './features/dealer/pages/DealerHome';
 import AdminHome from './features/admin/pages/AdminHome';
 import Home from './app/Home';
 import PageNotFound from './shared/components/PageNotFound';
-import { useAuth } from './shared/hooks/AuthContext';
+import { useAuth } from './shared/hooks/AuthProvider';
 
 function App() {
 
