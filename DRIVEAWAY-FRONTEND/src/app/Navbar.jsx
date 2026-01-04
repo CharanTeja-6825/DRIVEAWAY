@@ -45,6 +45,7 @@ function Navbar() {
             {user.role === "ADMIN" && (
                 <>
                     <Link to={'/admin'}>Ah</Link>
+                    <Link to={'/admin/all'}>All Users</Link>
                 </>
             )}
 

@@ -12,6 +12,7 @@ import AdminHome from './features/admin/pages/AdminHome';
 import Home from './app/Home';
 import PageNotFound from './shared/components/PageNotFound';
 import { useAuth } from './shared/hooks/AuthProvider';
+import AllUsers from './features/admin/pages/AllUsers'
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
             {/* Admin */}
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
               <Route path="/admin" element={<AdminHome />} />
+              <Route path='/admin/all' element={<AllUsers />} />
             </Route>
           </>
         )}

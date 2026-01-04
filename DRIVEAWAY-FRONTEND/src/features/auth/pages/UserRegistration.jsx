@@ -34,9 +34,9 @@ function UserRegistration() {
     return (
         <div>
             {
-                error.length > 0 ? (
+                error ? (
                     <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
-                ) : message.length > 0 ?
+                ) : message ?
                     (
                         <p style={{ color: 'green', fontWeight: 'bold' }}>{message}</p>
                     ) : null

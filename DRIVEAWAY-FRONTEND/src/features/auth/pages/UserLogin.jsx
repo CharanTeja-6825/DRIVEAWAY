@@ -36,7 +36,7 @@ function UserLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-100 bg-purple-500">
+    <div>
       <form onSubmit={handleSubmit} className="">
         <input
           name="userEmail"

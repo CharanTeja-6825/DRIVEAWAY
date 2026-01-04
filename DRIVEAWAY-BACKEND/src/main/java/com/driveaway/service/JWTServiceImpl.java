@@ -47,7 +47,7 @@ public class JWTServiceImpl implements JWTService{
 				   .add(claims) // adds the details regarding user
 				   .subject(user.getUserEmail()) // subject specification
 				   .issuedAt(new Date(System.currentTimeMillis())) // issued time
-				   .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+				   .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30L))
 				   .and()
 				   .signWith(getKey()) // signature
 				   .compact(); // conversion to String
