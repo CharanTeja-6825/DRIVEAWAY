@@ -1,20 +1,26 @@
 import axios from "axios";
+import logout from '../shared/hooks/useLogout'
 
 const api = axios.create({
   baseURL: "http://localhost:2006/",
 });
 
+
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token").toString();
-    console.log(token);
-    console.log(typeof(token));
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token.toString()}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    if(error.response?.status === 403){
+      logout();
+      window.location.href="/login";
+    }
+    Promise.reject(error)
+  }
 );
 
 export default api;

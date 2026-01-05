@@ -26,18 +26,6 @@ public class UserController {
 	public ResponseEntity<?> login(@RequestBody User user) {
 		ResponseDTO response = service.userLogin(user.getUserEmail(), user.getPassword());
 		
-//		switch(message) {
-//		case "SUCCESS":
-//			User u = service.getUser(user.getUserEmail());
-//			return ResponseEntity.ok(u);
-//		case "INVALID":
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
-//		case "NOT_FOUND":
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-//		default:
-//			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(message);
-//		}
-		
 		if(response == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials or User not found");
 		
 		else return ResponseEntity.ok(response);

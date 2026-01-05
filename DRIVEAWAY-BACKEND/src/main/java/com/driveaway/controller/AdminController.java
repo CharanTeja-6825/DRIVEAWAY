@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.driveaway.entity.User;
+import com.driveaway.roles.Roles;
 import com.driveaway.service.AdminService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,10 @@ public class AdminController {
 	
 	@GetMapping("/all")
 	public List<User> getAllUsers(){
-		return adminService.getAllUsers();
+		List<User> users = adminService.getAllUsers();
+		users = users.stream()
+							  .filter(user -> user.getRole() != Roles.ADMIN)
+							  .toList();
+		return users;
 	}
 }

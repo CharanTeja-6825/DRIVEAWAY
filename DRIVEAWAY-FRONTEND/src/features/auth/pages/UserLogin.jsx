@@ -12,13 +12,15 @@ function UserLogin() {
     password: ""
   });
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const { data } = await loginApi(credentials);
 
-      login(data); // 🔥 one line
+      login(data);
 
       switch (data.role) {
         case "ADMIN":
@@ -31,12 +33,15 @@ function UserLogin() {
           navigate("/customer");
       }
     } catch (err) {
-      console.error(err);
+      setError(err.response.data)
     }
   };
 
   return (
     <div>
+      {
+        error && (<p className="text-red-500 font-bold">{error}</p>)
+      }
       <form onSubmit={handleSubmit} className="">
         <input
           name="userEmail"
@@ -53,7 +58,7 @@ function UserLogin() {
             setCredentials({ ...credentials, password: e.target.value })
           }
         />
-        <button type="submit">Login</button>
+        <button className="cursor-pointer" type="submit">Login</button>
       </form>
     </div>
   );
