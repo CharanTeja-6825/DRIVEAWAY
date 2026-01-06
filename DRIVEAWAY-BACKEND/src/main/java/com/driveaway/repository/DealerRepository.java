@@ -2,8 +2,8 @@ package com.driveaway.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.driveaway.entity.User;
+import com.driveaway.entity.Dealer;
 
-public interface DealerRepository extends MongoRepository<User, String>{
+public interface DealerRepository extends MongoRepository<Dealer, String>{
 	
 }

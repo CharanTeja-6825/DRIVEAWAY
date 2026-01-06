@@ -29,7 +29,11 @@ public class SecurityConfig {
 					.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 					.csrf(customizer -> customizer.disable())
 					.authorizeHttpRequests(request -> request
-															 .requestMatchers("/api/user/login", "/api/user/register")
+															 .requestMatchers("/api/user/login", 
+																	 		  "/api/user/register", 
+																	 		  "/v3/api-docs/**",
+																              "/swagger-ui/**",
+																              "/swagger-ui.html")
 															 .permitAll()
 															 .anyRequest().authenticated())
 //					.formLogin(Customizer.withDefaults())

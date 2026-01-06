@@ -31,8 +31,6 @@ public class UserController {
 		else return ResponseEntity.ok(response);
 		
 	}
-
-	
 	
 	@PostMapping("/register")
 	public User register(@RequestBody User user) throws Exception {

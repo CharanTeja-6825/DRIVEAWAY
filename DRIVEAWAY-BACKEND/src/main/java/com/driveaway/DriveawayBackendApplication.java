@@ -8,7 +8,7 @@ public class DriveawayBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DriveawayBackendApplication.class, args);
-		System.out.println("Project running...");
+		System.out.println("Jaiii Balayyyaa...!!!");
 	}
 
 }
