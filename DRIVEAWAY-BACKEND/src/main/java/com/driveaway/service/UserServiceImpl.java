@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
 		User user = userRepository.findByUserEmail(email);
 		if(user != null && encoder.matches(password, user.getPassword())) {
 			String token = jwtService.generateToken(user);
-			return new ResponseDTO(email, user.getRole().name(), token);
+			return new ResponseDTO(email, user.getRole(), token);
 		}
 		else return null;
 	}
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService{
 		if(existingUser != null) throw new Exception("User already exists with given email");
 		
 		user.setCreatedAt(Instant.now());
-		user.setRole(Roles.CUSTOMER);
+		user.setRole(Roles.CUSTOMER.toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		
 		return userRepository.save(user);

@@ -30,21 +30,22 @@ function Navbar() {
                 {/* Customer Routings */}
                 {user.role === "CUSTOMER" && (
                 <>
-                    <Link to={'/customer'}>Ch</Link>
+                    <Link to={'/customer'}>Home</Link>
+                    <Link to={'/customer/profile'}>Profile</Link>
                 </>
             )}
 
             {/* Dealer Routings */}
                 {user.role === "DEALER" && (
                 <>
-                    <Link to={'/dealer'}>Dh</Link>
+                    <Link to={'/dealer'}>Home</Link>
                 </>
             )}
 
             {/* Admin Routings */}
             {user.role === "ADMIN" && (
                 <>
-                    <Link to={'/admin'}>Ah</Link>
+                    <Link to={'/admin'}>Dash</Link>
                     <Link to={'/admin/all'}>All Users</Link>
                 </>
             )}

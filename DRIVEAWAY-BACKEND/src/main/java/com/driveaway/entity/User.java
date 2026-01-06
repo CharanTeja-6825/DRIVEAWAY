@@ -18,7 +18,7 @@ public class User {
 	@Indexed(unique = true)
 	private String userEmail;
 	private String password;
-	private Roles role;
+	private String role;
 	private Instant createdAt;
 	
 	public String getUserId() {
@@ -57,10 +57,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Roles getRole() {
+	public String getRole() {
 		return role;
 	}
-	public void setRole(Roles role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 	public Instant getCreatedAt() {

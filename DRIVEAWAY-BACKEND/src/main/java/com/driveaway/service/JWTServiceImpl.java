@@ -40,7 +40,7 @@ public class JWTServiceImpl implements JWTService{
 	@Override
 	public String generateToken(User user) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", user.getRole().name());
+		claims.put("role", user.getRole());
 		
 		return Jwts.builder() // method to build the JWT token
 				   .claims() // specifying that we are adding claims
@@ -83,7 +83,7 @@ public class JWTServiceImpl implements JWTService{
 	public boolean validateToken(String token, User user) {
 		final String email = extractEmail(token);
 		final String role = extractRole(token);
-		return (email.equals(user.getUserEmail()) && role.equals(user.getRole().name()) && !isTokenExpired(token));
+		return (email.equals(user.getUserEmail()) && role.equals(user.getRole()) && !isTokenExpired(token));
 	}
 
 	private boolean isTokenExpired(String token) {
