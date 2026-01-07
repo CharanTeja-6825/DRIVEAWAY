@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.driveaway.DTO.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
+import com.driveaway.roles.Approval;
 import com.driveaway.roles.Roles;
 
 @Service
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService{
 		
 		user.setCreatedAt(Instant.now());
 		user.setRole(Roles.CUSTOMER.toString());
+		user.setApprovalStatus(Approval.NOT_REQUESTED.toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		
 		return userRepository.save(user);

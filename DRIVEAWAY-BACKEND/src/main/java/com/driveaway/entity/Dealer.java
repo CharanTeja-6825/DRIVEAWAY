@@ -17,7 +17,6 @@ public class Dealer {
 
     private String dealershipName;
     private String ownerName;
-    private boolean approvalStatus = false;
 
     @Indexed(unique = true)
     private String gstIn;
@@ -50,12 +49,6 @@ public class Dealer {
 	}
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
-	}
-	public boolean isApprovalStatus() {
-		return approvalStatus;
-	}
-	public void setApprovalStatus(boolean approvalStatus) {
-		this.approvalStatus = approvalStatus;
 	}
 	public String getGstIn() {
 		return gstIn;
