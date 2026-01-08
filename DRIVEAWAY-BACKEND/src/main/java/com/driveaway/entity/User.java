@@ -68,7 +68,7 @@ public class User {
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 	}
-	public String isApprovalStatus() {
+	public String getApprovalStatus() {
 		return approvalStatus;
 	}
 	public void setApprovalStatus(String approvalStatus) {
