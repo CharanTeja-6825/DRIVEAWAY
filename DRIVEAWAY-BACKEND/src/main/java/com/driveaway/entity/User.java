@@ -18,7 +18,6 @@ public class User {
 	private String password;
 	private String role;
 	private Instant createdAt;
-	private String approvalStatus;
 	
 	public String getUserId() {
 		return userId;
@@ -68,11 +67,4 @@ public class User {
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 	}
-	public String getApprovalStatus() {
-		return approvalStatus;
-	}
-	public void setApprovalStatus(String approvalStatus) {
-		this.approvalStatus = approvalStatus;
-	}
-	
 }

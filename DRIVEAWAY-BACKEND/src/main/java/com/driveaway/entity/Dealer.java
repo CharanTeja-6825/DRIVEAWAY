@@ -21,10 +21,9 @@ public class Dealer {
     @Indexed(unique = true)
     private String gstIn;
 
-    private String phone;
     private String location;
     private Instant createdAt;
-    
+    private String approvalStatus;
     
 	public String getId() {
 		return id;
@@ -56,12 +55,6 @@ public class Dealer {
 	public void setGstIn(String gstIn) {
 		this.gstIn = gstIn;
 	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 	public String getLocation() {
 		return location;
 	}
@@ -74,4 +67,11 @@ public class Dealer {
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 	}
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
 }

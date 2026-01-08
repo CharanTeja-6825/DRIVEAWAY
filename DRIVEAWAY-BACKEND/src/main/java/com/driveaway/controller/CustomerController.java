@@ -1,5 +1,9 @@
 package com.driveaway.controller;
 
+import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.entity.Dealer;
+import com.driveaway.service.DealerService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private DealerService dealerService;
 	
 	@GetMapping("/")
 	public String chome() {
@@ -32,10 +39,12 @@ public class CustomerController {
 		return ResponseEntity.ok(user);
 	}
 
-	@PostMapping("/request")
-	public ResponseEntity<String> dealerRequest(@RequestParam String email){
-		String message = customerService.dealerApproval(email);
-		if(message.equals("User not found")) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-		return ResponseEntity.ok(message);
+	@PostMapping("/add")
+	public ResponseEntity<?> addDealer(@RequestBody DealerRequestDTO dealer){
+		System.out.println("USER = " + dealer.getUser());
+		Dealer d = dealerService.addDealer(dealer);
+		if(d == null) return ResponseEntity.status(404).body("User not found");
+		return ResponseEntity.status(201).body(d);
 	}
+
 }
