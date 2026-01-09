@@ -2,7 +2,9 @@ package com.driveaway.controller;
 
 import java.util.List;
 
+import com.driveaway.service.DealerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,10 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adminService;
-	
+
+	@Autowired
+	private DealerApplicationService dealerApplicationService;
+
 	@GetMapping("/")
 	public String test(HttpServletRequest request) {
 		return "Jai Balayya : "+request.getSession().getId();
@@ -33,5 +38,15 @@ public class AdminController {
 							  .filter(user -> user.getRole() != Roles.ADMIN.toString())
 							  .toList();
 		return users;
+	}
+
+	@PostMapping("/approve/{id}")
+	public ResponseEntity<String> approve(@PathVariable String id){
+		String message = dealerApplicationService.approveApplication(id);
+		switch(message){
+			case "Application not found", "User ID mentioned in Application not found": return ResponseEntity.status(404).body(message);
+			case "Dealer Approved Successfully" : return ResponseEntity.status(200).body(message);
+			default: return ResponseEntity.status(400).body(message);
+        }
 	}
 }

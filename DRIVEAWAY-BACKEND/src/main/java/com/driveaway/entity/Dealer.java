@@ -12,8 +12,7 @@ public class Dealer {
     @Id
     private String id;
 
-    @DBRef(lazy = true)
-    private User user;
+    private String userId;
 
     private String dealershipName;
     private String ownerName;
@@ -31,11 +30,11 @@ public class Dealer {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public User getUser() {
-		return user;
+	public String getUser() {
+		return userId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(String userId) {
+		this.userId = userId;
 	}
 	public String getDealershipName() {
 		return dealershipName;

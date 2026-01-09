@@ -29,15 +29,9 @@ public class DealerServiceImpl implements DealerService{
 		Optional<User> u = userRepository.findById(dto.getUser());
 		if(u.isEmpty()) return null;
 
-		// Updating the User Role from "CUSTOMER" to "DEALER".
-		User us = u.get();
-		us.setRole(Roles.DEALER.toString());
-
-		userRepository.save(us);
-
 		// Creating Dealer object for adding Dealer.
 		Dealer d = new Dealer();
-		d.setUser(us);
+		d.setUser(dto.getUser());
 		d.setLocation(dto.getLocation());
 		d.setDealershipName(dto.getDealershipName());
 		d.setOwnerName(dto.getOwnerName());
