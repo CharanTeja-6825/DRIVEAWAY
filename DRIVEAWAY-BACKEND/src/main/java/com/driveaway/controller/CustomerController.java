@@ -40,7 +40,6 @@ public class CustomerController {
 
 	@PostMapping("/add")
 	public ResponseEntity<?> addDealer(@RequestBody DealerRequestDTO dealerRequestDTO){
-//		System.out.println("USER = " + dealerRequestDTO.getUser());
 		String message = dealerApplicationService.submitApplication(dealerRequestDTO);
 		return ResponseEntity.status(201).body(message);
 	}
