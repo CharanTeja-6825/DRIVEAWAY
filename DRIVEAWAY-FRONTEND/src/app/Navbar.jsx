@@ -45,12 +45,13 @@ function Navbar() {
             {/* Admin Routings */}
             {user.role === "ADMIN" && (
                 <>
-                    <Link to={'/admin'}>Dash</Link>
+                    <Link to={'/admin'}>Dashboard</Link>
                     <Link to={'/admin/all'}>All Users</Link>
+                    <Link to={'/admin/applications'}>Requests</Link>
                 </>
             )}
 
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout} className='cursor-pointer'>Logout</button>
                 </>
             )}
         </div>

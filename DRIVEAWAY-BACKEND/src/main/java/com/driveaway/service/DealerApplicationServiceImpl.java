@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,5 +72,11 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
 
         dealerRepository.save(d);
         return "Dealer Approved Successfully";
+    }
+
+    public List<DealerApplications> allApplications(){
+        return dealerApplicationRepository.findAll().stream()
+                .filter(app -> app.getApprovalStatus().equals(Approval.PENDING.toString()))
+                .toList();
     }
 }

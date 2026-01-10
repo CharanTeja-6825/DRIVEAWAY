@@ -2,14 +2,20 @@ import React, { useState } from 'react'
 import { getUserByEmail } from '../services'
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import { useEffect } from 'react';
-import DealershipModal from '../../../shared/components/DealershipModal';
-import { Box, Button, TextField } from '@mui/material';
+import DealershipModal from '../components/DealershipModal'
+import { Button, TextField } from '@mui/material';
 
 
 
-function UserProfile() {
+function CustomerProfile() {
 
-  const [profileUser, setProfileUser] = useState({});
+  const [profileUser, setProfileUser] = useState({
+    userName: "",
+    userPhone: "",
+    userAge: "",
+    role: ""
+  });
+
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -94,4 +100,4 @@ function UserProfile() {
   )
 }
 
-export default UserProfile
+export default CustomerProfile

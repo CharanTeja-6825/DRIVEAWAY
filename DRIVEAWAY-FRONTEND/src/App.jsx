@@ -13,7 +13,8 @@ import Home from './app/Home';
 import PageNotFound from './shared/components/PageNotFound';
 import { useAuth } from './shared/hooks/AuthProvider';
 import AllUsers from './features/admin/pages/AllUsers'
-import UserProfile from './features/customer/pages/UserProfile';
+import CustomerProfile from './features/customer/pages/CustomerProfile';
+import ApproveDealers from './features/admin/pages/ApproveDealers';
 
 function App() {
 
@@ -38,7 +39,7 @@ function App() {
             {/* Customer */}
             <Route element={<ProtectedRoute allowedRoles={["CUSTOMER"]} />}>
               <Route path="/customer" element={<CustomerHome />} />
-              <Route path="/customer/profile" element={<UserProfile />} />
+              <Route path="/customer/profile" element={<CustomerProfile />} />
             </Route>
 
             {/* Dealer */}
@@ -50,6 +51,7 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
               <Route path="/admin" element={<AdminHome />} />
               <Route path='/admin/all' element={<AllUsers />} />
+              <Route path='/admin/applications' element={<ApproveDealers />} />
             </Route>
           </>
         )}

@@ -1,5 +1,5 @@
 package com.driveaway.enumerations;
 
 public enum Approval {
-	 PENDING, APPROVED
+	 PENDING, APPROVED, REJECTED
 }

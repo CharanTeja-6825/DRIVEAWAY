@@ -46,6 +46,7 @@ function UserLogin() {
         <input
           name="userEmail"
           value={credentials.userEmail}
+          placeholder="Enter Email"
           onChange={(e) =>
             setCredentials({ ...credentials, userEmail: e.target.value })
           }
@@ -54,6 +55,7 @@ function UserLogin() {
           type="password"
           name="password"
           value={credentials.password}
+          placeholder="Enter Password"
           onChange={(e) =>
             setCredentials({ ...credentials, password: e.target.value })
           }
