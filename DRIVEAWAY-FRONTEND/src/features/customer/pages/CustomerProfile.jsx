@@ -15,7 +15,7 @@ function CustomerProfile() {
     role: ""
   });
 
-  const [approvalStatus, setApprovalStatus] = useState(null);
+  const [approvalStatus, setApprovalStatus] = useState("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,7 +39,7 @@ function CustomerProfile() {
     const loadStatus = async () => {
       try {
         const { data } = await applicationStatus(profileUser.userId);
-        setApprovalStatus(data?.status); // PENDING / APPROVED / REJECTED
+        setApprovalStatus(data); // PENDING / APPROVED / REJECTED
       } catch (err) {
         // No application found → allow user to apply
         setApprovalStatus(null);
@@ -64,7 +64,7 @@ function CustomerProfile() {
         {approvalStatus && (
           <Alert
             severity={
-              approvalStatus === "APPROVED"
+              approvalStatus === "PENDING"
                 ? "success"
                 : approvalStatus === "REJECTED"
                 ? "error"

@@ -25,7 +25,6 @@ const style = {
 
 export default function DealershipModal({ open, handleClose, id }) {
   const [form, setForm] = React.useState({
-    userId: id.toString(),
     dealershipName: "",
     ownerName: "",
     gstIn: "",
@@ -33,7 +32,6 @@ export default function DealershipModal({ open, handleClose, id }) {
     location: ""
   });
 
-  console.log(id);
 
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState("");
@@ -46,7 +44,6 @@ export default function DealershipModal({ open, handleClose, id }) {
 
   const resetState = () => {
     setForm({
-      userId: id,
       dealershipName: "",
       ownerName: "",
       gstIn: "",
@@ -68,12 +65,15 @@ export default function DealershipModal({ open, handleClose, id }) {
     setError("");
     setSuccess("");
 
+    const payload = {
+      ...form,
+      user : id
+    };
+
     try {
-      console.log(form);
-      const { data } = await submitRequest(form);
+      const { data } = await submitRequest(payload);
       setSuccess("Request submitted successfully");
       setForm({
-        userId: id,
         dealershipName: "",
         ownerName: "",
         gstIn: "",
@@ -82,6 +82,7 @@ export default function DealershipModal({ open, handleClose, id }) {
       });
       onClose();
     } catch (err) {
+      console.log(err);
       setError(
         err?.response?.data?.message ||
         err?.message ||

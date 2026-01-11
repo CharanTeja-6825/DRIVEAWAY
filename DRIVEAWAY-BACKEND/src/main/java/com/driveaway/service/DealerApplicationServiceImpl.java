@@ -31,16 +31,20 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
 
     @Override
     public String submitApplication(DealerRequestDTO dto) {
-        DealerApplications app = new DealerApplications();
-        app.setUserId(dto.getUser());
-        app.setDealerShipName(dto.getDealershipName());
-        app.setOwnerName(dto.getOwnerName());
-        app.setGstIn(dto.getGstIn());
-        app.setLocation(dto.getLocation());
-        app.setApprovalStatus(Approval.PENDING.toString());
-        app.setCreatedAt(Instant.now());
-        dealerApplicationRepository.save(app);
-        return "Application submitted";
+       try{
+           DealerApplications app = new DealerApplications();
+           app.setUserId(dto.getUser());
+           app.setDealerShipName(dto.getDealershipName());
+           app.setOwnerName(dto.getOwnerName());
+           app.setGstIn(dto.getGstIn());
+           app.setLocation(dto.getLocation());
+           app.setApprovalStatus(Approval.PENDING.toString());
+           app.setCreatedAt(Instant.now());
+           dealerApplicationRepository.save(app);
+           return "Application submitted";
+       } catch (Exception e) {
+           return "Application already Exists";
+       }
     }
 
     @Override

@@ -62,9 +62,9 @@ function ApproveDealers() {
                                 <td className='text-center'>{application.gstIn}</td>
                                 <td className='text-center'>{application.location}</td>
                                 <td className='text-center'>{application.createdAt.substring(0, 10)}</td>
-                                <td className='text-center p-3 flex flex-col'>
-                                    <button onClick={() => handleApprove(application.id)} className='bg-green-400 text-white rounded-xl w-25'>Approve</button>
-                                    <button className='bg-red-400 text-white rounded-xl w-25'>Reject</button>
+                                <td className='text-center p-3 flex flex-col gap-2'>
+                                    <button onClick={() => handleApprove(application.id)} className='bg-green-400 cursor-pointer text-white rounded-xl w-25'>Approve</button>
+                                    <button className='bg-red-400 text-white rounded-xl w-25 cursor-pointer'>Reject</button>
                                 </td>
                             </tr>
                         ))
