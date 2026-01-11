@@ -42,4 +42,11 @@ public class CustomerController {
 		return ResponseEntity.status(201).body(message);
 	}
 
+	@GetMapping("/status/{id}")
+	public ResponseEntity<String> applicationStatus(@PathVariable String id){
+		String result = customerService.getApplicationStatus(id);
+		if(result.contains("Not Found")) return ResponseEntity.status(404).body(result);
+		return ResponseEntity.ok(result);
+	}
+
 }

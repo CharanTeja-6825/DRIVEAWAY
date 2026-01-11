@@ -1,103 +1,97 @@
-import React, { useState } from 'react'
-import { getUserByEmail } from '../services'
-import { useAuth } from '../../../shared/hooks/AuthProvider';
-import { useEffect } from 'react';
-import DealershipModal from '../components/DealershipModal'
-import { Button, TextField } from '@mui/material';
-
-
+import React, { useEffect, useState } from "react";
+import { applicationStatus, getUserByEmail } from "../services";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
+import DealershipModal from "../components/DealershipModal";
+import { Button, TextField, Alert } from "@mui/material";
 
 function CustomerProfile() {
+  const { user } = useAuth();
 
   const [profileUser, setProfileUser] = useState({
+    userId: "",
     userName: "",
     userPhone: "",
     userAge: "",
     role: ""
   });
 
-  const [error, setError] = useState("");
+  const [approvalStatus, setApprovalStatus] = useState(null);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
 
-  const { user } = useAuth();
-
-
+  // 1️⃣ Fetch user
   useEffect(() => {
-    const getUser = async () => {
+    const loadUser = async () => {
       try {
         const { data } = await getUserByEmail(user.email);
-        console.log(data);
         setProfileUser(data);
-      } catch (error) {
-        setError(error.response.data);
+      } catch (err) {
+        setError("Failed to load user");
       }
-    }
-    getUser();
-  }, [])
+    };
+    loadUser();
+  }, [user.email]);
 
+  // 2️⃣ Fetch application status AFTER userId exists
+  useEffect(() => {
+    if (!profileUser.userId) return;
+
+    const loadStatus = async () => {
+      try {
+        const { data } = await applicationStatus(profileUser.userId);
+        setApprovalStatus(data?.status); // PENDING / APPROVED / REJECTED
+      } catch (err) {
+        // No application found → allow user to apply
+        setApprovalStatus(null);
+      }
+    };
+
+    loadStatus();
+  }, [profileUser.userId]);
 
   return (
-    <div className='p-4 justify-center items-center flex mt-10'>
-      <div className='mt-5 flex flex-col w-75 gap-5 shadow-2xl p-4'>
-        {/* <input value={profileUser.userName} type="text" /> */}
-        <TextField
-          label="Full Name"
-          name="userName"
-          value={profileUser.userName}
-          slotProps={{
-            inputLabel: {
-              shrink: true
-            }
-          }}
-        />
+    <div className="p-4 justify-center items-center flex mt-10">
+      <div className="mt-5 flex flex-col w-75 gap-4 shadow-2xl p-4">
 
-        <TextField
-          label="Phone"
-          value={profileUser.userPhone}
-          type="text"
-          slotProps={{
-            inputLabel: {
-              shrink: true
-            }
-          }}
-        />
+        {error && <Alert severity="error">{error}</Alert>}
 
-        <TextField
-          label="Age"
-          value={profileUser.userAge}
-          type="text"
-          slotProps={{
-            inputLabel: {
-              shrink: true
-            }
-          }}
-        />
+        <TextField label="Full Name" value={profileUser.userName} />
+        <TextField label="Phone" value={profileUser.userPhone} />
+        <TextField label="Age" value={profileUser.userAge} />
+        <TextField label="Role" value={profileUser.role} />
 
-        <TextField
-          label="Role"
-          value={profileUser.role}
-          type="text"
-          slotProps={{
-            inputLabel: {
-              shrink: true
+        {/* 3️⃣ Show application status if exists */}
+        {approvalStatus && (
+          <Alert
+            severity={
+              approvalStatus === "APPROVED"
+                ? "success"
+                : approvalStatus === "REJECTED"
+                ? "error"
+                : "info"
             }
-          }}
-        />
+          >
+            Application Status: {approvalStatus}
+          </Alert>
+        )}
 
+        {/* 4️⃣ Disable button if application exists */}
         <Button
-          className='bg-blue-500 text-white font-bold rounded-xl p-2'
-          onClick={() => setOpen(true)}>
-          Request for Dealer
+          variant="contained"
+          disabled={approvalStatus === "PENDING" || approvalStatus === "APPROVED"}
+          onClick={() => setOpen(true)}
+        >
+          {approvalStatus ? "Application Submitted" : "Request for Dealer"}
         </Button>
 
         <DealershipModal
           open={open}
+          id={profileUser.userId}
           handleClose={() => setOpen(false)}
         />
-
       </div>
     </div>
-  )
+  );
 }
 
-export default CustomerProfile
+export default CustomerProfile;

@@ -22,16 +22,19 @@ const style = {
   borderRadius: 2
 };
 
-const initialForm = {
-  dealershipName: "",
-  ownerName: "",
-  gstIn: "",
-  phone: "",
-  location: ""
-};
 
-export default function DealershipModal({ open, handleClose }) {
-  const [form, setForm] = React.useState(initialForm);
+export default function DealershipModal({ open, handleClose, id }) {
+  const [form, setForm] = React.useState({
+    userId: id.toString(),
+    dealershipName: "",
+    ownerName: "",
+    gstIn: "",
+    phone: "",
+    location: ""
+  });
+
+  console.log(id);
+
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState("");
   const [error, setError] = React.useState("");
@@ -42,7 +45,14 @@ export default function DealershipModal({ open, handleClose }) {
   };
 
   const resetState = () => {
-    setForm(initialForm);
+    setForm({
+      userId: id,
+      dealershipName: "",
+      ownerName: "",
+      gstIn: "",
+      phone: "",
+      location: ""
+    });
     setSuccess("");
     setError("");
     setLoading(false);
@@ -59,9 +69,18 @@ export default function DealershipModal({ open, handleClose }) {
     setSuccess("");
 
     try {
+      console.log(form);
       const { data } = await submitRequest(form);
       setSuccess("Request submitted successfully");
-      setForm(initialForm);
+      setForm({
+        userId: id,
+        dealershipName: "",
+        ownerName: "",
+        gstIn: "",
+        phone: "",
+        location: ""
+      });
+      onClose();
     } catch (err) {
       setError(
         err?.response?.data?.message ||

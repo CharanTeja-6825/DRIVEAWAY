@@ -3,7 +3,7 @@ package com.driveaway.DTO;
 import java.time.Instant;
 
 public class DealerRequestDTO {
-    private String user;
+    private String userId;
     private String dealershipName;
     private String ownerName;
     private String gstIn;
@@ -12,11 +12,11 @@ public class DealerRequestDTO {
 
 
     public String getUser() {
-        return user;
+        return userId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String userId) {
+        this.userId = userId;
     }
 
     public String getDealershipName() {

@@ -7,3 +7,7 @@ export const getUserByEmail = (email) => {
 export const submitRequest = (application) => {
     return api.post('/api/customer/add', application);
 }
+
+export const applicationStatus = (id) => {
+    return api.get(`/api/customer/status/${id}`);
+}
