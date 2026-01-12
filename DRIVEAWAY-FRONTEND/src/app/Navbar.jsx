@@ -39,6 +39,7 @@ function Navbar() {
                 {user.role === "DEALER" && (
                 <>
                     <Link to={'/dealer'}>Home</Link>
+                    <Link to={'/dealer/addCar'}>New Car</Link>
                 </>
             )}
 

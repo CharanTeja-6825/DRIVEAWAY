@@ -1,6 +1,8 @@
 package com.driveaway.controller;
 
+import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
+import com.driveaway.service.CarService;
 import com.driveaway.service.DealerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,18 @@ public class DealerController {
 	@Autowired
 	private DealerService dealerService;
 
+	@Autowired
+	private CarService carService;
+
 	@GetMapping("/")
 	public String dealerHome() {
 		return "Dealer Home";
+	}
+
+	@PostMapping("/add/car")
+	public ResponseEntity<String> addCar(@RequestBody Car car){
+		String response = carService.addCar(car);
+		return ResponseEntity.status(201).body(response);
 	}
 	
 }

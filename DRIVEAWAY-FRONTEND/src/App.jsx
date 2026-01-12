@@ -15,6 +15,7 @@ import { useAuth } from './shared/hooks/AuthProvider';
 import AllUsers from './features/admin/pages/AllUsers'
 import CustomerProfile from './features/customer/pages/CustomerProfile';
 import ApproveDealers from './features/admin/pages/ApproveDealers';
+import AddCar from './features/dealer/pages/AddCar';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
             {/* Dealer */}
             <Route element={<ProtectedRoute allowedRoles={["DEALER"]} />}>
               <Route path="/dealer" element={<DealerHome />} />
+              <Route path="/dealer/addCar" element={<AddCar />} />
             </Route>
 
             {/* Admin */}

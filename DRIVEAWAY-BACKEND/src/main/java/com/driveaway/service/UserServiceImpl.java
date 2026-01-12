@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 		User user = userRepository.findByUserEmail(email);
 		if(user != null && encoder.matches(password, user.getPassword())) {
 			String token = jwtService.generateToken(user);
-			return new ResponseDTO(email, user.getRole(), token);
+			return new ResponseDTO(email, user.getRole(), token, user.getUserId());
 		}
 		else return null;
 	}
