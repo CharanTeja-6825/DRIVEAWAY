@@ -27,5 +27,7 @@ public class CarServiceImpl implements CarService{
         return carRepository.findAll();
     }
 
-
+    public List<Car> dealerCars(String dealerId){
+        return carRepository.findCarsByDealerId(dealerId);
+    }
 }

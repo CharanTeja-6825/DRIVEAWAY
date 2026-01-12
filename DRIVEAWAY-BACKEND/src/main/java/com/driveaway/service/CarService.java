@@ -8,4 +8,5 @@ public interface CarService {
 
     public String addCar(Car car);
     public List<Car> allCars();
+    public List<Car> dealerCars(String dealerId);
 }

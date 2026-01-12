@@ -1,8 +1,10 @@
 package com.driveaway.service;
 
 import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.entity.Car;
 import com.driveaway.entity.User;
 import com.driveaway.enumerations.Roles;
+import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.enumerations.Approval;
 import com.driveaway.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.driveaway.entity.Dealer;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +24,8 @@ public class DealerServiceImpl implements DealerService{
 	private DealerRepository dealerRepository;
     @Autowired
     private UserRepository userRepository;
+	@Autowired
+	private CarRepository carRepository;
 
 	@Override
 	public Dealer addDealer(DealerRequestDTO dto) {
@@ -40,5 +45,7 @@ public class DealerServiceImpl implements DealerService{
 		d.setApprovalStatus(Approval.PENDING.toString());
 		return dealerRepository.save(d);
 	}
+
+
 
 }
