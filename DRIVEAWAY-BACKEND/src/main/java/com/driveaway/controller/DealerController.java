@@ -40,5 +40,12 @@ public class DealerController {
 		List<Car> cars = carService.dealerCars(dealerId);
 		return cars.size() == 0 ? ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
 	}
+
+	@PatchMapping("/update/car")
+	public ResponseEntity<String> editCar(@RequestBody Car car){
+		String response = carService.updateCar(car);
+		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
+		else return ResponseEntity.ok(response);
+	}
 	
 }

@@ -1,14 +1,19 @@
 package com.driveaway.controller;
 
 import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.entity.Car;
+import com.driveaway.service.CarService;
 import com.driveaway.service.DealerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.driveaway.entity.User;
 import com.driveaway.service.CustomerService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -21,6 +26,9 @@ public class CustomerController {
 
 	@Autowired
 	private DealerApplicationService dealerApplicationService;
+
+	@Autowired
+	private CarService carService;
 	
 	@GetMapping("/")
 	public String chome() {
@@ -47,6 +55,14 @@ public class CustomerController {
 		String result = customerService.getApplicationStatus(id);
 		if(result.contains("Not Found")) return ResponseEntity.status(404).body(result);
 		return ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/get/cars")
+	public ResponseEntity<?> getAllCars(){
+		List<Car> cars = carService.allCars();
+		return cars.size() == 0 ?
+				ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Cars Found"):
+				ResponseEntity.ok(cars);
 	}
 
 }

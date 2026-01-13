@@ -60,11 +60,15 @@ export default function DealerCars() {
               <Card elevation={3}>
                 <CardContent>
                   <Typography variant="h6">
-                    {car.brand} {car.model}
+                    {car.model} {car.brand} 
                   </Typography>
 
                   <Typography color="text.secondary">
                     Year: {car.year}
+                  </Typography>
+
+                  <Typography color="text.secondary">
+                    Year: {car.carId}
                   </Typography>
 
                   <Typography color="text.secondary">

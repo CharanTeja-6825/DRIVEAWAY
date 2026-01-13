@@ -13,6 +13,7 @@ public class Car {
 
     @Indexed
     private String dealerId;
+    private String dealerShipName;
 
     private String model;
     private String brand;
@@ -84,5 +85,13 @@ public class Car {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getDealerShipName() {
+        return dealerShipName;
+    }
+
+    public void setDealerShipName(String dealerShipName) {
+        this.dealerShipName = dealerShipName;
     }
 }

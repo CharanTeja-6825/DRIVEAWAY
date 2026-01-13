@@ -40,7 +40,7 @@ function Navbar() {
                 <>
                     <Link to={'/dealer'}>Home</Link>
                     <Link to={'/dealer/addCar'}>New Car</Link>
-                    <Link to={'/dealer/allCars'}>All Cars</Link>
+                    <Link to={'/dealer/allCars'}>Cars</Link>
                 </>
             )}
 
