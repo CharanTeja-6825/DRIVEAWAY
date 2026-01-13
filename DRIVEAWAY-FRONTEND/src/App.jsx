@@ -17,6 +17,7 @@ import CustomerProfile from './features/customer/pages/CustomerProfile';
 import ApproveDealers from './features/admin/pages/ApproveDealers';
 import AddCar from './features/dealer/pages/AddCar';
 import DealerCars from './features/dealer/pages/DealerCars';
+import CarsGrid from './features/customer/pages/CarsGrid';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["CUSTOMER"]} />}>
               <Route path="/customer" element={<CustomerHome />} />
               <Route path="/customer/profile" element={<CustomerProfile />} />
+              <Route path="/customer/viewCars" element={<CarsGrid />} />
             </Route>
 
             {/* Dealer */}

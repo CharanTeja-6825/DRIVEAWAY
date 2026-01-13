@@ -32,6 +32,7 @@ function Navbar() {
                 <>
                     <Link to={'/customer'}>Home</Link>
                     <Link to={'/customer/profile'}>Profile</Link>
+                    <Link to={'/customer/viewCars'}>Cars</Link>
                 </>
             )}
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -6,8 +6,28 @@ import {
   Chip,
   Button
 } from "@mui/material";
+import { getCars } from '../services'
 
-export default function CarsGrid({ cars }) {
+export default function CarsGrid() {
+
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadCars = async () => {
+      try{
+        const { data } = await getCars();
+        console.log(data);
+        setCars(data);
+      }catch(err){
+        setError(err.message);
+      }
+    }
+    loadCars();
+  }, [])
+  
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-2xl font-semibold mb-6 text-gray-800">

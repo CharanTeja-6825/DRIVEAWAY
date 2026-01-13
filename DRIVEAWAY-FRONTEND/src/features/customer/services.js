@@ -11,3 +11,7 @@ export const submitRequest = (application) => {
 export const applicationStatus = (id) => {
     return api.get(`/api/customer/status/${id}`);
 }
+
+export const getCars = () => {
+    return api.get('/api/customer/get/cars');
+}
