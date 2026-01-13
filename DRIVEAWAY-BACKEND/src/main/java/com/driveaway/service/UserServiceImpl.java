@@ -2,6 +2,8 @@ package com.driveaway.service;
 
 import java.time.Instant;
 
+import com.driveaway.entity.Dealer;
+import com.driveaway.repository.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private JWTService jwtService;
+
+	@Autowired
+	private DealerRepository dealerRepository;
 	
 
 	@Override
@@ -29,7 +34,15 @@ public class UserServiceImpl implements UserService{
 		User user = userRepository.findByUserEmail(email);
 		if(user != null && encoder.matches(password, user.getPassword())) {
 			String token = jwtService.generateToken(user);
-			return new ResponseDTO(email, user.getRole(), token, user.getUserId());
+
+			String userId = user.getUserId();
+			String role = user.getRole().toString();
+			if(role.equals("DEALER")){
+				Dealer d = dealerRepository.findDealerByUserId(user.getUserId());
+				userId = d.getId();
+			}
+
+			return new ResponseDTO(email, user.getRole(), token, userId);
 		}
 		else return null;
 	}

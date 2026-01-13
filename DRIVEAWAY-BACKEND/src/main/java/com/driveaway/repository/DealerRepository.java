@@ -8,4 +8,5 @@ import com.driveaway.entity.Dealer;
 import java.util.List;
 
 public interface DealerRepository extends MongoRepository<Dealer, String>{
+    Dealer findDealerByUserId(String userId);
 }

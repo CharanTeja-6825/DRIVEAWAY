@@ -24,10 +24,14 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public String addCar(Car car) {
+        Optional<Dealer> opd = dealerRepository.findById(car.getDealerId());
+        if(opd.isEmpty()) return "Dealer not found";
+        Dealer d = opd.get();
+        car.setDealerShipName(d.getDealershipName());
         car.setCreatedAt(Instant.now());
         car.setAvailable(true);
         carRepository.save(car);
-        return "Car Added Successfully ";
+        return "Car Added Successfully "+d.getDealershipName();
     }
 
     @Override

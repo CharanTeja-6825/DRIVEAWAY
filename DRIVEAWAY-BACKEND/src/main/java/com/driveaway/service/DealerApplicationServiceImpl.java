@@ -70,7 +70,7 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
         d.setApprovalStatus(Approval.APPROVED.toString());
         d.setGstIn(dealerApp.getGstIn());
         d.setLocation(dealerApp.getLocation());
-        d.setDealershipName(d.getDealershipName());
+        d.setDealershipName(dealerApp.getDealerShipName());
         d.setOwnerName(dealerApp.getOwnerName());
         d.setCreatedAt(Instant.now());
 
