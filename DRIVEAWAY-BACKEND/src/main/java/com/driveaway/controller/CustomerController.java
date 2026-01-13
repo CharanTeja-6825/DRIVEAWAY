@@ -59,7 +59,7 @@ public class CustomerController {
 
 	@GetMapping("/get/cars")
 	public ResponseEntity<?> getAllCars(){
-		List<Car> cars = carService.allCars();
+		List<Car> cars = carService.allCars().stream().filter(car -> car.isAvailable()).toList();
 		return cars.size() == 0 ?
 				ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Cars Found"):
 				ResponseEntity.ok(cars);
