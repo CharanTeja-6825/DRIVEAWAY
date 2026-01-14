@@ -1,7 +1,9 @@
 package com.driveaway.controller;
 
 import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.service.BookingService;
 import com.driveaway.service.CarService;
 import com.driveaway.service.DealerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class CustomerController {
 
 	@Autowired
 	private CarService carService;
+
+	@Autowired
+	private BookingService bookingService;
 	
 	@GetMapping("/")
 	public String chome() {
@@ -61,8 +66,15 @@ public class CustomerController {
 	public ResponseEntity<?> getAllCars(){
 		List<Car> cars = carService.allCars().stream().filter(car -> car.isAvailable()).toList();
 		return cars.size() == 0 ?
-				ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Cars Found"):
+				ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Cars Found"):
 				ResponseEntity.ok(cars);
+	}
+
+	@PostMapping("/add/booking")
+	public ResponseEntity<String> addBooking(@RequestBody Booking booking){
+		String response = bookingService.createBooking(booking);
+		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
+		return ResponseEntity.ok(response);
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.driveaway.controller;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
+import com.driveaway.service.BookingService;
 import com.driveaway.service.CarService;
 import com.driveaway.service.DealerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class DealerController {
 
 	@Autowired
 	private CarService carService;
+    @Autowired
+    private BookingService bookingService;
 
 	@GetMapping("/")
 	public String dealerHome() {
@@ -38,7 +42,7 @@ public class DealerController {
 	@GetMapping("/cars/{dealerId}")
 	public ResponseEntity<?> dealerCars(@PathVariable String dealerId){
 		List<Car> cars = carService.dealerCars(dealerId);
-		return cars.size() == 0 ? ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
+		return cars.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
 	}
 
 	@PatchMapping("/update/car")
@@ -46,6 +50,13 @@ public class DealerController {
 		String response = carService.updateCar(car);
 		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
 		else return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/get/bookings")
+	public ResponseEntity<?> dealerBookings(@RequestParam String dealerId, @RequestParam String carId){
+		List<Booking> bookings = bookingService.bookingsByDealer(dealerId, carId);
+		if(bookings.size() == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Bookings under your dealership");
+		return ResponseEntity.ok(bookings);
 	}
 	
 }

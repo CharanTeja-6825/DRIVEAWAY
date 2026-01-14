@@ -55,7 +55,7 @@ public class AdminController {
 	@GetMapping("/applications")
 	public ResponseEntity<?> getAllApplications(){
 		List<DealerApplications> apps = dealerApplicationService.allApplications();
-		if(apps.size() == 0) return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Applications");
+		if(apps.size() == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Applications");
 		return ResponseEntity.ok(apps);
 	}
 }
