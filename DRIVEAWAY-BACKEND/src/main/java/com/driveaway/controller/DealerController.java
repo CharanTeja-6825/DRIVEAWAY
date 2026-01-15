@@ -42,7 +42,7 @@ public class DealerController {
 	@GetMapping("/cars/{dealerId}")
 	public ResponseEntity<?> dealerCars(@PathVariable String dealerId){
 		List<Car> cars = carService.dealerCars(dealerId);
-		return cars.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
+		return cars.size() == 0 ? ResponseEntity.status(200).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
 	}
 
 	@PatchMapping("/update/car")
