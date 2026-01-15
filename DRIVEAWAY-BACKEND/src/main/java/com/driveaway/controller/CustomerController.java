@@ -70,7 +70,7 @@ public class CustomerController {
 													 			   .equals(BookingStatus.AVAILABLE.toString()))
 											 .toList();
 		return cars.size() == 0 ?
-				ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Cars Found"):
+				ResponseEntity.status(HttpStatus.ACCEPTED).body("No Cars Found"):
 				ResponseEntity.ok(cars);
 	}
 

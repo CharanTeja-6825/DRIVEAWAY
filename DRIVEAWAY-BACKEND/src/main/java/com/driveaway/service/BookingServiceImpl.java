@@ -48,10 +48,11 @@ public class BookingServiceImpl implements BookingService{
             default : break;
         }
 
-        /// Setting status of Booking and timestamp.
+        /// Setting status of Booking, DealerId and timestamp.
         booking.setStatus(BookingStatus.PENDING.toString());
         Instant timestamp = Instant.now();
         booking.setCreatedAt(timestamp);
+        booking.setDealerId(car.getDealerId());
 
         /// Fetching ZoneId of IST => "Asia/Kolkata"
         ZoneId zoneID = ZoneId.of("Asia/Kolkata");
