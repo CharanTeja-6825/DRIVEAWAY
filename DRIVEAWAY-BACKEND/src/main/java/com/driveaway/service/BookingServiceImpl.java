@@ -34,31 +34,47 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public String createBooking(Booking booking) {
 
-        // Setting status of Booking and timestamp.
+        /// Finding Car using carId as base condition.
+        Optional<Car> opcar = carRepository.findById(booking.getCarId());
+        if(opcar.isEmpty()) return "Car Not Found";
+
+        Car car = opcar.get();
+        String status = car.getCarStatus();
+
+        ///  Checking for existing status of the car.
+        switch (status){
+            case "PENDING" : return "Car is reserved try after 15 mins.";
+            case "ACTIVE" : return "Car is actively used by customer";
+            default : break;
+        }
+
+        /// Setting status of Booking and timestamp.
         booking.setStatus(BookingStatus.PENDING.toString());
         Instant timestamp = Instant.now();
         booking.setCreatedAt(timestamp);
 
-        // Fetching ZoneId of IST => "Asia/Kolkata"
+        /// Fetching ZoneId of IST => "Asia/Kolkata"
         ZoneId zoneID = ZoneId.of("Asia/Kolkata");
 
-        // Retrieving starting and ending dates.
+        /// Retrieving starting and ending dates.
         Instant st = booking.getStartDate();
         Instant en = booking.getEndDate();
 
-        // To work with ChronoUnit we need to convert UTC to IST using LocalDate.
+        /// To work with ChronoUnit we need to convert UTC to IST using LocalDate.
         LocalDate start = st.atZone(zoneID).toLocalDate();
         LocalDate end = en.atZone(zoneID).toLocalDate();
 
-        // calculation of days between start and end date.
+        /// calculation of days between start and end date.
         long days = Math.max(1, ChronoUnit.DAYS.between(start, end));
 
-        Optional<Car> opcar = carRepository.findById(booking.getCarId());
-        if(opcar.isEmpty()) return "Car Not Found";
+        double price = car.getPricePerDay();
 
-        double price = opcar.get().getPricePerDay();
+        /// Updating the car Status to Pending.
 
-        // Calculating and setting the price.
+        car.setCarStatus(BookingStatus.PENDING.toString());
+        carRepository.save(car);
+
+        /// Calculating and setting the price.
         booking.setTotalAmount(price*days);
 
         bookingRepository.save(booking);

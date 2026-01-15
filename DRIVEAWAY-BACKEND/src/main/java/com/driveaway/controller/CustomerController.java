@@ -3,6 +3,7 @@ package com.driveaway.controller;
 import com.driveaway.DTO.DealerRequestDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.service.BookingService;
 import com.driveaway.service.CarService;
 import com.driveaway.service.DealerApplicationService;
@@ -64,7 +65,10 @@ public class CustomerController {
 
 	@GetMapping("/get/cars")
 	public ResponseEntity<?> getAllCars(){
-		List<Car> cars = carService.allCars().stream().filter(car -> car.isAvailable()).toList();
+		List<Car> cars = carService.allCars().stream()
+											 .filter(car -> car.getCarStatus()
+													 			   .equals(BookingStatus.AVAILABLE.toString()))
+											 .toList();
 		return cars.size() == 0 ?
 				ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Cars Found"):
 				ResponseEntity.ok(cars);

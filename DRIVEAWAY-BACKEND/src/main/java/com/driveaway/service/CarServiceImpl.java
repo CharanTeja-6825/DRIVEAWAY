@@ -2,6 +2,7 @@ package com.driveaway.service;
 
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
+import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CarServiceImpl implements CarService{
         Dealer d = opd.get();
         car.setDealerShipName(d.getDealershipName());
         car.setCreatedAt(Instant.now());
-        car.setAvailable(true);
+        car.setCarStatus(BookingStatus.AVAILABLE.toString());
         carRepository.save(car);
         return "Car Added Successfully "+d.getDealershipName();
     }
@@ -52,7 +53,7 @@ public class CarServiceImpl implements CarService{
         c.setYear(car.getYear());
         c.setModel(car.getModel());
         c.setPricePerDay(car.getPricePerDay());
-        c.setAvailable(true);
+        c.setCarStatus(BookingStatus.AVAILABLE.toString());
         c.setCreatedAt(Instant.now());
         carRepository.save(c);
         return "Car Data Updated";

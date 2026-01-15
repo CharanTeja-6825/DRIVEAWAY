@@ -21,7 +21,7 @@ public class Car {
     private double pricePerDay;
 
     private Instant createdAt;
-    private boolean available;
+    private String carStatus;
 
     public String getCarId() {
         return carId;
@@ -79,19 +79,19 @@ public class Car {
         this.createdAt = createdAt;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
     public String getDealerShipName() {
         return dealerShipName;
     }
 
     public void setDealerShipName(String dealerShipName) {
         this.dealerShipName = dealerShipName;
+    }
+
+    public String getCarStatus() {
+        return carStatus;
+    }
+
+    public void setCarStatus(String carStatus) {
+        this.carStatus = carStatus;
     }
 }

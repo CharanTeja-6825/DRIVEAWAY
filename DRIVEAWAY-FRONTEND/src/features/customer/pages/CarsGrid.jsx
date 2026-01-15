@@ -10,10 +10,21 @@ import {
 } from "@mui/material";
 import { getCars } from "../services";
 
+const statusColorMap = {
+  AVAILABLE: "success",
+  PENDING: "warning",
+  APPROVED: "info",
+  ACTIVE: "secondary",
+  COMPLETED: "default",
+  CANCELLED: "error",
+  REJECTED: "error"
+};
+
 export default function CarsGrid() {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const loadCars = async () => {
@@ -35,6 +46,14 @@ export default function CarsGrid() {
 
     loadCars();
   }, []);
+
+  const handleBooking = () => {
+    try {
+
+    } catch (err) {
+
+    }
+  }
 
   /* 🔄 Loading */
   if (loading) {
@@ -79,8 +98,8 @@ export default function CarsGrid() {
                   </Typography>
 
                   <Chip
-                    label={car.available ? "Available" : "Booked"}
-                    color={car.available ? "success" : "error"}
+                    label={car.carStatus}
+                    color={statusColorMap[car.carStatus] || "default"}
                     size="small"
                   />
                 </div>
@@ -110,7 +129,7 @@ export default function CarsGrid() {
                   <Button
                     variant="contained"
                     size="small"
-                    disabled={!car.available}
+                    disabled={car.carStatus !== "AVAILABLE"}
                     className="!rounded-full"
                   >
                     Book
