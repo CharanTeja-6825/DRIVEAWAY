@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { Link, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './app/Navbar';
 import UserLogin from './features/auth/pages/UserLogin';
@@ -17,7 +15,7 @@ import CustomerProfile from './features/customer/pages/CustomerProfile';
 import ApproveDealers from './features/admin/pages/ApproveDealers';
 import AddCar from './features/dealer/pages/AddCar';
 import DealerCars from './features/dealer/pages/DealerCars';
-import CarsGrid from './features/customer/pages/CarsGrid';
+import CustomerCars from './features/customer/pages/CustomerCars';
 
 function App() {
 
@@ -43,7 +41,7 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["CUSTOMER"]} />}>
               <Route path="/customer" element={<CustomerHome />} />
               <Route path="/customer/profile" element={<CustomerProfile />} />
-              <Route path="/customer/viewCars" element={<CarsGrid />} />
+              <Route path="/customer/viewCars" element={<CustomerCars />} />
             </Route>
 
             {/* Dealer */}

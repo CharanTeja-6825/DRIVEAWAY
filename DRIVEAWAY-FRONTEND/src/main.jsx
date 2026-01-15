@@ -4,12 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import AuthContext from './shared/hooks/AuthProvider.jsx'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 createRoot(document.getElementById('root')).render(
   <AuthContext>
-    <BrowserRouter>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <BrowserRouter>
         <App />
-    </BrowserRouter>
-    {/* <AllUsers /> */}
+      </BrowserRouter>
+      {/* <AllUsers /> */}
+    </LocalizationProvider>
   </AuthContext>,
 )

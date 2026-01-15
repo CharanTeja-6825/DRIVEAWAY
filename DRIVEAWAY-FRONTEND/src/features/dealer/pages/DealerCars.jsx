@@ -12,6 +12,16 @@ import {
 import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 
+const statusColorMap = {
+  AVAILABLE: "success",
+  PENDING: "warning",
+  APPROVED: "info",
+  ACTIVE: "secondary",
+  COMPLETED: "default",
+  CANCELLED: "error",
+  REJECTED: "error"
+};
+
 export default function DealerCars() {
   const { user } = useAuth();
   const dealerId = user.userId;
@@ -56,11 +66,11 @@ export default function DealerCars() {
       ) : (
         <Grid container spacing={3}>
           {cars.map((car) => (
-            <Grid size={{ xs: 12, sm: 6, md:6 }} key={car.carId}>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }} key={car.carId}>
               <Card elevation={3}>
                 <CardContent>
                   <Typography variant="h6">
-                    {car.model} {car.brand} 
+                    {car.model} {car.brand}
                   </Typography>
 
                   <Typography color="text.secondary">
@@ -68,7 +78,7 @@ export default function DealerCars() {
                   </Typography>
 
                   <Typography color="text.secondary">
-                    Year: {car.carId}
+                    ID: {car.carId}
                   </Typography>
 
                   <Typography color="text.secondary">
@@ -77,8 +87,8 @@ export default function DealerCars() {
 
                   <Box mt={2}>
                     <Chip
-                      label={car.available ? "Available" : "Booked"}
-                      color={car.available ? "success" : "error"}
+                      label={car.carStatus}
+                      color={statusColorMap[car.carStatus] || "default"}
                       size="small"
                     />
                   </Box>

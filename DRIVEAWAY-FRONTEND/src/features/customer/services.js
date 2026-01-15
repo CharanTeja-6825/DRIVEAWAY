@@ -15,3 +15,7 @@ export const applicationStatus = (id) => {
 export const getCars = () => {
     return api.get('/api/customer/get/cars');
 }
+
+export const createBooking = (payload) => {
+    return api.post('/api/customer/add/booking', payload);
+}

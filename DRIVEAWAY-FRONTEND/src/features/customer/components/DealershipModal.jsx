@@ -30,7 +30,7 @@ export default function DealershipModal({ open, handleClose, id }) {
     gstIn: "",
     phone: "",
     location: ""
-  });
+  });		
 
 
   const [loading, setLoading] = React.useState(false);
@@ -72,7 +72,7 @@ export default function DealershipModal({ open, handleClose, id }) {
 
     try {
       const { data } = await submitRequest(payload);
-      setSuccess("Request submitted successfully");
+      setSuccess(data);
       setForm({
         dealershipName: "",
         ownerName: "",

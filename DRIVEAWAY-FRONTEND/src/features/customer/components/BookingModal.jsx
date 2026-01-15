@@ -1,160 +1,140 @@
 import * as React from "react";
 import {
-  Modal,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Alert,
-  Stack
+    Modal,
+    Box,
+    TextField,
+    Button,
+    Typography,
+    Alert,
+    Stack,
 } from "@mui/material";
-import { submitRequest } from "../services";
+
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+
+
+import { createBooking } from "../services";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
+import dayjs from "dayjs";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 420,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 420,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2
 };
 
 
 export default function BookingModal({ open, handleClose, car }) {
-  const [form, setForm] = React.useState({
-    startDate : null,
-    endDate : null,
-  });
 
+    const { user } = useAuth();
 
-  const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState("");
-  const [error, setError] = React.useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const resetState = () => {
-    setForm({
-      dealershipName: "",
-      ownerName: "",
-      gstIn: "",
-      phone: "",
-      location: ""
+    const [form, setForm] = React.useState({
+        startDate: dayjs(),
+        endDate: dayjs(),
     });
-    setSuccess("");
-    setError("");
-    setLoading(false);
-  };
 
-  const onClose = () => {
-    resetState();
-    handleClose();
-  };
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    setError("");
-    setSuccess("");
+    const [loading, setLoading] = React.useState(false);
+    const [success, setSuccess] = React.useState("");
+    const [error, setError] = React.useState("");
 
-    const payload = {
-      ...form,
-      user : id
+    const resetState = () => {
+        setForm({
+            startDate: dayjs(),
+            endDate: dayjs()
+        });
+        setSuccess("");
+        setError("");
+        setLoading(false);
     };
 
-    try {
-      const { data } = await submitRequest(payload);
-      setSuccess("Request submitted successfully");
-      setForm({
-        dealershipName: "",
-        ownerName: "",
-        gstIn: "",
-        phone: "",
-        location: ""
-      });
-      onClose();
-    } catch (err) {
-      console.log(err);
-      setError(
-        err?.response?.data?.message ||
-        err?.message ||
-        "Something went wrong"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    const onClose = () => {
+        resetState();
+        handleClose();
+    };
 
-  return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
-        <Typography variant="h6" mb={2}>
-          Request Dealership
-        </Typography>
+    const handleSubmit = async () => {
+        setLoading(true);
+        setError("");
+        setSuccess("");
 
-        <Stack spacing={2}>
-          {success && <Alert severity="success">{success}</Alert>}
-          {error && <Alert severity="error">{error}</Alert>}
+        const payload = {
+            ...form,
+            customerId: user.userId,
+            dealerId: car.dealerId,
+            carId: car.carId
+        };
 
-          <TextField
-            label="Dealership Name"
-            name="dealershipName"
-            value={form.dealershipName}
-            onChange={handleChange}
-            fullWidth
-          />
+        try {
+            const { data } = await createBooking(payload);
+            setSuccess(data);
+            setForm({
+                startDate: dayjs(),
+                endDate: dayjs()
+            });
+            console.log(data);
+            onClose();
+        } catch (err) {
+            console.log(err);
+            setError(
+                err?.response?.data?.message ||
+                err?.message ||
+                "Something went wrong"
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
-          <TextField
-            label="Owner Name"
-            name="ownerName"
-            value={form.ownerName}
-            onChange={handleChange}
-            fullWidth
-          />
+    return (
+        <Modal open={open} onClose={onClose}>
+            <Box sx={style}>
+                <Typography variant="h6" mb={2}>
+                    Book Car
+                </Typography>
 
-          <TextField
-            label="GST IN"
-            name="gstIn"
-            value={form.gstIn}
-            onChange={handleChange}
-            fullWidth
-          />
+                <Stack spacing={2}>
+                    {success && <Alert severity="success">{success}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
 
-          <TextField
-            label="Phone"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            fullWidth
-          />
+                    <DatePicker 
+                        minDate={dayjs().get('h') > 10 ? dayjs().add(1, 'day') : dayjs()} 
+                        format="DD/MM/YYYY" 
+                        label="Start Date" 
+                        name="startDate" 
+                        onChange={(newDate) => {
+                                setForm((prev) => ({ ...prev, startDate: newDate }))
+                    }} />
 
-          <TextField
-            label="Location"
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-            fullWidth
-          />
+                    <DatePicker 
+                        minDate={dayjs().add(1, 'day')} 
+                        format="DD/MM/YYYY" 
+                        label="End Date" 
+                        name="startDate" 
+                        onChange={(newDate) => {
+                                setForm((prev) => ({ ...prev, endDate: newDate }))
+                    }} />
 
-          <Box display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={onClose} disabled={loading}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              disabled={loading}
-            >
-              {loading ? "Submitting..." : "Submit"}
-            </Button>
-          </Box>
-        </Stack>
-      </Box>
-    </Modal>
-  );
+
+                    <Box display="flex" justifyContent="flex-end" gap={1}>
+                        <Button onClick={onClose} disabled={loading}>
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? "Submitting..." : "Submit"}
+                        </Button>
+                    </Box>
+                </Stack>
+            </Box>
+        </Modal>
+    );
 }
