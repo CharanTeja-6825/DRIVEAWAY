@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { approveDealer, getAllApplications } from '../services';
+import { Alert } from '@mui/material';
 
 function ApproveDealers() {
     const [applicationList, setApplicationList] = useState([]);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const [success, setSuccess] = useState("");
 
     useEffect(() => {
         const getApplications = async (e) => {
             try {
                 const { data } = await getAllApplications();
-                setApplicationList(data);
+                if(typeof(data) === "string") setMessage(data);
+                else setApplicationList(data);
                 console.log(data);
             } catch (error) {
                 console.log(error);
@@ -24,9 +27,9 @@ function ApproveDealers() {
         try {
             const { data } = await approveDealer(id);
             console.log(data);
-            setMessage(data);
+            setSuccess(data);
             setTimeout(() => {
-                setMessage("");
+                setSuccess("");
             }, 1500);
         } catch (error) {
             setError(error.message);
@@ -34,10 +37,13 @@ function ApproveDealers() {
     }
 
     return (
-        <div className='overflow-x-auto mt-3 flex justify-center'>
+        <div className='overflow-x-auto mt-3 flex flex-col justify-center items-center'>
             
-            { error && (<p className='text-red-500 font-bold'>{error}</p>)}
-            { message && (<p className='text-green-400 font-bold'>{message}</p>)}
+            { error && (<Alert severity='error' className='w-auto'>{error}</Alert>)}
+            { message && (<Alert severity='info' className='w-auto'>{message}</Alert>)}
+            { success && (<Alert severity='success' className='w-auto'>{success}</Alert>)}
+
+
             <br />
             <table className="min-w-[600px] border border-gray-300 rounded-lg overflow-hidden shadow-md">
                 <thead className="bg-blue-500 text-white">

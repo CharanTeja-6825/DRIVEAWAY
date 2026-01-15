@@ -1,103 +1,103 @@
 import React, { useEffect, useState } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  Box,
-  CircularProgress,
-  Alert,
-  Chip
+	Card,
+	CardContent,
+	Typography,
+	Grid,
+	Box,
+	CircularProgress,
+	Alert,
+	Chip
 } from "@mui/material";
 import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 
 const statusColorMap = {
-  AVAILABLE: "success",
-  PENDING: "warning",
-  APPROVED: "info",
-  ACTIVE: "secondary",
-  COMPLETED: "default",
-  CANCELLED: "error",
-  REJECTED: "error"
+	AVAILABLE: "success",
+	PENDING: "warning",
+	APPROVED: "info",
+	ACTIVE: "secondary",
+	COMPLETED: "default",
+	CANCELLED: "error",
+	REJECTED: "error"
 };
 
 export default function DealerCars() {
-  const { user } = useAuth();
-  const dealerId = user.userId;
+	const { user } = useAuth();
+	const dealerId = user.userId;
 
-  const [cars, setCars] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+	const [cars, setCars] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState("");
+	const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const loadCars = async () => {
-      try {
-        const { data } = await getCarsByDealer(dealerId);
-        setCars(data);
-      } catch {
-        setError("Failed to load cars");
-      } finally {
-        setLoading(false);
-      }
-    };
+	useEffect(() => {
+		const loadCars = async () => {
+			try {
+				const { data } = await getCarsByDealer(dealerId);
+				if (typeof (data) === "string") setMessage(data);
+				else setCars(data);
+			} catch {
+				setError("Failed to load cars");
+			} finally {
+				setLoading(false);
+			}
+		};
 
-    loadCars();
-  }, [dealerId]);
+		loadCars();
+	}, [dealerId]);
 
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" mt={10}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+	if (loading) {
+		return (
+			<Box display="flex" justifyContent="center" mt={10}>
+				<CircularProgress />
+			</Box>
+		);
+	}
 
-  return (
-    <Box p={4}>
-      <Typography variant="h5" mb={3}>
-        My Cars
-      </Typography>
+	return (
+		<Box p={4}>
+			<Typography variant="h5" mb={3}>
+				My Cars
+			</Typography>
 
-      {error && <Alert severity="error">{error}</Alert>}
+			{error && (<Alert severity='error' className='w-auto'>{error}</Alert>)}
+			{message && (<Alert severity='info' className='w-auto'>{message}</Alert>)}
 
-      {cars.length === 0 ? (
-        <Alert severity="info">No cars added yet</Alert>
-      ) : (
-        <Grid container spacing={3}>
-          {cars.map((car) => (
-            <Grid size={{ xs: 12, sm: 6, md: 6 }} key={car.carId}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6">
-                    {car.model} {car.brand}
-                  </Typography>
 
-                  <Typography color="text.secondary">
-                    Year: {car.year}
-                  </Typography>
+			<Grid container spacing={3}>
+				{cars.map((car) => (
+					<Grid size={{ xs: 12, sm: 6, md: 6 }} key={car.carId}>
+						<Card elevation={3}>
+							<CardContent>
+								<Typography variant="h6">
+									{car.model} {car.brand}
+								</Typography>
 
-                  <Typography color="text.secondary">
-                    ID: {car.carId}
-                  </Typography>
+								<Typography color="text.secondary">
+									Year: {car.year}
+								</Typography>
 
-                  <Typography color="text.secondary">
-                    ₹{car.pricePerDay} / day
-                  </Typography>
+								<Typography color="text.secondary">
+									ID: {car.carId}
+								</Typography>
 
-                  <Box mt={2}>
-                    <Chip
-                      label={car.carStatus}
-                      color={statusColorMap[car.carStatus] || "default"}
-                      size="small"
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Box>
-  );
+								<Typography color="text.secondary">
+									₹{car.pricePerDay} / day
+								</Typography>
+
+								<Box mt={2}>
+									<Chip
+										label={car.carStatus}
+										color={statusColorMap[car.carStatus] || "default"}
+										size="small"
+									/>
+								</Box>
+							</CardContent>
+						</Card>
+					</Grid>
+				))}
+			</Grid>
+		</Box>
+	);
 }
