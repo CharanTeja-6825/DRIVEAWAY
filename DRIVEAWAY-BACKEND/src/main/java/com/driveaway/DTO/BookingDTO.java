@@ -1,41 +1,43 @@
-package com.driveaway.entity;
+package com.driveaway.DTO;
 
+import com.driveaway.entity.User;
 import java.time.Instant;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+public class BookingDTO {
 
-@Document(collection = "bookings")
-@CompoundIndex(
-        name = "unique_active_booking_per_car",
-        def = "{'carId': 1, 'status': 1}"
-)
-public class Booking {
-
-    @Id
     private String bookingId;
 
-    @Indexed
     private String carId;
 
-    @Indexed
     private String dealerId;
 
-    @Indexed
     private String customerId;
+
+    private User user;
 
     private Instant startDate;
     private Instant endDate;
 
     private double totalAmount;
 
-    @Indexed
     private String status;
 
     private Instant createdAt;
     private Instant approvedAt;
+
+    public BookingDTO(String bookingId, String carId, String dealerId, String customerId, User user, Instant startDate, Instant endDate, double totalAmount, String status, Instant createdAt, Instant approvedAt) {
+        this.bookingId = bookingId;
+        this.carId = carId;
+        this.dealerId = dealerId;
+        this.customerId = customerId;
+        this.user = user;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.approvedAt = approvedAt;
+    }
 
     public String getCarId() {
         return carId;
@@ -115,5 +117,13 @@ public class Booking {
 
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

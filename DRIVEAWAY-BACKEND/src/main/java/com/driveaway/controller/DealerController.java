@@ -1,5 +1,6 @@
 package com.driveaway.controller;
 
+import com.driveaway.DTO.BookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
@@ -51,7 +52,7 @@ public class DealerController {
 
 	@GetMapping("/get/bookings")
 	public ResponseEntity<?> dealerBookings(@RequestParam String dealerId){
-		List<Booking> bookings = bookingService.bookingsByDealer(dealerId);
+		List<BookingDTO> bookings = bookingService.bookingsByDealer(dealerId);
 		if(bookings.size() == 0) return ResponseEntity.ok("No Bookings under your dealership");
 		return ResponseEntity.ok(bookings);
 	}

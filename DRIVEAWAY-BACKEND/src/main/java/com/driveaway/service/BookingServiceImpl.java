@@ -1,5 +1,6 @@
 package com.driveaway.service;
 
+import com.driveaway.DTO.BookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.User;
@@ -11,10 +12,12 @@ import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +42,6 @@ public class BookingServiceImpl implements BookingService{
         Optional<Car> opcar = carRepository.findById(booking.getCarId());
         if(opcar.isEmpty()) return "Car Not Found";
 
-        Optional<User> customer = userRepository.findById(booking.getCustomerId());
-        if(customer.isEmpty()) return "Customer Not Found";
-
         Car car = opcar.get();
         String status = car.getCarStatus();
 
@@ -57,7 +57,6 @@ public class BookingServiceImpl implements BookingService{
         Instant timestamp = Instant.now();
         booking.setCreatedAt(timestamp);
         booking.setDealerId(car.getDealerId());
-        booking.setCustomer(customer.get());
 
         /// Fetching ZoneId of IST => "Asia/Kolkata"
         ZoneId zoneID = ZoneId.of("Asia/Kolkata");
@@ -87,8 +86,24 @@ public class BookingServiceImpl implements BookingService{
         return "Booking Successful !";
     }
 
-    public List<Booking> bookingsByDealer(String dealerId){
-        return bookingRepository.findBookingsByDealerId(dealerId);
+    public List<BookingDTO> bookingsByDealer(String dealerId){
+        List<Booking> bookings = bookingRepository.findBookingsByDealerId(dealerId);
+        List<BookingDTO> bookingDTOS = new ArrayList<>();
+        for(Booking booking : bookings){
+            bookingDTOS.add(new BookingDTO(
+                                booking.getBookingId(),
+                                booking.getCarId(),
+                                booking.getDealerId(),
+                                booking.getCustomerId(), 
+                                userRepository.findById(booking.getCustomerId()).get(),
+                                booking.getStartDate(),
+                                booking.getEndDate(),
+                                booking.getTotalAmount(),
+                                booking.getStatus(),
+                                booking.getCreatedAt(),
+                                booking.getApprovedAt()));
+        }
+        return bookingDTOS;
     }
 
     @Override
