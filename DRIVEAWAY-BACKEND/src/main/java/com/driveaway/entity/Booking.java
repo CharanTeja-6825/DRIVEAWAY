@@ -26,6 +26,9 @@ public class Booking {
     @Indexed
     private String customerId;
 
+    @Indexed
+    private User customer;
+
     private Instant startDate;
     private Instant endDate;
 
@@ -115,5 +118,13 @@ public class Booking {
 
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public User getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(User customer) {
+        this.customer = customer;
     }
 }

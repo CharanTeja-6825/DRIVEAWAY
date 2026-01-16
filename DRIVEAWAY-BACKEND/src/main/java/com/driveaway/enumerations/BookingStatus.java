@@ -7,5 +7,6 @@ public enum BookingStatus {
     COMPLETED, /// Done after the active period is complete.
     PENDING, /// Done After Booking is created.
     CANCELLED, /// Done after approval (Optionally Done by Customer).
-    AVAILABLE /// The Default Status for all Cars.
+    AVAILABLE, /// The Default Status for all Cars.
+    BOOKED /// Once Booking is approved the status of car becomes Booked.
 }

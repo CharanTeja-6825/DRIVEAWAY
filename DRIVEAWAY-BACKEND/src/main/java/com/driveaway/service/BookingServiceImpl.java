@@ -2,6 +2,7 @@ package com.driveaway.service;
 
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.entity.User;
 import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
@@ -38,6 +39,9 @@ public class BookingServiceImpl implements BookingService{
         Optional<Car> opcar = carRepository.findById(booking.getCarId());
         if(opcar.isEmpty()) return "Car Not Found";
 
+        Optional<User> customer = userRepository.findById(booking.getCustomerId());
+        if(customer.isEmpty()) return "Customer Not Found";
+
         Car car = opcar.get();
         String status = car.getCarStatus();
 
@@ -53,6 +57,7 @@ public class BookingServiceImpl implements BookingService{
         Instant timestamp = Instant.now();
         booking.setCreatedAt(timestamp);
         booking.setDealerId(car.getDealerId());
+        booking.setCustomer(customer.get());
 
         /// Fetching ZoneId of IST => "Asia/Kolkata"
         ZoneId zoneID = ZoneId.of("Asia/Kolkata");
@@ -84,5 +89,26 @@ public class BookingServiceImpl implements BookingService{
 
     public List<Booking> bookingsByDealer(String dealerId){
         return bookingRepository.findBookingsByDealerId(dealerId);
+    }
+
+    @Override
+    public String validateBooking(String bookingId, boolean approval) {
+
+        Optional<Booking> opbook = bookingRepository.findById(bookingId);
+        if(opbook.isEmpty()) return "Booking ID not found";
+
+        Booking booking = opbook.get();
+        booking.setStatus(approval ? BookingStatus.APPROVED.toString() : BookingStatus.REJECTED.toString());
+
+        Optional<Car> opcar = carRepository.findById(booking.getCarId());
+        if(opcar.isEmpty()) return "Car Not Found";
+
+        Car car = opcar.get();
+        car.setCarStatus(approval ? BookingStatus.BOOKED.toString() : BookingStatus.AVAILABLE.toString());
+
+        bookingRepository.save(booking);
+        carRepository.save(car);
+
+        return approval ? "Booking Approved Successfully" : "Booking Rejected Successfully";
     }
 }

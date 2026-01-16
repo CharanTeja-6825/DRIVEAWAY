@@ -21,9 +21,6 @@ import java.util.List;
 public class DealerController {
 
 	@Autowired
-	private DealerService dealerService;
-
-	@Autowired
 	private CarService carService;
     @Autowired
     private BookingService bookingService;
@@ -55,8 +52,14 @@ public class DealerController {
 	@GetMapping("/get/bookings")
 	public ResponseEntity<?> dealerBookings(@RequestParam String dealerId){
 		List<Booking> bookings = bookingService.bookingsByDealer(dealerId);
-		if(bookings.size() == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Bookings under your dealership");
+		if(bookings.size() == 0) return ResponseEntity.ok("No Bookings under your dealership");
 		return ResponseEntity.ok(bookings);
+	}
+
+	@PutMapping("/approve/booking/{bookingId}")
+	public ResponseEntity<String> approveBooking(@PathVariable String bookingId, @RequestParam boolean approval){
+		String response = bookingService.validateBooking(bookingId, approval);
+		return ResponseEntity.ok(response);
 	}
 	
 }
