@@ -9,7 +9,7 @@ function ApproveDealers() {
     const [success, setSuccess] = useState("");
 
     useEffect(() => {
-        const getApplications = async (e) => {
+        const getApplications = async () => {
             try {
                 const { data } = await getAllApplications();
                 if(typeof(data) === "string") setMessage(data);
@@ -21,11 +21,11 @@ function ApproveDealers() {
             }
         }
         getApplications();
-    }, [applicationList])
+    }, [])
 
-    const handleApprove = async (id) => {
+    const handleApprove = async (id, approval) => {
         try {
-            const { data } = await approveDealer(id);
+            const { data } = await approveDealer(id, approval);
             console.log(data);
             setSuccess(data);
             setTimeout(() => {
@@ -69,8 +69,8 @@ function ApproveDealers() {
                                 <td className='text-center'>{application.location}</td>
                                 <td className='text-center'>{application.createdAt.substring(0, 10)}</td>
                                 <td className='text-center p-3 flex flex-col gap-2'>
-                                    <button onClick={() => handleApprove(application.id)} className='bg-green-400 cursor-pointer text-white rounded-xl w-25'>Approve</button>
-                                    <button className='bg-red-400 text-white rounded-xl w-25 cursor-pointer'>Reject</button>
+                                    <button onClick={() => handleApprove(application.id, true)} className='bg-green-400 cursor-pointer text-white rounded-xl w-25'>Approve</button>
+                                    <button onClick={() => handleApprove(application.id, false)} className='bg-red-400 text-white rounded-xl w-25 cursor-pointer'>Reject</button>
                                 </td>
                             </tr>
                         ))

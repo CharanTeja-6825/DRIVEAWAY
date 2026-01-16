@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface DealerApplicationService {
     public String submitApplication(DealerRequestDTO dealerRequestDTO);
-    public String approveApplication(String applicationId);
+    public String approveApplication(String applicationId, boolean reject);
     public List<DealerApplications> allApplications();
 }

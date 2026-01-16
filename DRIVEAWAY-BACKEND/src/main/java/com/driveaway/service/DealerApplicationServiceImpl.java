@@ -48,13 +48,16 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
     }
 
     @Override
-    public String approveApplication(String applicationId) {
+    public String approveApplication(String applicationId, boolean approval) {
+
+        String status = approval == true ? Approval.APPROVED.toString() : Approval.REJECTED.toString();
+
         Optional<DealerApplications> app = dealerApplicationRepository.findById(applicationId);
         if(app.isEmpty()) return "Application not found";
 
         DealerApplications dealerApp = app.get();
 
-        dealerApp.setApprovalStatus(Approval.APPROVED.toString());
+        dealerApp.setApprovalStatus(status);
         dealerApplicationRepository.save(dealerApp);
 
         Optional<User> user = userRepository.findById(dealerApp.getUserId());
@@ -67,7 +70,7 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
 
         Dealer d = new Dealer();
         d.setUser(dealerApp.getUserId());
-        d.setApprovalStatus(Approval.APPROVED.toString());
+        d.setApprovalStatus(status);
         d.setGstIn(dealerApp.getGstIn());
         d.setLocation(dealerApp.getLocation());
         d.setDealershipName(dealerApp.getDealerShipName());
@@ -75,7 +78,8 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
         d.setCreatedAt(Instant.now());
 
         dealerRepository.save(d);
-        return "Dealer Approved Successfully";
+        return approval == true ? "Dealer Approved Successfully" : "Dealer Rejected Successfully";
+
     }
 
     public List<DealerApplications> allApplications(){

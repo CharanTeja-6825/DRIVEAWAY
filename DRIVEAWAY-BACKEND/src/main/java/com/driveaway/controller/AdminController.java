@@ -1,11 +1,9 @@
 package com.driveaway.controller;
 
 import java.util.List;
-
 import com.driveaway.entity.DealerApplications;
 import com.driveaway.service.DealerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,13 +41,9 @@ public class AdminController {
 	}
 
 	@PostMapping("/approve/{id}")
-	public ResponseEntity<String> approve(@PathVariable String id){
-		String message = dealerApplicationService.approveApplication(id);
-		switch(message){
-			case "Application not found", "User ID mentioned in Application not found": return ResponseEntity.status(404).body(message);
-			case "Dealer Approved Successfully" : return ResponseEntity.status(200).body(message);
-			default: return ResponseEntity.status(400).body(message);
-        }
+	public ResponseEntity<String> approve(@PathVariable String id, @RequestParam boolean approval){
+		String message = dealerApplicationService.approveApplication(id, approval);
+		return ResponseEntity.ok(message);
 	}
 
 	@GetMapping("/applications")
