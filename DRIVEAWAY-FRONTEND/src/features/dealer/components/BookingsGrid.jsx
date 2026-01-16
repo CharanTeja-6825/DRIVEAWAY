@@ -62,12 +62,12 @@ const BookingsGrid = ({ bookings = [], setMessage, setError }) => {
 
 							<div>
 								<p className="text-gray-500">Customer Name</p>
-								<p className="font-medium">{b.customer.userName}</p>
+								<p className="font-medium">{b.user.userName}</p>
 							</div>
 
 							<div>
 								<p className="text-gray-500">Customer Phone</p>
-								<p className="font-medium">{b.customer.userPhone}</p>
+								<p className="font-medium">{b.user.userPhone}</p>
 							</div>
 
 							<div>
