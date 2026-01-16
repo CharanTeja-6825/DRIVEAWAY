@@ -79,6 +79,8 @@ function AllUsers() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    const filteredUsers = usersList.filter(user => user.role === role);
+
     const emptyRows =
         page > 0
             ? Math.max(0, (1 + page) * rowsPerPage - filteredUsers.length)
@@ -94,9 +96,6 @@ function AllUsers() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    const filteredUsers = usersList.filter(user => user.role === role);
-
 
     const paginatedUsers =
         rowsPerPage > 0
@@ -157,7 +156,7 @@ function AllUsers() {
                     </TableHead>
                     <TableBody>
                         {paginatedUsers.map((user, ind) => (
-                            <TableRow key={user.id}>
+                            <TableRow key={ind}>
                                 <TableCell align="center">
                                     {page * rowsPerPage + ind + 1}
                                 </TableCell>

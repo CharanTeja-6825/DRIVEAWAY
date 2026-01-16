@@ -16,6 +16,7 @@ import ApproveDealers from './features/admin/pages/ApproveDealers';
 import AddCar from './features/dealer/pages/AddCar';
 import DealerCars from './features/dealer/pages/DealerCars';
 import CustomerCars from './features/customer/pages/CustomerCars';
+import DealerBookings from './features/dealer/pages/DealerBookings';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
               <Route path="/dealer" element={<DealerHome />} />
               <Route path="/dealer/addCar" element={<AddCar />} />
               <Route path="/dealer/allCars" element={<DealerCars />} />
+              <Route path='/dealer/bookings' element={<DealerBookings />} />
             </Route>
 
             {/* Admin */}

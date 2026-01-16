@@ -7,3 +7,7 @@ export const addCar = (payload) => {
 export const getCarsByDealer = (id) => {
     return api.get(`/api/dealer/cars/${id}`);
 }
+
+export const getBookings = (dealerId) => {
+    return api.get(`/api/dealer/get/bookings?dealerId=${dealerId}`);
+}

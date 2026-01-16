@@ -53,8 +53,8 @@ public class DealerController {
 	}
 
 	@GetMapping("/get/bookings")
-	public ResponseEntity<?> dealerBookings(@RequestParam String dealerId, @RequestParam String carId){
-		List<Booking> bookings = bookingService.bookingsByDealer(dealerId, carId);
+	public ResponseEntity<?> dealerBookings(@RequestParam String dealerId){
+		List<Booking> bookings = bookingService.bookingsByDealer(dealerId);
 		if(bookings.size() == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Bookings under your dealership");
 		return ResponseEntity.ok(bookings);
 	}

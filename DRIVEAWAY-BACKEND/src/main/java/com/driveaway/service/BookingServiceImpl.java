@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService{
         return "Booking Successful !";
     }
 
-    public List<Booking> bookingsByDealer(String dealerId, String carId){
-        return bookingRepository.findBookingsByDealerIdAndCarId(dealerId, carId);
+    public List<Booking> bookingsByDealer(String dealerId){
+        return bookingRepository.findBookingsByDealerId(dealerId);
     }
 }
