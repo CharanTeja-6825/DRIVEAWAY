@@ -17,6 +17,7 @@ import AddCar from './features/dealer/pages/AddCar';
 import DealerCars from './features/dealer/pages/DealerCars';
 import CustomerCars from './features/customer/pages/CustomerCars';
 import DealerBookings from './features/dealer/pages/DealerBookings';
+import CustomerBookings from './features/customer/pages/CustomerBookings';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
               <Route path="/customer" element={<CustomerHome />} />
               <Route path="/customer/profile" element={<CustomerProfile />} />
               <Route path="/customer/viewCars" element={<CustomerCars />} />
+              <Route path="/customer/myBookings" element={<CustomerBookings />} />
             </Route>
 
             {/* Dealer */}

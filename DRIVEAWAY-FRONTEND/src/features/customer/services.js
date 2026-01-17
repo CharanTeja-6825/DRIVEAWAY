@@ -19,3 +19,7 @@ export const getCars = () => {
 export const createBooking = (payload) => {
     return api.post('/api/customer/add/booking', payload);
 }
+
+export const getCustomerBookings = (id) => {
+    return api.get(`/api/customer/bookings?customerId=${id}`);
+}

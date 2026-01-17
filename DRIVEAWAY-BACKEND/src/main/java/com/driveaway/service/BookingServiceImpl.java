@@ -1,8 +1,10 @@
 package com.driveaway.service;
 
 import com.driveaway.DTO.BookingDTO;
+import com.driveaway.DTO.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.entity.Dealer;
 import com.driveaway.entity.User;
 import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.BookingRepository;
@@ -10,6 +12,7 @@ import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
@@ -91,17 +94,17 @@ public class BookingServiceImpl implements BookingService{
         List<BookingDTO> bookingDTOS = new ArrayList<>();
         for(Booking booking : bookings){
             bookingDTOS.add(new BookingDTO(
-                                booking.getBookingId(),
-                                booking.getCarId(),
-                                booking.getDealerId(),
-                                booking.getCustomerId(), 
-                                userRepository.findById(booking.getCustomerId()).get(),
-                                booking.getStartDate(),
-                                booking.getEndDate(),
-                                booking.getTotalAmount(),
-                                booking.getStatus(),
-                                booking.getCreatedAt(),
-                                booking.getApprovedAt()));
+                    booking.getBookingId(),
+                    booking.getCarId(),
+                    booking.getDealerId(),
+                    booking.getCustomerId(),
+                    userRepository.findById(booking.getCustomerId()).get(),
+                    booking.getStartDate(),
+                    booking.getEndDate(),
+                    booking.getTotalAmount(),
+                    booking.getStatus(),
+                    booking.getCreatedAt(),
+                    booking.getApprovedAt()));
         }
         return bookingDTOS;
     }
@@ -125,5 +128,30 @@ public class BookingServiceImpl implements BookingService{
         carRepository.save(car);
 
         return approval ? "Booking Approved Successfully" : "Booking Rejected Successfully";
+    }
+
+    @Override
+    public List<CustomerBookingDTO> bookingsByCustomer(String customerId) {
+        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
+        List<CustomerBookingDTO> customerBookingDTOS = new ArrayList<>();
+        for(Booking booking : bookings){
+            Dealer d = dealerRepository.findById(booking.getDealerId()).get();
+            User u = userRepository.findById(d.getUser()).get();
+            customerBookingDTOS.add(new CustomerBookingDTO(
+                booking.getBookingId(),
+                booking.getCarId(),
+                booking.getDealerId(),
+                booking.getCustomerId(),
+                u,
+                booking.getStartDate(),
+                booking.getEndDate(),
+                booking.getTotalAmount(),
+                booking.getStatus(),
+                booking.getCreatedAt(),
+                booking.getApprovedAt(),
+                d
+            ));
+        }
+        return customerBookingDTOS;
     }
 }

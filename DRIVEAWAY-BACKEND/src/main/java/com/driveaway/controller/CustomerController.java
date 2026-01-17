@@ -1,5 +1,6 @@
 package com.driveaway.controller;
 
+import com.driveaway.DTO.CustomerBookingDTO;
 import com.driveaway.DTO.DealerRequestDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
@@ -79,6 +80,11 @@ public class CustomerController {
 		String response = bookingService.createBooking(booking);
 		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
 		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/bookings")
+	public ResponseEntity<List<CustomerBookingDTO>> customerBookings(@RequestParam String customerId){
+		return ResponseEntity.ok(bookingService.bookingsByCustomer(customerId));
 	}
 
 }
