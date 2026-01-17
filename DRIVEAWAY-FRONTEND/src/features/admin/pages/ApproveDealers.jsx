@@ -8,18 +8,26 @@ function ApproveDealers() {
     const [message, setMessage] = useState("");
     const [success, setSuccess] = useState("");
 
-    useEffect(() => {
-        const getApplications = async () => {
+    const getApplications = async () => {
             try {
                 const { data } = await getAllApplications();
-                if(typeof(data) === "string") setMessage(data);
-                else setApplicationList(data);
+                if(typeof(data) === "string") {
+                    setMessage(data);
+                    setApplicationList([]);
+                }
+                else {
+                    setApplicationList(data);
+                    setMessage("");
+                    setError("")
+                }
                 console.log(data);
             } catch (error) {
                 console.log(error);
                 setError(error.message);
             }
         }
+
+    useEffect(() => {
         getApplications();
     }, [])
 
@@ -33,6 +41,8 @@ function ApproveDealers() {
             }, 1500);
         } catch (error) {
             setError(error.message);
+        } finally{
+            getApplications();
         }
     }
 

@@ -38,6 +38,7 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
            app.setOwnerName(dto.getOwnerName());
            app.setGstIn(dto.getGstIn());
            app.setLocation(dto.getLocation());
+           app.setPhone(dto.getPhone());
            app.setApprovalStatus(Approval.PENDING.toString());
            app.setCreatedAt(Instant.now());
            dealerApplicationRepository.save(app);
@@ -75,6 +76,7 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
         d.setLocation(dealerApp.getLocation());
         d.setDealershipName(dealerApp.getDealerShipName());
         d.setOwnerName(dealerApp.getOwnerName());
+        d.setPhone(dealerApp.getPhone());
         d.setCreatedAt(Instant.now());
 
         dealerRepository.save(d);

@@ -8,7 +8,7 @@ public class DealerRequestDTO {
     private String ownerName;
     private String gstIn;
     private String location;
-
+    private String phone;
 
 
     public String getUser() {
@@ -51,4 +51,11 @@ public class DealerRequestDTO {
         this.location = location;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

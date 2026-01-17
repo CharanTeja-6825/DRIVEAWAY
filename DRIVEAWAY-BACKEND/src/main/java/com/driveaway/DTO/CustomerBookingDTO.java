@@ -13,6 +13,11 @@ public class CustomerBookingDTO extends BookingDTO{
         this.dealer = dealer;
     }
 
+    public CustomerBookingDTO(String bookingId, String carId, String dealerId, String customerId, Instant startDate, Instant endDate, double totalAmount, String status, Instant createdAt, Instant approvedAt, Dealer dealer){
+        super(bookingId, carId, dealerId, customerId, null, startDate, endDate, totalAmount, status, createdAt, approvedAt);
+        this.dealer=dealer;
+    }
+
     public Dealer getDealer() {
         return dealer;
     }

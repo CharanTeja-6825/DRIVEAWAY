@@ -16,6 +16,7 @@ public class Dealer {
 
     private String dealershipName;
     private String ownerName;
+	private String phone;
 
     @Indexed(unique = true)
     private String gstIn;
@@ -69,8 +70,13 @@ public class Dealer {
     public String getApprovalStatus() {
         return approvalStatus;
     }
-
     public void setApprovalStatus(String approvalStatus) {
         this.approvalStatus = approvalStatus;
     }
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 }

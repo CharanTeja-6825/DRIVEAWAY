@@ -142,7 +142,6 @@ public class BookingServiceImpl implements BookingService{
                 booking.getCarId(),
                 booking.getDealerId(),
                 booking.getCustomerId(),
-                u,
                 booking.getStartDate(),
                 booking.getEndDate(),
                 booking.getTotalAmount(),

@@ -17,6 +17,7 @@ public class DealerApplications {
     private String dealerShipName;
     private String ownerName;
     private String gstIn;
+    private String phone;
 
     private String location;
     private String approvalStatus;
@@ -84,5 +85,13 @@ public class DealerApplications {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

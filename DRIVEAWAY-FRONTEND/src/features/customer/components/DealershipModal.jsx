@@ -23,7 +23,7 @@ const style = {
 };
 
 
-export default function DealershipModal({ open, handleClose, id }) {
+export default function DealershipModal({ open, handleClose, id, reload }) {
   const [form, setForm] = React.useState({
     dealershipName: "",
     ownerName: "",
@@ -90,6 +90,7 @@ export default function DealershipModal({ open, handleClose, id }) {
       );
     } finally {
       setLoading(false);
+      reload();
     }
   };
 
