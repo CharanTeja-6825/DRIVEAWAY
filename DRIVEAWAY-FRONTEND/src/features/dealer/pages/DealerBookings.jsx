@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import { getBookings } from '../services';
 import BookingsGrid from '../components/BookingsGrid';
-import { SetMealSharp } from '@mui/icons-material';
-import { Alert } from '@mui/material';
+import { Alert, CircularProgress, Stack, Box } from '@mui/material';
 
 function DealerBookings() {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const { user } = useAuth();
 
@@ -17,29 +17,34 @@ function DealerBookings() {
             try {
                 const { data } = await getBookings(user.userId);
                 if (typeof (data) === "string") setMessage(data);
-                setBookings(data);
+                else setBookings(data);
             } catch (err) {
                 setError(err);
+            } finally{
+                setLoading(false);
             }
         }
         fetchBookings();
     }, [])
 
+    if (loading) {
+		return (
+			<Box display="flex" justifyContent="center" mt={10}>
+				<CircularProgress />
+			</Box>
+		);
+	}
 
     return (
         <div>
             {
-                message || error ? (
-                    <div className='flex gap-5 justify-center items-center mt-5'>
-                        {message && <Alert severity='info'>{message}</Alert>}
-                        {error && <Alert variant='error'>{error}</Alert>}
-                    </div>
-                ) :
-                    (
-                        <BookingsGrid setMessage={setMessage} setError={setError} bookings={bookings} />
-                    )
-            }
+                <Stack>
+                    {message && <Alert severity='success'>{message}</Alert>}
+                    {error && <Alert severity='error'>{error}</Alert>}
+                    <BookingsGrid setLoading={setLoading}  bookings={bookings} setMessage={setMessage} setError={setError}/>
+                </Stack>
 
+            }
         </div>
     )
 }

@@ -15,7 +15,7 @@ const statusColor = {
 	REJECTED: "error",
 };
 
-const BookingsGrid = ({ bookings = [], setMessage, setError }) => {
+const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading }) => {
 
 	const handleApproval = async (bookingId, approval) => {
 		try {
@@ -23,7 +23,7 @@ const BookingsGrid = ({ bookings = [], setMessage, setError }) => {
 			setMessage(data);
 		} catch (error) {
 			setError(error);
-		}
+		} 
 	}
 
 	return (

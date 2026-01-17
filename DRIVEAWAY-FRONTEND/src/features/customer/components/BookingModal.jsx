@@ -29,7 +29,7 @@ const style = {
 };
 
 
-export default function BookingModal({ open, handleClose, car }) {
+export default function BookingModal({ open, handleClose, car, reloadCars }) {
 
     const { user } = useAuth();
 
@@ -77,8 +77,12 @@ export default function BookingModal({ open, handleClose, car }) {
                 startDate: dayjs(),
                 endDate: dayjs()
             });
-            console.log(data);
-            onClose();
+
+            reloadCars();
+
+            setTimeout(() => {
+                onClose();
+            }, 2000);
         } catch (err) {
             console.log(err);
             setError(
