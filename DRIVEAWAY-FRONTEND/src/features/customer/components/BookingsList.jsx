@@ -8,81 +8,81 @@ import {
 	Divider
 } from "@mui/material";
 
+const statusColorMap = {
+	AVAILABLE: "success",
+	PENDING: "warning",
+	APPROVED: "info",
+	ACTIVE: "secondary",
+	COMPLETED: "default",
+	CANCELLED: "error",
+	REJECTED: "error"
+};
+
 export default function BookingsList({ bookings, onCancel }) {
 	return (
 		<div className="grid gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
 			{bookings.map((booking) => (
-				<Card key={booking.bookingId} className="relative shadow-md">
-
-					{/* Cancel Button */}
-					{booking.status === "APPROVED" && (
-						<Button
-							variant="outlined"
-							color="error"
-							size="small"
-							className="!absolute top-3 right-3"
-							onClick={() => onCancel(booking.bookingId)}
-						>
-							Cancel
-						</Button>
-					)}
-
+				<Card key={booking.bookingId} className="shadow-md">
 					<CardContent className="space-y-3">
+
 						{/* Header */}
-						<div className="flex justify-between items-center">
-							<Typography variant="h6">
-								{booking.dealer.dealershipName}
-							</Typography>
-							<Chip
-								label={booking.status}
-								color={booking.status === "APPROVED" ? "success" : "warning"}
-								size="small"
-							/>
+						<div className="flex items-start justify-between gap-2">
+							<div className="flex items-center gap-2">
+								<Typography variant="h6">
+									#{booking._id.slice(-6)}
+								</Typography>
+								<Chip
+									label={booking.status}
+									color={statusColorMap[booking.status]}
+									size="small"
+								/>
+							</div>
+
+							{booking.status === "APPROVED" && (
+								<Button
+									variant="outlined"
+									color="error"
+									size="small"
+									onClick={() => onCancel(booking.bookingId)}
+								>
+									Cancel
+								</Button>
+							)}
 						</div>
 
 						<Divider />
 
 						{/* Booking Info */}
 						<div className="space-y-1 text-sm">
-							<Typography>
-								<strong>DealerShip Name:</strong> {booking.dealer.dealershipName}
-							</Typography>
-							<Typography>
-								<strong>Owner:</strong> {booking.dealer.ownerName}
-							</Typography>
-							<Typography>
-								<strong>Location:</strong> {booking.dealer.location}
-							</Typography>
-							<Typography>
-								<strong>GST:</strong> {booking.dealer.gstIn}
-							</Typography>
-							<Typography>
-								<strong>Phone :</strong> {booking.dealer.phone}
-							</Typography>
+							<Typography><strong>DealerShip Name:</strong> {booking.dealershipName}</Typography>
+							<Typography><strong>Location:</strong> {booking.dealerLocation}</Typography>
+							<Typography><strong>Phone:</strong> {booking.dealerPhone}</Typography>
+						</div>
+
+						<div className="space-y-1 text-sm">
+							<Typography><strong>Vehicle :</strong> {booking.carBrand + " " + booking.carModel}</Typography>
+							<Typography><strong>Model Year:</strong> {booking.carYear}</Typography>
 						</div>
 
 						<Divider />
 
-						{/* Dates */}
 						<div className="flex justify-between text-sm">
 							<Typography>
-								<strong>Start:</strong>{" "}
-								{new Date(booking.startDate).toLocaleDateString()}
+								<strong>Start:</strong> {new Date(booking.startDate).toLocaleDateString()}
 							</Typography>
 							<Typography>
-								<strong>End:</strong>{" "}
-								{new Date(booking.endDate).toLocaleDateString()}
+								<strong>End:</strong> {new Date(booking.endDate).toLocaleDateString()}
 							</Typography>
 						</div>
 
 						<Divider />
 
-						{/* Amount */}
 						<Typography className="text-right font-semibold text-lg">
 							₹{booking.totalAmount}
 						</Typography>
 					</CardContent>
 				</Card>
+
 			))}
 		</div>
 	);

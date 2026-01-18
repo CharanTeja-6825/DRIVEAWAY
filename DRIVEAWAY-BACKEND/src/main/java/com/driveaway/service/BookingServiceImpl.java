@@ -132,25 +132,29 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<CustomerBookingDTO> bookingsByCustomer(String customerId) {
-        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
-        List<CustomerBookingDTO> customerBookingDTOS = new ArrayList<>();
-        for(Booking booking : bookings){
-            Dealer d = dealerRepository.findById(booking.getDealerId()).get();
-            User u = userRepository.findById(d.getUser()).get();
-            customerBookingDTOS.add(new CustomerBookingDTO(
-                booking.getBookingId(),
-                booking.getCarId(),
-                booking.getDealerId(),
-                booking.getCustomerId(),
-                booking.getStartDate(),
-                booking.getEndDate(),
-                booking.getTotalAmount(),
-                booking.getStatus(),
-                booking.getCreatedAt(),
-                booking.getApprovedAt(),
-                d
-            ));
-        }
+//        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
+        List<CustomerBookingDTO> customerBookingDTOS = bookingRepository.findCustomerBookings(customerId);
         return customerBookingDTOS;
+    }
+
+    @Override
+    public String cancelBooking(String bookingId) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
+        if(optionalBooking.isEmpty()) return "Booking Not found";
+        Booking b = optionalBooking.get();
+
+        if(!b.getStatus().equals(BookingStatus.APPROVED.toString())) return "Booking Not Approved";
+
+        b.setStatus(BookingStatus.CANCELLED.toString());
+        Optional<Car> optionalCar = carRepository.findById(b.getCarId());
+
+        if(optionalCar.isEmpty()) return "Car Not Found";
+        Car car = optionalCar.get();
+        car.setCarStatus(BookingStatus.AVAILABLE.toString());
+
+        bookingRepository.save(b);
+        carRepository.save(car);
+
+        return "Booking Cancelled Successfully";
     }
 }

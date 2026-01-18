@@ -87,4 +87,9 @@ public class CustomerController {
 		return ResponseEntity.ok(bookingService.bookingsByCustomer(customerId));
 	}
 
+	@PostMapping("/cancel/booking")
+	public ResponseEntity<String> cancelBooking(@RequestParam String bookingId){
+		return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
+	}
+
 }

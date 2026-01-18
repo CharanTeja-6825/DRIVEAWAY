@@ -11,4 +11,5 @@ public interface BookingService {
     public List<BookingDTO> bookingsByDealer(String dealerId);
     public String validateBooking(String bookingId, boolean approval);
     public List<CustomerBookingDTO> bookingsByCustomer(String customerId);
+    public String cancelBooking(String BookingId);
 }

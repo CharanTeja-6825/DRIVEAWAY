@@ -12,6 +12,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
         name = "unique_active_booking_per_car",
         def = "{'carId': 1, 'status': 1}"
 )
+@CompoundIndex(
+        name = "customer_bookings_idx",
+        def = "{ 'customerId': 1, 'createdAt': -1 }"
+)
+
 public class Booking {
 
     @Id

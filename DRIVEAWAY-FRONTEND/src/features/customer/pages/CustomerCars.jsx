@@ -24,16 +24,17 @@ export default function CustomerCars() {
 		setError("");
 		try {
 			const { data } = await getCars();
+			console.log(data); 
 			if (typeof (data) == "string") setMessage(data);
-			else
-				setCars(data);
-			setLoading(false);
+			else setCars(data);
 		} catch (err) {
 			setError(
 				err?.response?.data?.message ||
 				err?.message ||
 				"Failed to load cars"
 			);
+		} finally{
+			setLoading(false);
 		}
 	};
 

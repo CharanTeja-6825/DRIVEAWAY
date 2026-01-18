@@ -5,24 +5,18 @@ import com.driveaway.entity.User;
 
 import java.time.Instant;
 
-public class CustomerBookingDTO extends BookingDTO{
-    private Dealer dealer;
+public record CustomerBookingDTO(
+    String _id,
+    Instant startDate,
+    Instant endDate,
+    Double totalAmount,
+    String status,
 
-    public CustomerBookingDTO(String bookingId, String carId, String dealerId, String customerId, User user, Instant startDate, Instant endDate, double totalAmount, String status, Instant createdAt, Instant approvedAt, Dealer dealer) {
-        super(bookingId, carId, dealerId, customerId, user, startDate, endDate, totalAmount, status, createdAt, approvedAt);
-        this.dealer = dealer;
-    }
+    String dealershipName,
+    String dealerLocation,
+    String dealerPhone,
 
-    public CustomerBookingDTO(String bookingId, String carId, String dealerId, String customerId, Instant startDate, Instant endDate, double totalAmount, String status, Instant createdAt, Instant approvedAt, Dealer dealer){
-        super(bookingId, carId, dealerId, customerId, null, startDate, endDate, totalAmount, status, createdAt, approvedAt);
-        this.dealer=dealer;
-    }
-
-    public Dealer getDealer() {
-        return dealer;
-    }
-
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
-    }
-}
+    String carBrand,
+    String carModel,
+    Integer carYear
+) {}
