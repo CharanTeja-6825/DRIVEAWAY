@@ -26,7 +26,7 @@ function CarsGrid({ cars, reloadCars }) {
 
 
             {open &&
-                <BookingModal setLoading={setLoading} open={open} handleClose={() => setOpen(false)} car={selectedCar} reloadCars={reloadCars} />
+                <BookingModal open={open} handleClose={() => setOpen(false)} car={selectedCar} reloadCars={reloadCars} />
             }
         </div>
     )

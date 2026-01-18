@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   TextField,
   Button,
   Typography,
   Alert,
-  Stack
+  Stack,
+  Select,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  FormControl,
+  InputLabel
 } from "@mui/material";
 import { addCar } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
+import { brandsArray } from "../../../shared/constants/brands";
 
 export default function AddCar() {
-  const { user } = useAuth(); // dealer user
+  const { user } = useAuth();
   const dealerId = user.userId;
 
   const [form, setForm] = useState({
@@ -25,6 +32,12 @@ export default function AddCar() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // ✅ Sorted once (performance-safe)
+  const sortedBrands = useMemo(
+    () => [...brandsArray].sort((a, b) => a.label.localeCompare(b.label)),
+    []
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +55,7 @@ export default function AddCar() {
         year: Number(form.year),
         pricePerDay: Number(form.pricePerDay)
       });
+
       setSuccess("Car added successfully");
       setForm((prev) => ({
         ...prev,
@@ -53,8 +67,8 @@ export default function AddCar() {
     } catch (err) {
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        "Failed to add car"
+          err?.message ||
+          "Failed to add car"
       );
     } finally {
       setLoading(false);
@@ -71,13 +85,39 @@ export default function AddCar() {
         {success && <Alert severity="success">{success}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
 
-        <TextField
-          label="Brand"
-          name="brand"
-          value={form.brand}
-          onChange={handleChange}
-          fullWidth
-        />
+        {/* ✅ Brand Select */}
+        <FormControl fullWidth>
+          <InputLabel id="brand-label">Car Brand</InputLabel>
+
+          <Select
+            labelId="brand-label"
+            name="brand"
+            value={form.brand}
+            label="Car Brand"
+            onChange={handleChange}
+            renderValue={(selected) => {
+              const item = sortedBrands.find(
+                (b) => b.value === selected
+              );
+              if (!item) return "";
+              return (
+                <Box display="flex" alignItems="center" gap={1}>
+                  <img src={item.logo} width={20} alt={item.label} />
+                  {item.label}
+                </Box>
+              );
+            }}
+          >
+            {sortedBrands.map((b) => (
+              <MenuItem key={b.value} value={b.value}>
+                <ListItemIcon>
+                  <img src={b.logo} width={20} alt={b.label} />
+                </ListItemIcon>
+                <ListItemText primary={b.label} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField
           label="Model"

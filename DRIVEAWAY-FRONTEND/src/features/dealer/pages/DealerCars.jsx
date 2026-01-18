@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
+import { brandsArray } from "../../../shared/constants/brands";
 
 const statusColorMap = {
 	AVAILABLE: "success",
@@ -35,7 +36,7 @@ export default function DealerCars() {
 		const loadCars = async () => {
 			try {
 				const { data } = await getCarsByDealer(dealerId);
-				if (typeof (data) === "string") setMessage(data);
+				if (typeof data === "string") setMessage(data);
 				else setCars(data);
 			} catch {
 				setError("Failed to load cars");
@@ -55,30 +56,43 @@ export default function DealerCars() {
 		);
 	}
 
+	const getBrandLogo = (brand) =>
+		brandsArray.find((b) => b.value === brand)?.logo;
+
 	return (
 		<Box p={4}>
 			<Typography variant="h5" mb={3}>
 				My Cars
 			</Typography>
 
-			{error && (<Alert severity='error' className='w-auto'>{error}</Alert>)}
-			{message && (<Alert severity='info' className='w-auto'>{message}</Alert>)}
+			{error && <Alert severity="error">{error}</Alert>}
+			{message && <Alert severity="info">{message}</Alert>}
 
-
-			<Grid container spacing={3}>
+			<Grid container spacing={4}>
 				{cars.map((car) => (
-					<Grid size={{ xs: 12, sm: 6, md: 6 }} key={car.carId}>
-						<Card elevation={3}>
+					<Grid item xs={12} sm={6} md={4} key={car.carId}>
+						<Card elevation={4} sx={{ height: "100%" }}>
 							<CardContent>
-								<Typography variant="h6">
-									{car.model} {car.brand}
-								</Typography>
+								<Box display="flex" alignItems="center" gap={1.5} mb={2}>
+									{getBrandLogo(car.brand) && (
+										<img
+											src={getBrandLogo(car.brand)}
+											alt={car.brand}
+											width={40}
+											height={40}
+											style={{ objectFit: "contain" }}
+										/>
+									)}
+									<Typography variant="h6" fontWeight={600}>
+										{car.brand} {car.model}
+									</Typography>
+								</Box>
 
-								<Typography color="text.secondary">
+								<Typography color="text.secondary" mb={0.5}>
 									Year: {car.year}
 								</Typography>
 
-								<Typography color="text.secondary">
+								<Typography color="text.secondary" mb={0.5}>
 									ID: {car.carId}
 								</Typography>
 
@@ -90,7 +104,7 @@ export default function DealerCars() {
 									<Chip
 										label={car.carStatus}
 										color={statusColorMap[car.carStatus] || "default"}
-										size="small"
+										size="medium"
 									/>
 								</Box>
 							</CardContent>
