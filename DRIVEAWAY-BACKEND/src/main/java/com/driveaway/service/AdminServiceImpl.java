@@ -5,6 +5,7 @@ import java.util.List;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.driveaway.entity.User;
@@ -21,7 +22,8 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired
 	private DealerRepository dealerRepository;
-	
+
+	@Cacheable(value = "users")
 	@Override
 	public List<User> getAllUsers() {
 		return adminRepository.findAll();
