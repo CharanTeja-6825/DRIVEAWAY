@@ -5,9 +5,10 @@ import com.driveaway.entity.Booking;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.Instant;
 import java.util.List;
 
-public interface BookingRepository extends MongoRepository<Booking, String> {
+public interface BookingRepository extends MongoRepository<Booking, String>, BookingRepositoryCustom {
     List<Booking> findBookingsByDealerId(String dealerId);
 
     @Aggregation(pipeline = {
@@ -49,5 +50,8 @@ public interface BookingRepository extends MongoRepository<Booking, String> {
     })
     List<CustomerBookingDTO> findCustomerBookings(String customerId);
 
+    List<Booking> findBookingsByCreatedAtAndStatus(Instant createdAt, String status);
 
+    @Override
+    void expirePendingBookings(Instant cutoff);
 }

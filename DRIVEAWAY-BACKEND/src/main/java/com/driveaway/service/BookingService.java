@@ -12,4 +12,5 @@ public interface BookingService {
     public String validateBooking(String bookingId, boolean approval);
     public List<CustomerBookingDTO> bookingsByCustomer(String customerId);
     public String cancelBooking(String BookingId);
+    public void expirePendingBookings();
 }

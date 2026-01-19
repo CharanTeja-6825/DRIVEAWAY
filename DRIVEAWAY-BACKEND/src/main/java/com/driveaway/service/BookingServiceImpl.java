@@ -16,6 +16,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,6 +27,8 @@ import java.util.Optional;
 
 @Service
 public class BookingServiceImpl implements BookingService{
+
+    private final Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
 
     @Autowired
     private CarRepository carRepository;
@@ -156,5 +159,10 @@ public class BookingServiceImpl implements BookingService{
         carRepository.save(car);
 
         return "Booking Cancelled Successfully";
+    }
+
+    @Override
+    public void expirePendingBookings() {
+        bookingRepository.expirePendingBookings(timeoutDuration);
     }
 }
