@@ -52,6 +52,5 @@ public interface BookingRepository extends MongoRepository<Booking, String>, Boo
 
     List<Booking> findBookingsByCreatedAtAndStatus(Instant createdAt, String status);
 
-    @Override
-    void expirePendingBookings(Instant cutoff);
+    List<Booking> findBookingsByCreatedAtLessThan(Instant createdAtIsLessThan);
 }

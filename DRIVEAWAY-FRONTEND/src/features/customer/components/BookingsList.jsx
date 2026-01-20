@@ -7,18 +7,14 @@ import {
 	Chip,
 	Divider
 } from "@mui/material";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
 
-const statusColorMap = {
-	AVAILABLE: "success",
-	PENDING: "warning",
-	APPROVED: "info",
-	ACTIVE: "secondary",
-	COMPLETED: "default",
-	CANCELLED: "error",
-	REJECTED: "error"
-};
+
 
 export default function BookingsList({ bookings, onCancel }) {
+
+	const { statusColorMap } = useAuth();
+
 	return (
 		<div className="grid gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
 			{bookings.map((booking) => (
@@ -32,8 +28,9 @@ export default function BookingsList({ bookings, onCancel }) {
 									#{booking._id.slice(-6)}
 								</Typography>
 								<Chip
+									sx={{ backgroundColor: statusColorMap[booking.status], color: "white" }}
 									label={booking.status}
-									color={statusColorMap[booking.status]}
+									// color={statusColorMap[booking.status]}
 									size="small"
 								/>
 							</div>

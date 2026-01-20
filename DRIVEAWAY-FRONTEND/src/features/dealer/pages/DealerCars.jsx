@@ -13,18 +13,8 @@ import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import { brandsArray } from "../../../shared/constants/brands";
 
-const statusColorMap = {
-	AVAILABLE: "success",
-	PENDING: "warning",
-	APPROVED: "info",
-	ACTIVE: "secondary",
-	COMPLETED: "default",
-	CANCELLED: "error",
-	REJECTED: "error"
-};
-
 export default function DealerCars() {
-	const { user } = useAuth();
+	const { user, statusColorMap } = useAuth();
 	const dealerId = user.userId;
 
 	const [cars, setCars] = useState([]);
@@ -103,7 +93,7 @@ export default function DealerCars() {
 								<Box mt={2}>
 									<Chip
 										label={car.carStatus}
-										color={statusColorMap[car.carStatus] || "default"}
+										sx={{backgroundColor : statusColorMap[car.carStatus], color:"white"}}
 										size="medium"
 									/>
 								</Box>

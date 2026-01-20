@@ -32,10 +32,6 @@ public class BookingServiceImpl implements BookingService{
 
     @Autowired
     private CarRepository carRepository;
-
-    @Autowired
-    private DealerRepository dealerRepository;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -163,6 +159,16 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public void expirePendingBookings() {
+        List<Booking> expiredBookings = bookingRepository.findBookingsByCreatedAtLessThan(timeoutDuration);
+
+        if(expiredBookings.size() == 0) return;
+
         bookingRepository.expirePendingBookings(timeoutDuration);
+
+        List<String> carIds = expiredBookings.stream()
+                .map(Booking::getCarId)
+                .toList();
+
+        carRepository.unlockCars(carIds);
     }
 }

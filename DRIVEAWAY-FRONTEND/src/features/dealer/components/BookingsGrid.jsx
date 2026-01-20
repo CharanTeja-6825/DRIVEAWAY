@@ -8,14 +8,11 @@ import {
 	Divider,
 } from "@mui/material";
 import { validateBooking } from "../services";
-
-const statusColor = {
-	PENDING: "warning",
-	APPROVED: "success",
-	REJECTED: "error",
-};
+import { useAuth } from "../../../shared/hooks/AuthProvider";
 
 const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading }) => {
+
+	const { statusColorMap } = useAuth();
 
 	const handleApproval = async (bookingId, approval) => {
 		try {
@@ -41,7 +38,7 @@ const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading }) => {
 							</Typography>
 							<Chip
 								label={b.status}
-								color={statusColor[b.status]}
+								sx={{backgroundColor : statusColorMap[b.status], color:"white"}}
 								size="small"
 							/>
 						</div>
