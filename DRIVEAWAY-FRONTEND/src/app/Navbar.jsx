@@ -114,7 +114,15 @@ function Navbar() {
             <Typography
               variant="h5"
               component={Link}
-              to="/"
+              to={
+                user ?
+                user.role === "ADMIN" ? "/admin" : 
+                user.role === "CUSTOMER" ? "/customer" : 
+                user.role === "DEALER" ? "/dealer" : 
+                "*"
+                :
+                "/"
+              }
               sx={{
                 fontWeight: 700,
                 color: 'primary.main',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCustomerBookings } from '../services';
+import { getCustomerBookings, cancelBooking } from '../services';
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import BookingsList from '../components/BookingsList';
 import {
@@ -33,8 +33,15 @@ function CustomerBookings() {
     }
   };
 
-  const handleCancel = (bookingId) => {
-    console.log('Booking cancelled', bookingId);
+  const handleCancel = async (bookingId) => {
+    // console.log('Booking cancelled', bookingId);
+    try {
+      const { data } = await cancelBooking(bookingId);
+      setMessage(data);
+      fetchCustomerBookings();  
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   useEffect(() => {
