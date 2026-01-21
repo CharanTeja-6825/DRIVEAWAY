@@ -6,5 +6,7 @@ import java.time.Instant;
 
 @Repository
 public interface BookingRepositoryCustom {
-    public void expirePendingBookings(Instant cutoff);
+    void expirePendingBookings(Instant cutoff);
+    void activateBooking(Instant startDate);
+    void completeBooking(Instant endDate);
 }

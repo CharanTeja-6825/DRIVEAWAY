@@ -1,6 +1,6 @@
 package com.driveaway.repository;
 
-import com.driveaway.DTO.CustomerBookingDTO;
+import com.driveaway.records.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;

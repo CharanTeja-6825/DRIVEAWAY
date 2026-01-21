@@ -1,21 +1,16 @@
 package com.driveaway.service;
 
 import com.driveaway.DTO.BookingDTO;
-import com.driveaway.DTO.CustomerBookingDTO;
+import com.driveaway.records.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
-import com.driveaway.entity.Dealer;
-import com.driveaway.entity.User;
 import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
-import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
