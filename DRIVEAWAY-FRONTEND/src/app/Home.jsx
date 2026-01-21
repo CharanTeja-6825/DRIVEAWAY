@@ -73,7 +73,7 @@ function Home() {
     {
       step: '01',
       title: 'Register',
-      description: 'Sign up as a dealer and submit your business details for verification.',
+      description: 'Sign up as a Customer and submit your business details for verification in the profile section.',
       icon: <Handshake sx={{ fontSize: 40 }} />,
     },
     {

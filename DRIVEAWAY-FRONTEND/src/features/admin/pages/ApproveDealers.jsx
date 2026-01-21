@@ -1,29 +1,67 @@
 import React, { useEffect, useState } from 'react'
 import { approveDealer, getAllApplications } from '../services';
-import { Alert } from '@mui/material';
+import { 
+    Alert, 
+    Table, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    Paper, 
+    Button, 
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Box,
+    Typography,
+    Chip
+} from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function ApproveDealers() {
     const [applicationList, setApplicationList] = useState([]);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [actionLoading, setActionLoading] = useState(null);
+    const [confirmDialog, setConfirmDialog] = useState({
+        open: false,
+        id: null,
+        approval: null,
+        dealerName: ''
+    });
 
     const getApplications = async () => {
+            setLoading(true);
+            setError("");
+            setMessage("");
             try {
                 const { data } = await getAllApplications();
                 if(typeof(data) === "string") {
                     setMessage(data);
                     setApplicationList([]);
                 }
-                else {
+                else if (Array.isArray(data)) {
                     setApplicationList(data);
                     setMessage("");
-                    setError("")
+                    setError("");
+                } else {
+                    setError("Invalid data format received");
+                    setApplicationList([]);
                 }
                 console.log(data);
             } catch (error) {
                 console.log(error);
-                setError(error.message);
+                setError(error?.response?.data?.message || error.message || "Failed to fetch applications");
+                setApplicationList([]);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -31,63 +69,216 @@ function ApproveDealers() {
         getApplications();
     }, [])
 
-    const handleApprove = async (id, approval) => {
+    const handleOpenConfirm = (id, approval, dealerName) => {
+        if (!id) {
+            setError("Invalid dealer ID");
+            return;
+        }
+        setConfirmDialog({
+            open: true,
+            id,
+            approval,
+            dealerName
+        });
+    };
+
+    const handleCloseConfirm = () => {
+        setConfirmDialog({
+            open: false,
+            id: null,
+            approval: null,
+            dealerName: ''
+        });
+    };
+
+    const handleApprove = async () => {
+        const { id, approval } = confirmDialog;
+        
+        if (!id) {
+            setError("Invalid dealer ID");
+            return;
+        }
+
+        setActionLoading(id);
+        setError("");
+        setSuccess("");
+        
         try {
             const { data } = await approveDealer(id, approval);
             console.log(data);
-            setSuccess(data);
+            setSuccess(data || `Dealer ${approval ? 'approved' : 'rejected'} successfully`);
             setTimeout(() => {
                 setSuccess("");
-            }, 1500);
+            }, 3000);
+            await getApplications();
         } catch (error) {
-            setError(error.message);
-        } finally{
-            getApplications();
+            console.error(error);
+            setError(error?.response?.data?.message || error.message || "Failed to process request");
+        } finally {
+            setActionLoading(null);
+            handleCloseConfirm();
         }
     }
 
     return (
-        <div className='overflow-x-auto mt-3 flex flex-col justify-center items-center'>
+        <Box sx={{ p: 3, maxWidth: 1400, mx: 'auto' }}>
+            <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 600 }}>
+                Dealer Applications
+            </Typography>
             
-            { error && (<Alert severity='error' className='w-auto'>{error}</Alert>)}
-            { message && (<Alert severity='info' className='w-auto'>{message}</Alert>)}
-            { success && (<Alert severity='success' className='w-auto'>{success}</Alert>)}
+            {error && <Alert severity='error' sx={{ mb: 2 }}>{error}</Alert>}
+            {message && <Alert severity='info' sx={{ mb: 2 }}>{message}</Alert>}
+            {success && <Alert severity='success' sx={{ mb: 2 }}>{success}</Alert>}
 
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+                    <CircularProgress size={60} />
+                </Box>
+            ) : (
+                <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow sx={{ bgcolor: 'primary.main' }}>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>S.No</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>Owner Name</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>DealerShip Name</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>GSTIN</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>Location</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>Created At</TableCell>
+                                <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {applicationList && applicationList.length > 0 ? (
+                                applicationList.map((application, ind) => (
+                                    <TableRow 
+                                        key={application.id || ind}
+                                        sx={{ 
+                                            '&:nth-of-type(odd)': { bgcolor: 'grey.50' },
+                                            '&:hover': { bgcolor: 'grey.100' },
+                                            transition: 'background-color 0.2s'
+                                        }}
+                                    >
+                                        <TableCell align="center">{ind + 1}</TableCell>
+                                        <TableCell align="center">{application.ownerName || 'N/A'}</TableCell>
+                                        <TableCell align="center">{application.dealerShipName || 'N/A'}</TableCell>
+                                        <TableCell align="center">
+                                            <Chip 
+                                                label={application.gstIn || 'N/A'} 
+                                                size="small" 
+                                                sx={{ bgcolor: 'grey.200' }}
+                                            />
+                                        </TableCell>
+                                        <TableCell align="center">{application.location || 'N/A'}</TableCell>
+                                        <TableCell align="center">
+                                            {application.createdAt 
+                                                ? new Date(application.createdAt).toLocaleDateString('en-GB')
+                                                : 'N/A'}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    onClick={() => handleOpenConfirm(application.id, true, application.dealerShipName)}
+                                                    disabled={actionLoading === application.id || !application.id}
+                                                    startIcon={actionLoading === application.id ? <CircularProgress size={16} color="inherit" /> : <CheckCircleIcon />}
+                                                    sx={{
+                                                        bgcolor: 'success.main',
+                                                        color: 'white',
+                                                        minWidth: 100,
+                                                        '&:hover': {
+                                                            bgcolor: 'success.dark',
+                                                        },
+                                                        '&:disabled': {
+                                                            bgcolor: 'grey.300',
+                                                        }
+                                                    }}
+                                                >
+                                                    Approve
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    onClick={() => handleOpenConfirm(application.id, false, application.dealerShipName)}
+                                                    disabled={actionLoading === application.id || !application.id}
+                                                    startIcon={actionLoading === application.id ? <CircularProgress size={16} color="inherit" /> : <CancelIcon />}
+                                                    sx={{
+                                                        bgcolor: 'error.main',
+                                                        color: 'white',
+                                                        minWidth: 100,
+                                                        '&:hover': {
+                                                            bgcolor: 'error.dark',
+                                                        },
+                                                        '&:disabled': {
+                                                            bgcolor: 'grey.300',
+                                                        }
+                                                    }}
+                                                >
+                                                    Reject
+                                                </Button>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                                        <Typography variant="body1" color="text.secondary">
+                                            No pending applications found
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
 
-            <br />
-            <table className="min-w-[600px] border border-gray-300 rounded-lg overflow-hidden shadow-md">
-                <thead className="bg-blue-500 text-white">
-                    <tr>
-                        <th className='px-4'>S.No</th>
-                        <th className='px-4'>DealerShip Name</th>
-                        <th className='px-4'>Dealer</th>
-                        <th className='px-5 w-50'>GSTIn</th>
-                        <th className='px-4'>Location</th>
-                        <th className='px-4'>Created At</th>
-                        <th className='px-4'>Approval</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        applicationList &&
-                        applicationList.map((application, ind) => (
-                            <tr key={application.id}>
-                                <td className='text-center'>{ind+1}</td>
-                                <td className='text-center'>{application.ownerName}</td>
-                                <td className='text-center'>{application.dealerShipName}</td>
-                                <td className='text-center'>{application.gstIn}</td>
-                                <td className='text-center'>{application.location}</td>
-                                <td className='text-center'>{application.createdAt.substring(0, 10)}</td>
-                                <td className='text-center p-3 flex flex-col gap-2'>
-                                    <button onClick={() => handleApprove(application.id, true)} className='bg-green-400 cursor-pointer text-white rounded-xl w-25'>Approve</button>
-                                    <button onClick={() => handleApprove(application.id, false)} className='bg-red-400 text-white rounded-xl w-25 cursor-pointer'>Reject</button>
-                                </td>
-                            </tr>
-                        ))
+            {/* Confirmation Dialog */}
+            <Dialog
+                open={confirmDialog.open}
+                onClose={handleCloseConfirm}
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        minWidth: 400
                     }
-                </tbody>
-            </table>
-        </div>
+                }}
+            >
+                <DialogTitle sx={{ color: 'primary.main', fontWeight: 600 }}>
+                    Confirm Action
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to <strong>{confirmDialog.approval ? 'approve' : 'reject'}</strong> the 
+                        application for <strong>{confirmDialog.dealerName || 'this dealer'}</strong>?
+                        {!confirmDialog.approval && ' This action cannot be undone.'}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{ px: 3, pb: 2 }}>
+                    <Button 
+                        onClick={handleCloseConfirm} 
+                        sx={{ color: 'text.secondary' }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleApprove} 
+                        variant="contained"
+                        sx={{
+                            bgcolor: confirmDialog.approval ? 'success.main' : 'error.main',
+                            '&:hover': {
+                                bgcolor: confirmDialog.approval ? 'success.dark' : 'error.dark',
+                            }
+                        }}
+                        autoFocus
+                    >
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Box>
     )
 }
 
