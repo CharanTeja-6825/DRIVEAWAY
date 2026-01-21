@@ -1,66 +1,310 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import useLogout from '../shared/hooks/useLogout';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Stack,
+  Container,
+  Box,
+} from '@mui/material';
+import {
+  DirectionsCar,
+  Logout,
+  Dashboard,
+  Person,
+  CarRental,
+  AddCircle,
+  CalendarMonth,
+  People,
+  Assignment,
+} from '@mui/icons-material';
 import { useAuth } from '../shared/hooks/AuthProvider';
-import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
+  const { user, isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
 
-    const {user, isLoggedIn, logout} = useAuth();
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+  };
 
-    const navigate = useNavigate();
+  return (
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        backgroundColor: 'white',
+        borderBottom: '1px solid',
+        borderColor: 'grey.200',
+      }}
+    >
+      <Container maxWidth="lg">
+        <Toolbar disableGutters sx={{ py: 1 }}>
+          {/* Logo */}
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            sx={{ flexGrow: 1 }}
+          >
+            <DirectionsCar sx={{ fontSize: 32, color: 'primary.main' }} />
+            <Typography
+              variant="h5"
+              component={Link}
+              to="/"
+              sx={{
+                fontWeight: 700,
+                color: 'primary.main',
+                textDecoration: 'none',
+                '&:hover': {
+                  color: 'primary.dark',
+                },
+              }}
+            >
+              DriveAway
+            </Typography>
+          </Stack>
 
-    const handleLogout = () => {
-        logout();                  
-        navigate("/", { replace: true });
-    };
-
-    return (
-        <div className='flex gap-5 bg-blue-500 text-white p-4 font-bold'>
+          {/* Navigation Links */}
+          <Stack direction="row" spacing={1}>
             {!isLoggedIn && (
-                <>
-                <Link to={'/'}>Home</Link>
-                <Link to={'/login'}>Login</Link>
-                <Link to={'/register'}>Register</Link>
-                </>
+              <>
+                <Button
+                  component={Link}
+                  to="/"
+                  sx={{
+                    color: 'text.primary',
+                    fontWeight: 600,
+                    '&:hover': {
+                      backgroundColor: 'grey.50',
+                    },
+                  }}
+                >
+                  Home
+                </Button>
+                <Button
+                  component={Link}
+                  to="/login"
+                  variant="outlined"
+                  sx={{
+                    fontWeight: 600,
+                  }}
+                >
+                  Login
+                </Button>
+                <Button
+                  component={Link}
+                  to="/register"
+                  variant="contained"
+                  sx={{
+                    fontWeight: 600,
+                    backgroundColor: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                    },
+                  }}
+                >
+                  Register
+                </Button>
+              </>
             )}
 
             {isLoggedIn && (
-                <>
-                {/* Customer Routings */}
-                {user.role === "CUSTOMER" && (
-                <>
-                    <Link to={'/customer'}>Home</Link>
-                    <Link to={'/customer/profile'}>Profile</Link>
-                    <Link to={'/customer/viewCars'}>Cars</Link>
-                    <Link to={'/customer/myBookings'}>My Bookings</Link>
-                </>
-            )}
+              <>
+                {/* Customer Navigation */}
+                {user.role === 'CUSTOMER' && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/customer"
+                      startIcon={<Dashboard />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Home
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/customer/profile"
+                      startIcon={<Person />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Profile
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/customer/viewCars"
+                      startIcon={<CarRental />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Cars
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/customer/myBookings"
+                      startIcon={<CalendarMonth />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      My Bookings
+                    </Button>
+                  </>
+                )}
 
-            {/* Dealer Routings */}
-                {user.role === "DEALER" && (
-                <>
-                    <Link to={'/dealer'}>Home</Link>
-                    <Link to={'/dealer/addCar'}>New Car</Link>
-                    <Link to={'/dealer/allCars'}>Cars</Link>
-                    <Link to={'/dealer/bookings'}>Bookings</Link>
-                </>
-            )}
+                {/* Dealer Navigation */}
+                {user.role === 'DEALER' && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/dealer"
+                      startIcon={<Dashboard />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Home
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/dealer/addCar"
+                      startIcon={<AddCircle />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      New Car
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/dealer/allCars"
+                      startIcon={<CarRental />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Cars
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/dealer/bookings"
+                      startIcon={<CalendarMonth />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Bookings
+                    </Button>
+                  </>
+                )}
 
-            {/* Admin Routings */}
-            {user.role === "ADMIN" && (
-                <>
-                    <Link to={'/admin'}>Dashboard</Link>
-                    <Link to={'/admin/all'}>All Users</Link>
-                    <Link to={'/admin/applications'}>Requests</Link>
-                </>
-            )}
+                {/* Admin Navigation */}
+                {user.role === 'ADMIN' && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/admin"
+                      startIcon={<Dashboard />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Dashboard
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/admin/all"
+                      startIcon={<People />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      All Users
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/admin/applications"
+                      startIcon={<Assignment />}
+                      sx={{
+                        color: 'text.primary',
+                        fontWeight: 600,
+                        '&:hover': {
+                          backgroundColor: 'grey.50',
+                        },
+                      }}
+                    >
+                      Requests
+                    </Button>
+                  </>
+                )}
 
-            <button onClick={handleLogout} className='cursor-pointer'>Logout</button>
-                </>
+                <Button
+                  onClick={handleLogout}
+                  startIcon={<Logout />}
+                  variant="outlined"
+                  color="error"
+                  sx={{
+                    fontWeight: 600,
+                    ml: 1,
+                  }}
+                >
+                  Logout
+                </Button>
+              </>
             )}
-        </div>
-)
+          </Stack>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }
 
-export default Navbar
+export default Navbar;
