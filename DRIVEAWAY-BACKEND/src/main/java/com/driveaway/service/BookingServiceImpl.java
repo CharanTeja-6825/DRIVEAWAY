@@ -166,4 +166,22 @@ public class BookingServiceImpl implements BookingService{
 
         carRepository.unlockCars(carIds);
     }
+
+
+
+    @Override
+    public void updateBookingsAndCars(Instant currentDate) {
+        List<String> startedCars = bookingRepository.findAll().stream()
+                .filter(booking -> booking.getStartDate().equals(currentDate))
+                .map(Booking::getCarId)
+                .toList();
+
+        List<String> endCars = bookingRepository.findAll().stream()
+                .filter(booking -> booking.getEndDate().equals(currentDate))
+                .map(Booking::getCarId)
+                .toList();
+
+        bookingRepository.activateBooking(currentDate, startedCars);
+        bookingRepository.completeBooking(currentDate, endCars);
+    }
 }

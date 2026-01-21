@@ -50,7 +50,9 @@ public interface BookingRepository extends MongoRepository<Booking, String>, Boo
     })
     List<CustomerBookingDTO> findCustomerBookings(String customerId);
 
-    List<Booking> findBookingsByCreatedAtAndStatus(Instant createdAt, String status);
-
     List<Booking> findBookingsByCreatedAtLessThan(Instant createdAtIsLessThan);
+
+    List<Booking> findBookingsByStartDate(Instant startDate);
+
+    List<Booking> findBookingsByEndDate(Instant endDate);
 }

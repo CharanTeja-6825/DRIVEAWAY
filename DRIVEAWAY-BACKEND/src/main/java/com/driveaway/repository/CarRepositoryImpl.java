@@ -19,7 +19,7 @@ public class CarRepositoryImpl implements CarRepositoryCustom{
 
     @Override
     public void unlockCars(List<String> cars) {
-        Query q = Query.query(Criteria.where("carStatus").is(BookingStatus.PENDING.toString()));
+        Query q = Query.query(Criteria.where("_id").in(cars).and("carStatus").is(BookingStatus.PENDING.toString()));
         Update u = new Update().set("carStatus", BookingStatus.AVAILABLE.toString());
 
         mongoTemplate.updateMulti(q, u, Car.class);
