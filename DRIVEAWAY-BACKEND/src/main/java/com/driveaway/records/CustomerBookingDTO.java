@@ -1,7 +1,4 @@
-package com.driveaway.DTO;
-
-import com.driveaway.entity.Dealer;
-import com.driveaway.entity.User;
+package com.driveaway.records;
 
 import java.time.Instant;
 
