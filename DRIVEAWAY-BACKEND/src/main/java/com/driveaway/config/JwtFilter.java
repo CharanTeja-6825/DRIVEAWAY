@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,15 +36,17 @@ public class JwtFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String authHeader = request.getHeader("Authorization");
+		String authHeader = Arrays.stream(request.getCookies()).filter(cookie -> "JWT_TOKEN".equals(cookie.getName()))
+				.map(Cookie::getValue)
+				.findFirst()
+				.orElse(null);
+		System.out.println(authHeader);
 		String token = null;
 		String email = null;
-		String role = null;
 		
-		if(authHeader != null && authHeader.startsWith("Bearer ")) {
-			token = authHeader.substring(7);
+		if(authHeader != null) {
+			token = authHeader;
 			email = jwtService.extractEmail(token);
-			role = jwtService.extractRole(token);
 		}
 		
 		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
