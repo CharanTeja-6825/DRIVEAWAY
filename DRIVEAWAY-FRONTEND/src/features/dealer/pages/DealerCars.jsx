@@ -10,7 +10,8 @@ import {
 	Chip,
 	Divider,
 	alpha,
-	Stack
+	Stack,
+	Button
 } from "@mui/material";
 import {
 	DirectionsCar as CarIcon,
@@ -21,6 +22,7 @@ import {
 import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import { brandsArray } from "../../../shared/constants/brands";
+import CarUpdateModal from "../components/CarUpdateModal";
 
 export default function DealerCars() {
 	const { user, statusColorMap } = useAuth();
@@ -30,9 +32,11 @@ export default function DealerCars() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+	const [modalOpen, setModalOpen] = useState(false);
+	const [selectedCar, setSelectedCar] = useState(null);
 
-	useEffect(() => {
-		const loadCars = async () => {
+
+	const loadCars = async () => {
 			try {
 				const { data } = await getCarsByDealer(dealerId);
 				if (typeof data === "string") setMessage(data);
@@ -44,6 +48,7 @@ export default function DealerCars() {
 			}
 		};
 
+	useEffect(() => {
 		loadCars();
 	}, [dealerId]);
 
@@ -110,6 +115,7 @@ export default function DealerCars() {
 	);
 
 	return (
+		<>
 		<Box
 			sx={{
 				p: { xs: 2, sm: 3, md: 4 },
@@ -360,6 +366,16 @@ export default function DealerCars() {
 									>
 										₹{car.pricePerDay.toLocaleString("en-IN")}
 									</Typography>
+									<Button
+										variant="outlined"
+										onClick={() => {
+											setSelectedCar(car);
+											setModalOpen(true);
+										}}
+										sx={{ mt: 2 }}
+									>
+										Manage Car
+									</Button>
 								</Box>
 							</CardContent>
 						</Card>
@@ -402,5 +418,17 @@ export default function DealerCars() {
 				</Box>
 			)}
 		</Box>
+		<Box>
+			<CarUpdateModal
+				open={modalOpen}
+				handleClose={() => setModalOpen(false)}
+				car={selectedCar}
+				reloadCars={loadCars}
+				onUpdate={(updatedCar) => {
+					setCars(cars.map(c => c.carId === updatedCar.carId ? updatedCar : c));
+				}}
+			/>
+		</Box>
+		</>
 	);
 }

@@ -15,3 +15,7 @@ export const getBookings = (dealerId) => {
 export const validateBooking = (bookingId, approval) => {
     return api.put(`/api/dealer/approve/booking/${bookingId}?approval=${approval}`);
 }
+
+export const updateCar = (payload) => {
+    return api.put("/api/dealer/update/car", payload);
+}

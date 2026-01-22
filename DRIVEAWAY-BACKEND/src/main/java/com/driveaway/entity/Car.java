@@ -94,4 +94,19 @@ public class Car {
     public void setCarStatus(String carStatus) {
         this.carStatus = carStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "carId='" + carId + '\'' +
+                ", dealerId='" + dealerId + '\'' +
+                ", dealerShipName='" + dealerShipName + '\'' +
+                ", model='" + model + '\'' +
+                ", brand='" + brand + '\'' +
+                ", year=" + year +
+                ", pricePerDay=" + pricePerDay +
+                ", createdAt=" + createdAt +
+                ", carStatus='" + carStatus + '\'' +
+                '}';
+    }
 }
