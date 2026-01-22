@@ -1,7 +1,7 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.BookingDTO;
-import com.driveaway.records.CustomerBookingDTO;
+import com.driveaway.dto.BookingDTO;
+import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 
 import java.time.Instant;

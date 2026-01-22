@@ -1,6 +1,6 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.DealerApplications;
 
 import java.util.List;

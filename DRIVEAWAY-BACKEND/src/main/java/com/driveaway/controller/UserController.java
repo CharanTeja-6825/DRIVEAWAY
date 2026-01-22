@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.driveaway.DTO.ResponseDTO;
+import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.service.UserService;
 

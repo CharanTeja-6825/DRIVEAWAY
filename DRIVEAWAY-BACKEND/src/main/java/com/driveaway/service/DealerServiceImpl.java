@@ -1,9 +1,7 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.DealerRequestDTO;
-import com.driveaway.entity.Car;
+import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.User;
-import com.driveaway.enumerations.Roles;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.enumerations.Approval;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.driveaway.entity.Dealer;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,18 +26,18 @@ public class DealerServiceImpl implements DealerService{
 
 	@Override
 	public Dealer addDealer(DealerRequestDTO dto) {
-		System.out.println("USER = " + dto.getUser());
+		System.out.println("USER = " + dto.user());
 
-		Optional<User> u = userRepository.findById(dto.getUser());
+		Optional<User> u = userRepository.findById(dto.user());
 		if(u.isEmpty()) return null;
 
 		// Creating Dealer object for adding Dealer.
 		Dealer d = new Dealer();
-		d.setUser(dto.getUser());
-		d.setLocation(dto.getLocation());
-		d.setDealershipName(dto.getDealershipName());
-		d.setOwnerName(dto.getOwnerName());
-		d.setGstIn(dto.getGstIn());
+		d.setUser(dto.user());
+		d.setLocation(dto.location());
+		d.setDealershipName(dto.dealershipName());
+		d.setOwnerName(dto.ownerName());
+		d.setGstIn(dto.gstIn());
 		d.setCreatedAt(Instant.now());
 		d.setApprovalStatus(Approval.PENDING.toString());
 		return dealerRepository.save(d);

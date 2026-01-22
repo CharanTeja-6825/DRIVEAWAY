@@ -1,7 +1,7 @@
 package com.driveaway.controller;
 
-import com.driveaway.records.CustomerBookingDTO;
-import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.dto.CustomerBookingDTO;
+import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.enumerations.BookingStatus;

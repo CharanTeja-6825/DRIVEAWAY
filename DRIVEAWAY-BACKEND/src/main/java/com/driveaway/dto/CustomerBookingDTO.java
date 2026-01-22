@@ -1,4 +1,4 @@
-package com.driveaway.records;
+package com.driveaway.dto;
 
 import java.time.Instant;
 

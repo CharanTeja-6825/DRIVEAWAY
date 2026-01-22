@@ -1,6 +1,6 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.ResponseDTO;
+import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 
 public interface UserService {
