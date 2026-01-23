@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "dealers")
-public class Dealer{
+public class Dealer implements Serializable{
 
     @Id
     private String id;

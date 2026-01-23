@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
         def = "{ 'customerId': 1, 'createdAt': -1 }"
 )
 
-public class Booking {
+public class Booking implements Serializable{
 
     @Id
     private String bookingId;

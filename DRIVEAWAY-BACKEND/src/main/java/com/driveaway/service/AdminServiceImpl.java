@@ -23,7 +23,7 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private DealerRepository dealerRepository;
 
-	@Cacheable(value = "users")
+	@Cacheable(value = "users", unless = "#result == null || #result.isEmpty()")
 	@Override
 	public List<User> getAllUsers() {
 		return adminRepository.findAll();

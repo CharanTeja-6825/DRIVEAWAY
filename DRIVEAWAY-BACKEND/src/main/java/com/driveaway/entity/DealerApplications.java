@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Document(collection = "dealer_applications")
-public class DealerApplications{
+public class DealerApplications implements Serializable{
     @Id
     private String id;
 
