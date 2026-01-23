@@ -1,5 +1,6 @@
 package com.driveaway.entity;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import org.springframework.data.annotation.Id;

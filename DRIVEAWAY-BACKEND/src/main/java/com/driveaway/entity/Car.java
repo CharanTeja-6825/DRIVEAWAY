@@ -4,10 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Document(collection = "cars")
-public class Car {
+public class Car{
     @Id
     private String carId;
 

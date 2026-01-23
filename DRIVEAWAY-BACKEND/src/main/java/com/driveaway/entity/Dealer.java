@@ -1,4 +1,5 @@
 package com.driveaway.entity;
+import java.io.Serializable;
 import java.time.Instant;
 
 import org.springframework.data.annotation.Id;
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "dealers")
-public class Dealer {
+public class Dealer{
 
     @Id
     private String id;
