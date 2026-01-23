@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.driveaway.DTO.ResponseDTO;
+import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
-import com.driveaway.enumerations.Approval;
 import com.driveaway.enumerations.Roles;
 
 @Service

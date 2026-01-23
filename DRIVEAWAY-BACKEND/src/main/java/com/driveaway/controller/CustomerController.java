@@ -1,7 +1,7 @@
 package com.driveaway.controller;
 
-import com.driveaway.DTO.CustomerBookingDTO;
-import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.dto.CustomerBookingDTO;
+import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.enumerations.BookingStatus;
@@ -85,6 +85,11 @@ public class CustomerController {
 	@GetMapping("/bookings")
 	public ResponseEntity<List<CustomerBookingDTO>> customerBookings(@RequestParam String customerId){
 		return ResponseEntity.ok(bookingService.bookingsByCustomer(customerId));
+	}
+
+	@PostMapping("/cancel/booking")
+	public ResponseEntity<String> cancelBooking(@RequestParam String bookingId){
+		return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
 	}
 
 }

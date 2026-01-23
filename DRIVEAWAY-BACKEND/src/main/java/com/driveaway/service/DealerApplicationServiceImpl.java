@@ -1,6 +1,6 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.DealerRequestDTO;
+import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.Dealer;
 import com.driveaway.entity.DealerApplications;
 import com.driveaway.entity.User;
@@ -11,7 +11,6 @@ import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -33,12 +32,12 @@ public class DealerApplicationServiceImpl implements DealerApplicationService {
     public String submitApplication(DealerRequestDTO dto) {
        try{
            DealerApplications app = new DealerApplications();
-           app.setUserId(dto.getUser());
-           app.setDealerShipName(dto.getDealershipName());
-           app.setOwnerName(dto.getOwnerName());
-           app.setGstIn(dto.getGstIn());
-           app.setLocation(dto.getLocation());
-           app.setPhone(dto.getPhone());
+           app.setUserId(dto.user());
+           app.setDealerShipName(dto.dealershipName());
+           app.setOwnerName(dto.ownerName());
+           app.setGstIn(dto.gstIn());
+           app.setLocation(dto.location());
+           app.setPhone(dto.phone());
            app.setApprovalStatus(Approval.PENDING.toString());
            app.setCreatedAt(Instant.now());
            dealerApplicationRepository.save(app);

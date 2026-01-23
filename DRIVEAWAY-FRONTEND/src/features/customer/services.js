@@ -23,3 +23,7 @@ export const createBooking = (payload) => {
 export const getCustomerBookings = (id) => {
     return api.get(`/api/customer/bookings?customerId=${id}`);
 }
+
+export const cancelBooking = (id) => {
+    return api.post(`/api/customer/cancel/booking?bookingId=${id}`);
+}

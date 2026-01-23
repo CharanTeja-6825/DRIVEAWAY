@@ -9,7 +9,7 @@ import {
     Stack,
 } from "@mui/material";
 
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 
 
 import { createBooking } from "../services";

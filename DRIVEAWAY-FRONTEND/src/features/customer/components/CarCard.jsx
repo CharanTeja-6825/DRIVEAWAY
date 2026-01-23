@@ -1,15 +1,5 @@
 import React from 'react'
 
-const statusColorMap = {
-  AVAILABLE: "success",
-  PENDING: "warning",
-  APPROVED: "info",
-  ACTIVE: "secondary",
-  COMPLETED: "default",
-  CANCELLED: "error",
-  REJECTED: "error"
-};
-
 import {
   Card,
   CardContent,
@@ -19,8 +9,12 @@ import {
   CircularProgress,
   Alert
 } from "@mui/material";
+import { useAuth } from '../../../shared/hooks/AuthProvider';
 
 function CarCard({ car, onBook }) {
+
+    const { statusColorMap } = useAuth();
+
     return (
         <>
             <Card
@@ -36,7 +30,7 @@ function CarCard({ car, onBook }) {
 
                         <Chip
                             label={car.carStatus}
-                            color={statusColorMap[car.carStatus] || "default"}
+                            sx={{backgroundColor : statusColorMap[car.carStatus], color:"white"}}
                             size="small"
                         />
                     </div>

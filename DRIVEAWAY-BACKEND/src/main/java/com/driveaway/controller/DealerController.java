@@ -1,14 +1,10 @@
 package com.driveaway.controller;
 
-import com.driveaway.DTO.BookingDTO;
-import com.driveaway.entity.Booking;
+import com.driveaway.dto.BookingDTO;
 import com.driveaway.entity.Car;
-import com.driveaway.entity.Dealer;
 import com.driveaway.service.BookingService;
 import com.driveaway.service.CarService;
-import com.driveaway.service.DealerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +39,7 @@ public class DealerController {
 		return cars.size() == 0 ? ResponseEntity.status(200).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
 	}
 
-	@PatchMapping("/update/car")
+	@PutMapping("/update/car")
 	public ResponseEntity<String> editCar(@RequestBody Car car){
 		String response = carService.updateCar(car);
 		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);

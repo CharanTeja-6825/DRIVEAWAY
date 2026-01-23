@@ -1,89 +1,119 @@
-import React from "react";
-import {
-	Card,
-	CardContent,
-	Typography,
-	Button,
-	Chip,
-	Divider
-} from "@mui/material";
+import React, { useState, useMemo } from 'react';
+import { Stack, Tabs, Tab, Box, Typography } from '@mui/material';
+import { useAuth } from '../../../shared/hooks/AuthProvider';
+import BookingCard from './BookingCard';
 
 export default function BookingsList({ bookings, onCancel }) {
-	return (
-		<div className="grid gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
-			{bookings.map((booking) => (
-				<Card key={booking.bookingId} className="relative shadow-md">
+  const { statusColorMap } = useAuth();
+  const [selectedTab, setSelectedTab] = useState('all');
 
-					{/* Cancel Button */}
-					{booking.status === "APPROVED" && (
-						<Button
-							variant="outlined"
-							color="error"
-							size="small"
-							className="!absolute top-3 right-3"
-							onClick={() => onCancel(booking.bookingId)}
-						>
-							Cancel
-						</Button>
-					)}
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
-					<CardContent className="space-y-3">
-						{/* Header */}
-						<div className="flex justify-between items-center">
-							<Typography variant="h6">
-								{booking.dealer.dealershipName}
-							</Typography>
-							<Chip
-								label={booking.status}
-								color={booking.status === "APPROVED" ? "success" : "warning"}
-								size="small"
-							/>
-						</div>
+  // Filter bookings based on selected tab
+  const filteredBookings = useMemo(() => {
+    if (selectedTab === 'all') return bookings;
+    return bookings.filter((booking) => booking.status === selectedTab);
+  }, [bookings, selectedTab]);
 
-						<Divider />
+  // Calculate counts for each status
+  const statusCounts = useMemo(() => {
+    const counts = {
+      all: bookings.length,
+      PENDING: 0,
+      APPROVED: 0,
+      ACTIVE: 0,
+      COMPLETED: 0,
+      CANCELLED: 0,
+    };
 
-						{/* Booking Info */}
-						<div className="space-y-1 text-sm">
-							<Typography>
-								<strong>DealerShip Name:</strong> {booking.dealer.dealershipName}
-							</Typography>
-							<Typography>
-								<strong>Owner:</strong> {booking.dealer.ownerName}
-							</Typography>
-							<Typography>
-								<strong>Location:</strong> {booking.dealer.location}
-							</Typography>
-							<Typography>
-								<strong>GST:</strong> {booking.dealer.gstIn}
-							</Typography>
-							<Typography>
-								<strong>Phone :</strong> {booking.dealer.phone}
-							</Typography>
-						</div>
+    bookings.forEach((booking) => {
+      if (counts.hasOwnProperty(booking.status)) {
+        counts[booking.status]++;
+      }
+    });
 
-						<Divider />
+    return counts;
+  }, [bookings]);
 
-						{/* Dates */}
-						<div className="flex justify-between text-sm">
-							<Typography>
-								<strong>Start:</strong>{" "}
-								{new Date(booking.startDate).toLocaleDateString()}
-							</Typography>
-							<Typography>
-								<strong>End:</strong>{" "}
-								{new Date(booking.endDate).toLocaleDateString()}
-							</Typography>
-						</div>
+  return (
+    <Stack spacing={3}>
+      {/* Filter Tabs */}
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+          borderRadius: '12px',
+          px: 2,
+        }}
+      >
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{
+            '& .MuiTab-root': {
+              textTransform: 'none',
+              fontWeight: 600,
+              minHeight: 56,
+            },
+          }}
+        >
+          <Tab label={`All (${statusCounts.all})`} value="all" />
+          <Tab label={`Pending (${statusCounts.PENDING})`} value="PENDING" />
+          <Tab label={`Confirmed (${statusCounts.APPROVED})`} value="APPROVED" />
+          <Tab label={`Active (${statusCounts.ACTIVE})`} value="ACTIVE" />
+          <Tab label={`Completed (${statusCounts.COMPLETED})`} value="COMPLETED" />
+          <Tab label={`Cancelled (${statusCounts.CANCELLED})`} value="CANCELLED" />
+        </Tabs>
+      </Box>
 
-						<Divider />
-
-						{/* Amount */}
-						<Typography className="text-right font-semibold text-lg">
-							₹{booking.totalAmount}
-						</Typography>
-					</CardContent>
-				</Card>
-			))}
-		</div>
-	);
+      {/* Bookings Grid */}
+      {filteredBookings.length > 0 ? (
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 3,
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(3, 1fr)',
+            },
+          }}
+        >
+          {filteredBookings.map((booking) => (
+            <BookingCard
+              key={booking._id}
+              booking={booking}
+              onCancel={() => {onCancel(booking._id)}}
+              statusColorMap={statusColorMap}
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            textAlign: 'center',
+            py: 8,
+            px: 3,
+            bgcolor: 'background.paper',
+            borderRadius: '12px',
+          }}
+        >
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No bookings found
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {selectedTab === 'all'
+              ? 'You have no bookings yet'
+              : `You have no ${selectedTab.toLowerCase()} bookings`}
+          </Typography>
+        </Box>
+      )}
+    </Stack>
+  );
 }
+

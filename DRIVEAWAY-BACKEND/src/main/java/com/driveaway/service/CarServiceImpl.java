@@ -46,17 +46,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public String updateCar(Car car) {
-        Optional<Car> opcar = carRepository.findById(car.getCarId());
-        if(opcar.isEmpty()) return "Car Not Found";
-        Car c = opcar.get();
-        c.setBrand(car.getBrand());
-        c.setYear(car.getYear());
-        c.setModel(car.getModel());
-        c.setPricePerDay(car.getPricePerDay());
-        c.setCarStatus(BookingStatus.AVAILABLE.toString());
-        c.setCreatedAt(Instant.now());
-        carRepository.save(c);
-        return "Car Data Updated";
+        return carRepository.updateCar(car);
     }
 
     @Override

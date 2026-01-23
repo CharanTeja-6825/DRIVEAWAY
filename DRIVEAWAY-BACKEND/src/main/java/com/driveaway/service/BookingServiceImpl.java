@@ -1,21 +1,17 @@
 package com.driveaway.service;
 
-import com.driveaway.DTO.BookingDTO;
-import com.driveaway.DTO.CustomerBookingDTO;
+import com.driveaway.dto.BookingDTO;
+import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
-import com.driveaway.entity.Dealer;
-import com.driveaway.entity.User;
 import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
-import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -27,12 +23,10 @@ import java.util.Optional;
 @Service
 public class BookingServiceImpl implements BookingService{
 
+    private final Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
+
     @Autowired
     private CarRepository carRepository;
-
-    @Autowired
-    private DealerRepository dealerRepository;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -132,25 +126,62 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<CustomerBookingDTO> bookingsByCustomer(String customerId) {
-        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
-        List<CustomerBookingDTO> customerBookingDTOS = new ArrayList<>();
-        for(Booking booking : bookings){
-            Dealer d = dealerRepository.findById(booking.getDealerId()).get();
-            User u = userRepository.findById(d.getUser()).get();
-            customerBookingDTOS.add(new CustomerBookingDTO(
-                booking.getBookingId(),
-                booking.getCarId(),
-                booking.getDealerId(),
-                booking.getCustomerId(),
-                booking.getStartDate(),
-                booking.getEndDate(),
-                booking.getTotalAmount(),
-                booking.getStatus(),
-                booking.getCreatedAt(),
-                booking.getApprovedAt(),
-                d
-            ));
-        }
+//        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
+        List<CustomerBookingDTO> customerBookingDTOS = bookingRepository.findCustomerBookings(customerId);
         return customerBookingDTOS;
+    }
+
+    @Override
+    public String cancelBooking(String bookingId) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
+        if(optionalBooking.isEmpty()) return "Booking Not found";
+        Booking b = optionalBooking.get();
+
+        if(!b.getStatus().equals(BookingStatus.APPROVED.toString())) return "Booking Not Approved";
+
+        b.setStatus(BookingStatus.CANCELLED.toString());
+        Optional<Car> optionalCar = carRepository.findById(b.getCarId());
+
+        if(optionalCar.isEmpty()) return "Car Not Found";
+        Car car = optionalCar.get();
+        car.setCarStatus(BookingStatus.AVAILABLE.toString());
+
+        bookingRepository.save(b);
+        carRepository.save(car);
+
+        return "Booking Cancelled Successfully";
+    }
+
+    @Override
+    public void expirePendingBookings() {
+        List<Booking> expiredBookings = bookingRepository.findBookingsByCreatedAtLessThan(timeoutDuration);
+
+        if(expiredBookings.size() == 0) return;
+
+        bookingRepository.expirePendingBookings(timeoutDuration);
+
+        List<String> carIds = expiredBookings.stream()
+                .map(Booking::getCarId)
+                .toList();
+
+        carRepository.unlockCars(carIds);
+    }
+
+
+
+    @Override
+    public void updateBookingsAndCars(Instant currentDate) {
+        List<String> startedCars = bookingRepository.findAll().stream()
+                .filter(booking -> booking.getStartDate().equals(currentDate))
+                .map(Booking::getCarId)
+                .toList();
+
+        List<String> endCars = bookingRepository.findAll().stream()
+                .filter(booking -> booking.getEndDate().equals(currentDate))
+                .map(Booking::getCarId)
+                .toList();
+
+        bookingRepository.activateBooking(currentDate, startedCars);
+        bookingRepository.completeBooking(currentDate, endCars);
     }
 }

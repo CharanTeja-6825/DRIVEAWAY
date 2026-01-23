@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {
-    CircularProgress
+    CircularProgress,
+    Box
 } from "@mui/material";
 import CarCard from './CarCard';
 import BookingModal from './BookingModal';
@@ -11,19 +12,10 @@ function CarsGrid({ cars, reloadCars }) {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     const handleBook = (car) => {
         setSelectedCar(car);
         setOpen(true);
-    }
-
-    if (loading) {
-        return (
-            <Box display="flex" justifyContent="center" mt={10}>
-                <CircularProgress />
-            </Box>
-        );
     }
 
     return (
@@ -34,7 +26,7 @@ function CarsGrid({ cars, reloadCars }) {
 
 
             {open &&
-                <BookingModal setLoading={setLoading} open={open} handleClose={() => setOpen(false)} car={selectedCar} reloadCars={reloadCars} />
+                <BookingModal open={open} handleClose={() => setOpen(false)} car={selectedCar} reloadCars={reloadCars} />
             }
         </div>
     )
