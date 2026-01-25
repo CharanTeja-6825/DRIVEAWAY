@@ -40,29 +40,28 @@ public class JwtFilter extends OncePerRequestFilter{
 				.map(Cookie::getValue)
 				.findFirst()
 				.orElse(null);
-		System.out.println(authHeader);
 		String token = null;
 		String email = null;
-		
+
 		if(authHeader != null) {
 			token = authHeader;
 			email = jwtService.extractEmail(token);
 		}
-		
+
 		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			
+
 			User user = applicationContext.getBean(UserService.class).getUser(email);
-			
+
 			if(jwtService.validateToken(token, user)) {
-				UsernamePasswordAuthenticationToken authToken = 
+				UsernamePasswordAuthenticationToken authToken =
 						new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
-		
+
 		filterChain.doFilter(request, response);
-		
+
 	}
 
 }
