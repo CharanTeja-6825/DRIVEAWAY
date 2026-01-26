@@ -3,17 +3,90 @@ name: Auto-merge Dependabot PRs
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+  schedule:
+    # Run every day at 00:00 UTC to check for open Dependabot PRs
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  automerge:
-    if: github.actor == 'dependabot[bot]'
+  automerge-incoming:
+    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: merge
+
+  automerge-existing:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get all open Dependabot PRs
+        id: get-prs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              sort: 'created',
+              direction: 'desc'
+            });
+            
+            const dependabotPRs = pullRequests.filter(pr => pr.user.login === 'dependabot[bot]');
+            return dependabotPRs.map(pr => pr.number);
+
+      - name: Enable auto-merge for all Dependabot PRs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumbers = ${{ steps.get-prs.outputs.result }};
+            
+            for (const prNumber of prNumbers) {
+              try {
+                // Enable auto-merge
+                await github.rest.pulls.updateBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber
+                });
+                
+                // Enable auto-merge with GraphQL API
+                const pr = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber
+                });
+                
+                await github.graphql(`
+                  mutation($pullRequestId: ID!) {
+                    enablePullRequestAutoMerge(input: {
+                      pullRequestId: $pullRequestId,
+                      mergeMethod: MERGE
+                    }) {
+                      pullRequest {
+                        number
+                      }
+                    }
+                  }
+                `, {
+                  pullRequestId: pr.data.node_id
+                });
+                
+                console.log(`Enabled auto-merge for PR #${prNumber}`);
+              } catch (error) {
+                console.error(`Failed to enable auto-merge for PR #${prNumber}:`, error.message);
+              }
+            }
