@@ -11,6 +11,7 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.driveaway.entity.User;
@@ -23,19 +24,13 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JWTServiceImpl implements JWTService{
 	
-	private String secretKey = "";
+	private final SecretKey secretKey;
 
-	public JWTServiceImpl() {
-		
-		try {
-		
-			KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-			Key sk = keyGen.generateKey();
-			secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
+
+	public JWTServiceImpl(@Value("${spring.jwt.secret}") String key) {
+		byte[] bytes = Decoders.BASE64.decode(key);
+		secretKey = Keys.hmacShaKeyFor(bytes);
+    }
 	
 	@Override
 	public String generateToken(User user) {
@@ -49,18 +44,12 @@ public class JWTServiceImpl implements JWTService{
 				   .issuedAt(new Date(System.currentTimeMillis())) // issued time
 				   .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60L))
 				   .and()
-				   .signWith(getKey()) // signature
+				   .signWith(secretKey) // signature
 				   .compact(); // conversion to String
-	}
-
-	private SecretKey getKey() {
-		byte[] bytes = Decoders.BASE64.decode(secretKey);
-		return Keys.hmacShaKeyFor(bytes);
 	}
 
 	@Override
 	public String extractEmail(String token) {
-		
 		return extractClaim(token, Claims::getSubject);
 	}
 
@@ -72,7 +61,7 @@ public class JWTServiceImpl implements JWTService{
 
 	private Claims extractAllClaims(String token) {
 		return Jwts.parser()
-				.verifyWith(getKey())
+				.verifyWith(secretKey)
 			    .build()
 			    .parseSignedClaims(token)
 			    .getPayload();

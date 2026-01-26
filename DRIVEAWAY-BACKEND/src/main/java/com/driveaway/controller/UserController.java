@@ -26,30 +26,37 @@ public class UserController {
 	
 	@Autowired
 	private UserService service;
-	
-	
+
+
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse httpServletResponse) {
-		ResponseDTO response = service.userLogin(user.getUserEmail(), user.getPassword());
+	public ResponseEntity<?> login(@RequestBody User user,
+								   HttpServletResponse response) {
 
-		System.out.println(response.token());
+		ResponseDTO auth = service.userLogin(
+				user.getUserEmail(),
+				user.getPassword()
+		);
 
-		ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", response.token())
+		if (auth == null) {
+			return ResponseEntity
+					.status(HttpStatus.UNAUTHORIZED)
+					.body("Invalid credentials");
+		}
+
+		ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", auth.token())
 				.httpOnly(true)
-				.secure(false)
+				.secure(false)              // true in production (HTTPS)
+				.sameSite("Lax")            // ✔ SAFE for local dev
 				.path("/")
-				.maxAge(Duration.ofHours(1L))
-				.sameSite(Cookie.SameSite.NONE.toString())
+				.maxAge(Duration.ofHours(1))
 				.build();
 
-		httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-		if(response == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials or User not found");
-		
-		else return ResponseEntity.ok(response);
-		
+		return ResponseEntity.ok(auth);
 	}
-	
+
+
 	@PostMapping("/register")
 	public User register(@RequestBody User user) throws Exception {
 		return service.registerUser(user);
