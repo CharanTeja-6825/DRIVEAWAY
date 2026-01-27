@@ -1,0 +1,30 @@
+services:
+  backend:
+    container_name: springboot
+    build:
+      context: ./DRIVEAWAY-BACKEND
+      dockerfile: ./backend.Dockerfile
+    ports:
+      - "2025:2006"
+    restart: on-failure
+    networks:
+      - app-net
+
+  frontend:
+    container_name: react
+    build:
+      context: ./DRIVEAWAY-FRONTEND
+      dockerfile: ./frontend.Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://backend:2006
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+# Declare volumes at the bottom
+networks:
+  app-net:
+    driver: bridge

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormControl, InputLabel, Select, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import { brandsArray } from '../../../shared/constants/brands';
+import { useMemo } from 'react';
 
 const BrandSelection = ({ form, handleChange }) => {
 
