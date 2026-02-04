@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    environment: DOCKER
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
