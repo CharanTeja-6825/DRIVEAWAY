@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   build-and-push:
@@ -31,7 +32,9 @@ jobs:
           context: ./DRIVEAWAY-BACKEND
           file: ./DRIVEAWAY-BACKEND/backend.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:${{ github.sha }}
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
@@ -39,4 +42,6 @@ jobs:
           context: ./DRIVEAWAY-FRONTEND
           file: ./DRIVEAWAY-FRONTEND/frontend.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:${{ github.sha }}
