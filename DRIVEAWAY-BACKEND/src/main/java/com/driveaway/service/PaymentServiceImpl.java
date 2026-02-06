@@ -12,11 +12,10 @@ public class PaymentServiceImpl implements PaymentService{
     private RazorpayClient razorpayClient;
 
     @Override
-    public String createPayment(int amount, String bookingID) {
+    public String createPayment(int amount) {
         JSONObject payment = new JSONObject();
         payment.put("amount", amount * 100);
         payment.put("currency", "INR");
-        payment.put("order_id", )
-        razorpayClient.payments.createJsonPayment()
+        return "";
     }
 }
