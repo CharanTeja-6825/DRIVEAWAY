@@ -40,6 +40,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:${{ github.sha }}
+          platforms: linux/amd64, linux/arm64
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
@@ -50,3 +51,4 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:${{ github.sha }}
+          platforms: linux/amd64, linux/arm64
