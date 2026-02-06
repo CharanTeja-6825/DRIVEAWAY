@@ -31,9 +31,7 @@ public class SecurityConfig {
 					.authorizeHttpRequests(request -> request
 															 .requestMatchers("/api/user/login", 
 																	 		  "/api/user/register", 
-																	 		  "/v3/api-docs/**",
-																              "/swagger-ui/**",
-																              "/swagger-ui.html")
+																	 		  "/api/user/awake")
 															 .permitAll()
 															 .anyRequest().authenticated())
 //					.formLogin(Customizer.withDefaults())
