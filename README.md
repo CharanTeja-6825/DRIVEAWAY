@@ -8,6 +8,27 @@
 
 DRIVEAWAY is a comprehensive full-stack car rental marketplace platform that connects customers seeking rental vehicles with dealers offering cars. The platform features role-based access control, automated booking workflows, and a modern, responsive user interface.
 
+## 🌐 Live Demo
+
+**🚀 Application URL:** [https://driveaway-jhee.onrender.com/](https://driveaway-jhee.onrender.com/)
+
+### 🎨 Landing Page Preview
+
+The DRIVEAWAY application features a modern, intuitive landing page where users can:
+- **Browse** the car rental marketplace
+- **Sign up** as a customer or apply to become a dealer
+- **Login** to access role-specific dashboards
+- **Explore** available vehicles from verified dealers
+
+**Key Landing Page Features:**
+- 🎯 Clean, responsive Material-UI design
+- 🔐 Secure authentication interface
+- 🚗 Quick access to car browsing
+- 📱 Mobile-friendly navigation
+- ⚡ Fast loading with Vite optimization
+
+Visit the live application to see the landing page in action!
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -87,6 +108,7 @@ DRIVEAWAY is a comprehensive full-stack car rental marketplace platform that con
 - **Nginx**: Frontend web server in production
 - **Git**: Version control
 - **ESLint**: Code quality for frontend
+- **Render**: Cloud deployment platform
 
 ## 🏗️ Architecture
 
@@ -500,6 +522,10 @@ mvn verify
 
 ## 🐳 Deployment
 
+### Production Deployment
+The application is deployed on **Render** and accessible at:
+**🌐 [https://driveaway-jhee.onrender.com/](https://driveaway-jhee.onrender.com/)**
+
 ### Docker Deployment
 The application is containerized for easy deployment:
 
@@ -526,6 +552,7 @@ Configure these in your deployment environment:
 - `VITE_API_URL`: Backend API URL
 
 ### Cloud Deployment Options
+- **Render** ✅ (Currently deployed)
 - **AWS**: EC2 with Docker, or ECS for container orchestration
 - **Azure**: Azure Container Instances or App Service
 - **Google Cloud**: Cloud Run or GKE
@@ -562,6 +589,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Spring Boot team for the excellent framework
 - React community for the powerful UI library
 - MongoDB Atlas for reliable cloud database hosting
+- Render for seamless cloud deployment
 - All contributors who help improve this project
 
 ## 📞 Support
