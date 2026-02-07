@@ -19,6 +19,7 @@ import {
   Cancel,
   Store,
 } from '@mui/icons-material';
+import PaymentButton from './Payment';
 
 export default function BookingCard({ booking, onCancel, statusColorMap }) {
   const formatDate = (dateString) => {
@@ -86,7 +87,8 @@ export default function BookingCard({ booking, onCancel, statusColorMap }) {
           </Stack>
 
           {booking.status === 'APPROVED' && (
-            <IconButton
+            <div>
+              <IconButton
               size="small"
               onClick={() => onCancel(booking.bookingId)}
               sx={{
@@ -98,6 +100,9 @@ export default function BookingCard({ booking, onCancel, statusColorMap }) {
             >
               <Cancel fontSize="small" />
             </IconButton>
+            <PaymentButton booking={booking}/>
+            </div>
+            
           )}
         </Stack>
 

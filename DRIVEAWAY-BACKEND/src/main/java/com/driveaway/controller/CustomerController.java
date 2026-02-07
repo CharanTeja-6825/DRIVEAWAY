@@ -4,10 +4,10 @@ import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.entity.Order;
 import com.driveaway.enumerations.BookingStatus;
-import com.driveaway.service.BookingService;
-import com.driveaway.service.CarService;
-import com.driveaway.service.DealerApplicationService;
+import com.driveaway.service.*;
+import com.razorpay.RazorpayException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.driveaway.entity.User;
-import com.driveaway.service.CustomerService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -36,6 +36,9 @@ public class CustomerController {
 
 	@Autowired
 	private BookingService bookingService;
+
+	@Autowired
+	private OrderService orderService;
 	
 	@GetMapping("/")
 	public String chome() {
@@ -90,6 +93,20 @@ public class CustomerController {
 	@PostMapping("/cancel/booking")
 	public ResponseEntity<String> cancelBooking(@RequestParam String bookingId){
 		return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
+	}
+
+	@PostMapping("/create/order")
+	public ResponseEntity<Order> createPayment(@RequestBody Order order) throws RazorpayException {
+		return ResponseEntity.ok(orderService.createOrder(order));
+	}
+
+	@PostMapping("/verify")
+	public ResponseEntity<String> verifyPayment(@RequestBody Map<String, String> paymentDetails){
+		String orderId = paymentDetails.get("orderId");
+		String paymentId = paymentDetails.get("paymentId");
+		String signature = paymentDetails.get("signature");
+
+		return ResponseEntity.ok(orderService.verifySignature(orderId, paymentId, signature) ? "Payment Success" : "Invalid Signature");
 	}
 
 }

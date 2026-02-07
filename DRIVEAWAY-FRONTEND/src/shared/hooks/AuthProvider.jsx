@@ -3,20 +3,19 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);   // email + role
+  const [user, setUser] = useState(null); // email + role
   const [token, setToken] = useState(null); // jwt
 
-
   const statusColorMap = {
-  AVAILABLE:  "#2E7D32", // green
-  PENDING:    "#ED6C02", // orange
-  APPROVED:   "#0288D1", // blue
-  ACTIVE:     "#7B1FA2", // purple
-  COMPLETED:  "#616161", // grey
-  CANCELLED:  "#D32F2F", // red
-  REJECTED:   "#B71C1C", // dark red
-  EXPIRED:    "#455A64"  // blue-grey
-};
+    AVAILABLE: "#2E7D32", // green
+    PENDING: "#ED6C02", // orange
+    APPROVED: "#0288D1", // blue
+    ACTIVE: "#7B1FA2", // purple
+    COMPLETED: "#616161", // grey
+    CANCELLED: "#D32F2F", // red
+    REJECTED: "#B71C1C", // dark red
+    EXPIRED: "#455A64", // blue-grey
+  };
 
   // hydrate on refresh
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function AuthProvider({ children }) {
         isLoggedIn: !!token,
         login,
         logout,
-        statusColorMap
+        statusColorMap,
       }}
     >
       {children}
