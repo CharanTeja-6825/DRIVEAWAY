@@ -37,6 +37,9 @@ jobs:
           context: ./DRIVEAWAY-BACKEND
           file: ./DRIVEAWAY-BACKEND/backend.Dockerfile
           push: true
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_RAZORPAY_KEY=${{ secrets.VITE_RAZORPAY_KEY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:${{ github.sha }}
