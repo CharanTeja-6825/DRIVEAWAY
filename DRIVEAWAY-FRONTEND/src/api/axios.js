@@ -2,7 +2,7 @@ import axios from "axios";
 import logout from '../shared/hooks/useLogout'
 
 const api = axios.create({
-  baseURL: process.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 
