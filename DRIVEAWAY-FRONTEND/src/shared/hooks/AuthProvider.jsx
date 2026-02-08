@@ -15,6 +15,7 @@ export default function AuthProvider({ children }) {
     CANCELLED: "#D32F2F", // red
     REJECTED: "#B71C1C", // dark red
     EXPIRED: "#455A64", // blue-grey
+    PAID: "#56eb58"
   };
 
   // hydrate on refresh

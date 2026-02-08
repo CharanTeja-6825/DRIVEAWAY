@@ -1,6 +1,10 @@
 package com.driveaway.service;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Order;
+import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.exception.BookingNotFoundException;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.OrderRepository;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -9,6 +13,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -21,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public Order createOrder(Order order) throws RazorpayException {
@@ -46,11 +55,38 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean verifySignature(String orderId, String paymentId, String signature) {
         String generatedSign = "";
+        boolean valid = false;
         try{
             generatedSign = Utils.getHash(orderId + "|" + paymentId, razorPaySecret);
-        } catch (RazorpayException e) {
+
+            valid = generatedSign.equals(signature);
+
+            if(valid){
+                Optional<Order> optionalOrder = orderRepository.findById(orderId);
+                if(optionalOrder.isEmpty()) throw new RazorpayException("Order not found");
+                Order order = optionalOrder.get();
+
+                // Fetching Order from RazorPay API
+                com.razorpay.Order razpOrder = razorpayClient.orders.fetch(orderId);
+
+                // Updating Order in DB
+                order.setStatus(razpOrder.get("status"));
+
+                // Updating Booking document
+                Optional<Booking> optionalBooking = bookingRepository.findById(order.getBooking_id());
+                if(optionalBooking.isEmpty()) throw new BookingNotFoundException(order.getBooking_id() + " not found");
+                Booking booking = optionalBooking.get();
+
+                booking.setStatus(BookingStatus.PAID.toString());
+
+                // DB Save
+                bookingRepository.save(booking);
+                orderRepository.save(order);
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return generatedSign.equals(signature);
+
+        return valid;
     }
 }
