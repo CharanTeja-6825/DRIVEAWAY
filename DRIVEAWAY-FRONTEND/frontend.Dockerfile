@@ -2,6 +2,14 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
+# Accept build arguments
+ARG VITE_API_URL
+ARG VITE_RAZORPAY_KEY
+
+# Set them as env so React can read during build
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_RAZORPAY_KEY=$VITE_RAZORPAY_KEY
+
 COPY package*.json ./
 RUN npm install
 COPY . .

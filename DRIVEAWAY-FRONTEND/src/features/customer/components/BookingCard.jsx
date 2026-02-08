@@ -19,27 +19,18 @@ import {
   Store,
 } from "@mui/icons-material";
 import PaymentButton from "./Payment";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
 
 export default function BookingCard({ booking, onCancel, statusColorMap }) {
+
+  const {getStatusLabel} = useAuth();
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-  };
-
-  const getStatusLabel = (status) => {
-    const labels = {
-      PENDING: "Pending Approval",
-      APPROVED: "Confirmed",
-      ACTIVE: "Active",
-      COMPLETED: "Completed",
-      CANCELLED: "Cancelled",
-      REJECTED: "Rejected",
-      EXPIRED: "Expired",
-    };
-    return labels[status] || status;
   };
 
   const isBookingApproved =

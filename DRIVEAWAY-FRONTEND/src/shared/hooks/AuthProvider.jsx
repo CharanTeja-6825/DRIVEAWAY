@@ -15,7 +15,21 @@ export default function AuthProvider({ children }) {
     CANCELLED: "#D32F2F", // red
     REJECTED: "#B71C1C", // dark red
     EXPIRED: "#455A64", // blue-grey
-    PAID: "#56eb58"
+    PAID: "#56eb58",
+  };
+
+  const getStatusLabel = (status) => {
+    const labels = {
+      PENDING: "Pending Approval",
+      APPROVED: "Confirmed",
+      ACTIVE: "Active",
+      COMPLETED: "Completed",
+      CANCELLED: "Cancelled",
+      REJECTED: "Rejected",
+      EXPIRED: "Expired",
+      PAID: "Paid",
+    };
+    return labels[status] || status;
   };
 
   // hydrate on refresh
@@ -57,6 +71,7 @@ export default function AuthProvider({ children }) {
         login,
         logout,
         statusColorMap,
+        getStatusLabel
       }}
     >
       {children}
