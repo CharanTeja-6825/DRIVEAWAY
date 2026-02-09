@@ -38,7 +38,7 @@ public class BookingRepositoryImpl implements BookingRepositoryCustom{
     @Override
     public void activateBooking(Instant currentDate, List<String> cars) {
 
-        Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.APPROVED.toString())
+        Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.PAID.toString())
                 .and("startDate")
                 .lte(currentDate));
 
