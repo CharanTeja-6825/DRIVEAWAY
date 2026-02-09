@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { createOrder, verfiyOrder } from '../services';
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 
-function PaymentButton({ booking }) {
+function PaymentButton({ booking, reloadBookings }) {
   const { user, email } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -34,6 +34,7 @@ function PaymentButton({ booking }) {
           );
 
           alert(data);
+          reloadBookings();
         },
         prefill: {
           email: JSON.stringify(email),

@@ -160,7 +160,7 @@ function CustomerBookings() {
           )}
 
           {/* Bookings List */}
-          <BookingsList bookings={customerBookings} onCancel={handleCancel} />
+          <BookingsList bookings={customerBookings} reloadBookings={fetchCustomerBookings} onCancel={handleCancel} />
         </Stack>
       </Container>
     </Box>

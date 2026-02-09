@@ -3,7 +3,7 @@ import { Stack, Tabs, Tab, Box, Typography } from '@mui/material';
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import BookingCard from './BookingCard';
 
-export default function BookingsList({ bookings, onCancel }) {
+export default function BookingsList({ bookings, onCancel, reloadBookings }) {
   const { statusColorMap } = useAuth();
   const [selectedTab, setSelectedTab] = useState('all');
 
@@ -88,6 +88,7 @@ export default function BookingsList({ bookings, onCancel }) {
             <BookingCard
               key={booking._id}
               booking={booking}
+              reloadBookings={reloadBookings}
               onCancel={() => {onCancel(booking._id)}}
               statusColorMap={statusColorMap}
             />

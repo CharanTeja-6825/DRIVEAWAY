@@ -21,7 +21,7 @@ import {
 import PaymentButton from "./Payment";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 
-export default function BookingCard({ booking, onCancel, statusColorMap }) {
+export default function BookingCard({ booking, onCancel, statusColorMap, reloadBookings }) {
 
   const {getStatusLabel} = useAuth();
 
@@ -228,7 +228,7 @@ export default function BookingCard({ booking, onCancel, statusColorMap }) {
             color="primary.main"
             fontWeight={700}
           ></Typography>
-          {isBookingApproved && <PaymentButton booking={booking} />}
+          {isBookingApproved && <PaymentButton reloadBookings={reloadBookings} booking={booking} />}
         </Stack>
       </CardContent>
     </Card>
