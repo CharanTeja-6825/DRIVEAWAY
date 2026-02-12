@@ -21,7 +21,105 @@ import {
 	Shield as ShieldIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { isHtmlResponse } from "../../../shared/utils/responseUtils";
 import { getAllApplications, getAllUsers } from "../services";
+
+const StatCard = ({ icon: Icon, title, value, helper, color, bgColor }) => (
+	<Card
+		elevation={0}
+		sx={{
+			height: "100%",
+			borderRadius: 3,
+			border: "1px solid",
+			borderColor: "divider",
+			transition: "all 0.3s ease",
+			"&:hover": {
+				transform: "translateY(-4px)",
+				boxShadow: (theme) =>
+					`0 12px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
+				borderColor: color
+			}
+		}}
+	>
+		<CardContent sx={{ p: 3 }}>
+			<Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+				<Box>
+					<Typography variant="body2" color="text.secondary" gutterBottom>
+						{title}
+					</Typography>
+					<Typography variant="h3" fontWeight={700} color={color}>
+						{value}
+					</Typography>
+					{helper && (
+						<Typography variant="caption" color="text.secondary">
+							{helper}
+						</Typography>
+					)}
+				</Box>
+				<Box
+					sx={{
+						width: 56,
+						height: 56,
+						borderRadius: 2,
+						bgcolor: bgColor,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center"
+					}}
+				>
+					<Icon sx={{ fontSize: 28, color }} />
+				</Box>
+			</Stack>
+		</CardContent>
+	</Card>
+);
+
+const QuickActionCard = ({ icon: Icon, title, description, onClick }) => (
+	<Card
+		elevation={0}
+		sx={{
+			borderRadius: 3,
+			border: "1px solid",
+			borderColor: "divider",
+			cursor: "pointer",
+			transition: "all 0.3s ease",
+			"&:hover": {
+				transform: "translateY(-4px)",
+				boxShadow: (theme) =>
+					`0 12px 24px ${alpha(theme.palette.primary.main, 0.12)}`,
+				borderColor: "primary.main"
+			}
+		}}
+		onClick={onClick}
+	>
+		<CardContent sx={{ p: 3 }}>
+			<Stack direction="row" spacing={2} alignItems="center">
+				<Box
+					sx={{
+						width: 48,
+						height: 48,
+						borderRadius: 2,
+						background: (theme) =>
+							`linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center"
+					}}
+				>
+					<Icon sx={{ fontSize: 24, color: "white" }} />
+				</Box>
+				<Box>
+					<Typography variant="subtitle1" fontWeight={600}>
+						{title}
+					</Typography>
+					<Typography variant="body2" color="text.secondary">
+						{description}
+					</Typography>
+				</Box>
+			</Stack>
+		</CardContent>
+	</Card>
+);
 
 function AdminHome() {
 	const navigate = useNavigate();
@@ -38,17 +136,14 @@ function AdminHome() {
 					getAllUsers(),
 					getAllApplications()
 				]);
-				const isHtmlResponse = (value) =>
-					typeof value === "string" &&
-					value.trim().toLowerCase().startsWith("<!doctype");
 				const usersData = usersResponse?.data;
 				if (Array.isArray(usersData)) {
 					setUsers(usersData);
 				} else if (typeof usersData === "string") {
 					if (isHtmlResponse(usersData)) {
-						setError("Unable to load user summary right now.");
+						setError((prev) => prev || "Unable to load user summary right now.");
 					} else {
-						setMessage(usersData);
+						setMessage((prev) => prev || usersData);
 					}
 					setUsers([]);
 				}
@@ -58,12 +153,14 @@ function AdminHome() {
 					setApplications(applicationsData);
 				} else if (typeof applicationsData === "string") {
 					if (isHtmlResponse(applicationsData)) {
-						setError("Unable to load dealer requests right now.");
+						setError((prev) => prev || "Unable to load dealer requests right now.");
+					} else {
+						setMessage((prev) => prev || applicationsData);
 					}
 					setApplications([]);
 				}
 			} catch {
-				setError("Failed to load admin dashboard data");
+				setError("Failed to load admin dashboard data. Please try again later.");
 			} finally {
 				setLoading(false);
 			}
@@ -115,103 +212,6 @@ function AdminHome() {
 			</Box>
 		);
 	}
-
-	const StatCard = ({ icon: Icon, title, value, helper, color, bgColor }) => (
-		<Card
-			elevation={0}
-			sx={{
-				height: "100%",
-				borderRadius: 3,
-				border: "1px solid",
-				borderColor: "divider",
-				transition: "all 0.3s ease",
-				"&:hover": {
-					transform: "translateY(-4px)",
-					boxShadow: (theme) =>
-						`0 12px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
-					borderColor: color
-				}
-			}}
-		>
-			<CardContent sx={{ p: 3 }}>
-				<Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-					<Box>
-						<Typography variant="body2" color="text.secondary" gutterBottom>
-							{title}
-						</Typography>
-						<Typography variant="h3" fontWeight={700} color={color}>
-							{value}
-						</Typography>
-						{helper && (
-							<Typography variant="caption" color="text.secondary">
-								{helper}
-							</Typography>
-						)}
-					</Box>
-					<Box
-						sx={{
-							width: 56,
-							height: 56,
-							borderRadius: 2,
-							bgcolor: bgColor,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						<Icon sx={{ fontSize: 28, color }} />
-					</Box>
-				</Stack>
-			</CardContent>
-		</Card>
-	);
-
-	const QuickActionCard = ({ icon: Icon, title, description, onClick }) => (
-		<Card
-			elevation={0}
-			sx={{
-				borderRadius: 3,
-				border: "1px solid",
-				borderColor: "divider",
-				cursor: "pointer",
-				transition: "all 0.3s ease",
-				"&:hover": {
-					transform: "translateY(-4px)",
-					boxShadow: (theme) =>
-						`0 12px 24px ${alpha(theme.palette.primary.main, 0.12)}`,
-					borderColor: "primary.main"
-				}
-			}}
-			onClick={onClick}
-		>
-			<CardContent sx={{ p: 3 }}>
-				<Stack direction="row" spacing={2} alignItems="center">
-					<Box
-						sx={{
-							width: 48,
-							height: 48,
-							borderRadius: 2,
-							background: (theme) =>
-								`linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						<Icon sx={{ fontSize: 24, color: "white" }} />
-					</Box>
-					<Box>
-						<Typography variant="subtitle1" fontWeight={600}>
-							{title}
-						</Typography>
-						<Typography variant="body2" color="text.secondary">
-							{description}
-						</Typography>
-					</Box>
-				</Stack>
-			</CardContent>
-		</Card>
-	);
 
 	return (
 		<Box

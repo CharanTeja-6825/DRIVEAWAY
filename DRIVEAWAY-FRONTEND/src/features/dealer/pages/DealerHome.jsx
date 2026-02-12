@@ -23,7 +23,105 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
+import { isHtmlResponse } from "../../../shared/utils/responseUtils";
 import { getBookings, getCarsByDealer } from "../services";
+
+const StatCard = ({ icon: Icon, title, value, helper, color, bgColor }) => (
+	<Card
+		elevation={0}
+		sx={{
+			height: "100%",
+			borderRadius: 3,
+			border: "1px solid",
+			borderColor: "divider",
+			transition: "all 0.3s ease",
+			"&:hover": {
+				transform: "translateY(-4px)",
+				boxShadow: (theme) =>
+					`0 12px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
+				borderColor: color
+			}
+		}}
+	>
+		<CardContent sx={{ p: 3 }}>
+			<Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+				<Box>
+					<Typography variant="body2" color="text.secondary" gutterBottom>
+						{title}
+					</Typography>
+					<Typography variant="h3" fontWeight={700} color={color}>
+						{value}
+					</Typography>
+					{helper && (
+						<Typography variant="caption" color="text.secondary">
+							{helper}
+						</Typography>
+					)}
+				</Box>
+				<Box
+					sx={{
+						width: 56,
+						height: 56,
+						borderRadius: 2,
+						bgcolor: bgColor,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center"
+					}}
+				>
+					<Icon sx={{ fontSize: 28, color }} />
+				</Box>
+			</Stack>
+		</CardContent>
+	</Card>
+);
+
+const QuickActionCard = ({ icon: Icon, title, description, onClick }) => (
+	<Card
+		elevation={0}
+		sx={{
+			borderRadius: 3,
+			border: "1px solid",
+			borderColor: "divider",
+			cursor: "pointer",
+			transition: "all 0.3s ease",
+			"&:hover": {
+				transform: "translateY(-4px)",
+				boxShadow: (theme) =>
+					`0 12px 24px ${alpha(theme.palette.primary.main, 0.12)}`,
+				borderColor: "primary.main"
+			}
+		}}
+		onClick={onClick}
+	>
+		<CardContent sx={{ p: 3 }}>
+			<Stack direction="row" spacing={2} alignItems="center">
+				<Box
+					sx={{
+						width: 48,
+						height: 48,
+						borderRadius: 2,
+						background: (theme) =>
+							`linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center"
+					}}
+				>
+					<Icon sx={{ fontSize: 24, color: "white" }} />
+				</Box>
+				<Box>
+					<Typography variant="subtitle1" fontWeight={600}>
+						{title}
+					</Typography>
+					<Typography variant="body2" color="text.secondary">
+						{description}
+					</Typography>
+				</Box>
+			</Stack>
+		</CardContent>
+	</Card>
+);
 
 function DealerHome() {
 	const { user, getStatusLabel, statusColorMap } = useAuth();
@@ -41,31 +139,34 @@ function DealerHome() {
 					getCarsByDealer(user.userId),
 					getBookings(user.userId)
 				]);
-				const isHtmlResponse = (value) =>
-					typeof value === "string" &&
-					value.trim().toLowerCase().startsWith("<!doctype");
 				const carsData = carsResponse?.data;
-				if (typeof carsData === "string") {
+				if (Array.isArray(carsData)) {
+					setCars(carsData);
+				} else if (typeof carsData === "string") {
 					if (isHtmlResponse(carsData)) {
-						setError("Unable to load inventory summary right now.");
+						setError((prev) => prev || "Unable to load inventory summary right now.");
 					} else {
-						setMessage(carsData);
+						setMessage((prev) => prev || carsData);
 					}
 					setCars([]);
 				} else {
-					setCars(carsData || []);
+					setCars([]);
 				}
 				const bookingsData = bookingsResponse?.data;
-				if (typeof bookingsData === "string") {
+				if (Array.isArray(bookingsData)) {
+					setBookings(bookingsData);
+				} else if (typeof bookingsData === "string") {
 					if (isHtmlResponse(bookingsData)) {
-						setError("Unable to load booking insights right now.");
+						setError((prev) => prev || "Unable to load booking insights right now.");
+					} else {
+						setMessage((prev) => prev || bookingsData);
 					}
 					setBookings([]);
 				} else {
-					setBookings(bookingsData || []);
+					setBookings([]);
 				}
 			} catch {
-				setError("Failed to load dealer dashboard data");
+				setError("Failed to load dealer dashboard data. Please try again later.");
 			} finally {
 				setLoading(false);
 			}
@@ -125,103 +226,6 @@ function DealerHome() {
 			</Box>
 		);
 	}
-
-	const StatCard = ({ icon: Icon, title, value, helper, color, bgColor }) => (
-		<Card
-			elevation={0}
-			sx={{
-				height: "100%",
-				borderRadius: 3,
-				border: "1px solid",
-				borderColor: "divider",
-				transition: "all 0.3s ease",
-				"&:hover": {
-					transform: "translateY(-4px)",
-					boxShadow: (theme) =>
-						`0 12px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
-					borderColor: color
-				}
-			}}
-		>
-			<CardContent sx={{ p: 3 }}>
-				<Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-					<Box>
-						<Typography variant="body2" color="text.secondary" gutterBottom>
-							{title}
-						</Typography>
-						<Typography variant="h3" fontWeight={700} color={color}>
-							{value}
-						</Typography>
-						{helper && (
-							<Typography variant="caption" color="text.secondary">
-								{helper}
-							</Typography>
-						)}
-					</Box>
-					<Box
-						sx={{
-							width: 56,
-							height: 56,
-							borderRadius: 2,
-							bgcolor: bgColor,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						<Icon sx={{ fontSize: 28, color }} />
-					</Box>
-				</Stack>
-			</CardContent>
-		</Card>
-	);
-
-	const QuickActionCard = ({ icon: Icon, title, description, onClick }) => (
-		<Card
-			elevation={0}
-			sx={{
-				borderRadius: 3,
-				border: "1px solid",
-				borderColor: "divider",
-				cursor: "pointer",
-				transition: "all 0.3s ease",
-				"&:hover": {
-					transform: "translateY(-4px)",
-					boxShadow: (theme) =>
-						`0 12px 24px ${alpha(theme.palette.primary.main, 0.12)}`,
-					borderColor: "primary.main"
-				}
-			}}
-			onClick={onClick}
-		>
-			<CardContent sx={{ p: 3 }}>
-				<Stack direction="row" spacing={2} alignItems="center">
-					<Box
-						sx={{
-							width: 48,
-							height: 48,
-							borderRadius: 2,
-							background: (theme) =>
-								`linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						<Icon sx={{ fontSize: 24, color: "white" }} />
-					</Box>
-					<Box>
-						<Typography variant="subtitle1" fontWeight={600}>
-							{title}
-						</Typography>
-						<Typography variant="body2" color="text.secondary">
-							{description}
-						</Typography>
-					</Box>
-				</Stack>
-			</CardContent>
-		</Card>
-	);
 
 	return (
 		<Box
@@ -359,47 +363,57 @@ function DealerHome() {
 								</Typography>
 							) : (
 								<Stack spacing={2}>
-									{recentBookings.map((booking, index) => (
-										<Box key={booking.bookingId || index}>
-											<Stack
-												direction="row"
-												justifyContent="space-between"
-												alignItems="center"
-											>
-												<Box>
-												<Typography variant="subtitle2" fontWeight={600}>
-													Booking #
-													{booking.bookingId
-														? booking.bookingId.slice(-6)
-														: "N/A"}
-												</Typography>
-													<Typography variant="body2" color="text.secondary">
-														Car {booking.carId} •{" "}
-														{booking.startDate
-															? new Date(booking.startDate).toLocaleDateString()
-															: "Date pending"}
-													</Typography>
-													<Typography variant="body2" color="text.secondary">
-														Amount: ₹
-														{(booking.totalAmount || 0).toLocaleString("en-IN")}
-													</Typography>
-												</Box>
-												<Chip
-													label={getStatusLabel(booking.status)}
-													size="small"
-													sx={{
-														bgcolor:
-															statusColorMap[booking.status] || "primary.main",
-														color: "white",
-														fontWeight: 600
-													}}
-												/>
-											</Stack>
-											{index !== recentBookings.length - 1 && (
-												<Divider sx={{ mt: 2 }} />
-											)}
-										</Box>
-									))}
+									{recentBookings.map((booking, index) => {
+										const bookingLabel = booking.bookingId
+											? booking.bookingId.length > 6
+												? booking.bookingId.slice(-6)
+												: booking.bookingId
+											: "N/A";
+										const carDisplay = booking.carModel
+											? `${booking.carBrand ?? ""} ${booking.carModel}`.trim()
+											: booking.carId
+												? `Car ID ${booking.carId}`
+												: "Car ID pending";
+										return (
+											<Box key={booking.bookingId || index}>
+												<Stack
+													direction="row"
+													justifyContent="space-between"
+													alignItems="center"
+												>
+													<Box>
+														<Typography variant="subtitle2" fontWeight={600}>
+															Booking #{bookingLabel}
+														</Typography>
+														<Typography variant="body2" color="text.secondary">
+															{carDisplay} •{" "}
+															{booking.startDate
+																? new Date(booking.startDate).toLocaleDateString()
+																: "Date pending"}
+														</Typography>
+														<Typography variant="body2" color="text.secondary">
+															Amount: ₹
+															{(booking.totalAmount || 0).toLocaleString("en-IN")}
+														</Typography>
+													</Box>
+													<Chip
+														label={getStatusLabel(booking.status)}
+														size="small"
+														sx={{
+															bgcolor:
+																statusColorMap[booking.status] ||
+																"primary.main",
+															color: "white",
+															fontWeight: 600
+														}}
+													/>
+												</Stack>
+												{index !== recentBookings.length - 1 && (
+													<Divider sx={{ mt: 2 }} />
+												)}
+											</Box>
+										);
+									})}
 								</Stack>
 							)}
 						</CardContent>
