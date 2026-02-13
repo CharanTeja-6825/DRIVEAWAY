@@ -4,6 +4,7 @@ public enum BookingStatus {
 
     // Booking Statuses
     APPROVED, /// This operation is done by the dealer.
+    PAID ,/// Payment is done after approval of booking.
     REJECTED, /// This is done by the dealer.
     CANCELLED, /// Done after approval (Optionally Done by Customer).
     AVAILABLE, /// The Default Status for all Cars.

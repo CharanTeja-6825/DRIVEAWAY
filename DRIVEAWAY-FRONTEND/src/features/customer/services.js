@@ -27,3 +27,15 @@ export const getCustomerBookings = (id) => {
 export const cancelBooking = (id) => {
     return api.post(`/api/customer/cancel/booking?bookingId=${id}`);
 }
+
+export const createOrder = (order) => {
+    return api.post('/api/customer/create/order', order);
+}
+
+export const verfiyOrder = (orderId, paymentId, signature) => {
+    return api.post('/api/customer/verify', {
+        orderId : orderId,
+        paymentId : paymentId,
+        signature : signature
+    });
+}
