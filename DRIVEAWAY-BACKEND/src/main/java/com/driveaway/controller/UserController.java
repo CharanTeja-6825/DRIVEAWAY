@@ -1,7 +1,11 @@
 package com.driveaway.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +28,22 @@ public class UserController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user) {
+	public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse httpServletResponse) {
 		ResponseDTO response = service.userLogin(user.getUserEmail(), user.getPassword());
 		
 		if(response == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials or User not found");
+
+		ResponseCookie responseCookie = ResponseCookie.from("token", response.token())
+				.httpOnly(true)
+				.sameSite("Strict")
+				.maxAge(7 * 24 * 24 * 60)
+				.path("/")
+				.secure(true)
+				.build();
 		
-		else return ResponseEntity.ok(response);
+		httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+
+		return ResponseEntity.ok(response);
 		
 	}
 	
