@@ -28,23 +28,12 @@ public class UserController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse httpServletResponse) {
+	public ResponseEntity<?> login(@RequestBody User user) {
 		ResponseDTO response = service.userLogin(user.getUserEmail(), user.getPassword());
 		
 		if(response == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials or User not found");
 
-		ResponseCookie responseCookie = ResponseCookie.from("token", response.token())
-				.httpOnly(true)
-				.sameSite("Strict")
-				.maxAge(7 * 24 * 24 * 60)
-				.path("/")
-				.secure(true)
-				.build();
-		
-		httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
-
 		return ResponseEntity.ok(response);
-		
 	}
 	
 	@PostMapping("/register")
