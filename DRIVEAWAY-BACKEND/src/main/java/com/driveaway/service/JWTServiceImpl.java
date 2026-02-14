@@ -1,5 +1,6 @@
 package com.driveaway.service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -11,6 +12,7 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.driveaway.entity.User;
@@ -22,20 +24,23 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JWTServiceImpl implements JWTService{
-	
-	private String secretKey = "";
 
-	public JWTServiceImpl() {
-		
-		try {
-		
-			KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-			Key sk = keyGen.generateKey();
-			secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+	@Value("${jwt.secret}")
+	private String secretKey;
+
+	private SecretKey getKey() {
+		return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 	}
+
+//	public JWTServiceImpl() {
+//		try {
+//			KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+//			Key sk = keyGen.generateKey();
+//			secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@Override
 	public String generateToken(User user) {
@@ -53,10 +58,6 @@ public class JWTServiceImpl implements JWTService{
 				   .compact(); // conversion to String
 	}
 
-	private SecretKey getKey() {
-		byte[] bytes = Decoders.BASE64.decode(secretKey);
-		return Keys.hmacShaKeyFor(bytes);
-	}
 
 	@Override
 	public String extractEmail(String token) {

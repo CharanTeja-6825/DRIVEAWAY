@@ -21,7 +21,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/customer")
-@CrossOrigin("*")
 @PreAuthorize("hasRole('CUSTOMER')")
 public class CustomerController {
 	

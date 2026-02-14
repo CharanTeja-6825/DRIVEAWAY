@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/dealer")
-@CrossOrigin("*")
 @PreAuthorize("hasRole('DEALER')")
 public class DealerController {
 

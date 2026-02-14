@@ -3,6 +3,7 @@ package com.driveaway.config;
 import java.io.IOException;
 import java.util.Collections;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,12 +35,24 @@ public class JwtFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+
+		Cookie[] cookies = request.getCookies();
+
 		String authHeader = request.getHeader("Authorization");
 		String token = null;
 		String email = null;
 		String role = null;
-		
-		if(authHeader != null && authHeader.startsWith("Bearer ")) {
+
+		if(cookies.length != 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("token")) {
+					token = cookie.getValue();
+					email = jwtService.extractEmail(token);
+					role = jwtService.extractRole(token);
+				}
+			}
+		}
+		else if(authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7);
 			email = jwtService.extractEmail(token);
 			role = jwtService.extractRole(token);
@@ -51,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			
 			if(jwtService.validateToken(token, user)) {
 				UsernamePasswordAuthenticationToken authToken = 
-						new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+						new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role)));
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
@@ -59,6 +72,12 @@ public class JwtFilter extends OncePerRequestFilter{
 		
 		filterChain.doFilter(request, response);
 		
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		System.out.println(request.getServletPath());
+		return request.getServletPath().startsWith("/api/user");
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -35,8 +36,8 @@ public class SecurityConfig {
 															 .permitAll()
 															 .anyRequest().authenticated())
 //					.formLogin(Customizer.withDefaults())
-//					.httpBasic(Customizer.withDefaults())
-//					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+					.httpBasic(basic -> basic.disable())
+					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 					.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 					.build();
 		
@@ -45,7 +46,8 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
