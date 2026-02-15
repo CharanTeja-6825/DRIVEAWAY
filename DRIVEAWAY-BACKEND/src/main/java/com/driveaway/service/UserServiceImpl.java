@@ -2,6 +2,7 @@ package com.driveaway.service;
 
 import java.time.Instant;
 
+import com.driveaway.dto.LoginDTO;
 import com.driveaway.entity.Dealer;
 import com.driveaway.repository.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,10 @@ public class UserServiceImpl implements UserService{
 				userId = d.getId();
 			}
 
-			return new ResponseDTO(email, user.getRole(), token, userId);
+
+			LoginDTO loginDTO = new LoginDTO(email, user.getRole(), userId);
+
+			return new ResponseDTO(loginDTO, token);
 		}
 		else return null;
 	}

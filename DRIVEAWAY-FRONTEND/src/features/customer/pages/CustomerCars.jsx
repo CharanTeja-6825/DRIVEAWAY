@@ -11,6 +11,7 @@ import {
 import { DirectionsCar as CarIcon } from "@mui/icons-material";
 import { getCars } from "../services";
 import CarsGrid from "../components/CarsGrid";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
 
 
 
@@ -19,6 +20,9 @@ export default function CustomerCars() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+	const { user } = useAuth();
+
+	console.log(user);
 
 	const loadCars = async () => {
 		setLoading(true);

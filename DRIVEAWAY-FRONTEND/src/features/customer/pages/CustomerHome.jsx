@@ -48,7 +48,7 @@ function CustomerHome() {
 				if (typeof data === 'string') {
 					setBookings([]);
 				} else {
-          console.log(data);
+          
 					setBookings(data);
 					// Calculate stats
 					const total = data.length;
@@ -437,7 +437,7 @@ function CustomerHome() {
 						<Button
 							variant="contained"
 							startIcon={<CarIcon />}
-							onClick={() => navigate('/customer/cars')}
+							onClick={() => navigate('/customer/viewCars')}
 							sx={{
 								textTransform: 'none',
 								fontWeight: 600,

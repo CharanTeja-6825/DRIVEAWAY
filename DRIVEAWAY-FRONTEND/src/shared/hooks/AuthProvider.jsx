@@ -1,10 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { logout as logoutApi } from "../../features/auth/services";
 
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // email + role
-  const [token, setToken] = useState(null); // jwt
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const authLoading = false;
 
   const statusColorMap = {
     AVAILABLE: "#2E7D32", // green
@@ -32,42 +36,32 @@ export default function AuthProvider({ children }) {
     return labels[status] || status;
   };
 
-  // hydrate on refresh
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
-    }
-  }, []);
-
   const login = (data) => {
+
     // backend response: { email, role, token }
-    const { token, ...userInfo } = data;
 
-    setUser(userInfo);
-    setToken(token);
-
-    localStorage.setItem("user", JSON.stringify(userInfo));
-    localStorage.setItem("token", token);
+    setUser(data);
+    localStorage.setItem("user", JSON.stringify(data));
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+  const logout = async () => {
+    try {
+      await logoutApi();
+    } catch (error) {
+      // swallow error so UI can still log out gracefully
+      console.error("Logout request failed", error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem("user");
+    }
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
-        isLoggedIn: !!token,
+        isLoggedIn: !!user,
+        authLoading,
         login,
         logout,
         statusColorMap,
