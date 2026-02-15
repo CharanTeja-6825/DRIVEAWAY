@@ -1,10 +1,10 @@
-import api from '../../api/axios'
+import api from "../../api/axios";
 
-export const register = (user) => {
-    return api.post("/api/user/register", user)
-}
+const AUTH_BASE = "/api/user"; // Update if your backend exposes different auth routes
 
-export const login = (user) => {
-    return api.post("/api/user/login", user)
-}
+export const register = (user) => api.post(`${AUTH_BASE}/register`, user);
+
+export const login = (user) => api.post(`${AUTH_BASE}/login`, user);
+
+export const logout = () => api.post(`${AUTH_BASE}/logout`);
 

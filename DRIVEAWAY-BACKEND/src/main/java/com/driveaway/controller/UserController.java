@@ -1,8 +1,11 @@
 package com.driveaway.controller;
 
+import com.driveaway.dto.LoginDTO;
 import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +25,7 @@ public class UserController {
 	public String keepEngineAwake(){
 		return "Jai Balayya !!!";
 	}
-	
+
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse httpServletResponse) {
@@ -33,10 +36,9 @@ public class UserController {
 		ResponseCookie responseCookie = ResponseCookie.from("token", response.token())
 				.httpOnly(true)
 				.secure(true)
-				.sameSite("Lax")
-				.maxAge(7 * 24 * 60 * 60)
+				.sameSite("Strict")
+				.maxAge(60 * 60)
 				.path("/")
-				.domain("localhost")
 				.build();
 
 		httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
