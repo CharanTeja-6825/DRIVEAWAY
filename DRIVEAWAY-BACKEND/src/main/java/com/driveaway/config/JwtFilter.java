@@ -38,7 +38,6 @@ public class JwtFilter extends OncePerRequestFilter{
 
 		System.out.println(request.getServletPath());
 		Cookie[] cookies = request.getCookies();
-
 		String authHeader = request.getHeader("Authorization");
 		String token = null;
 		String email = null;
@@ -48,13 +47,15 @@ public class JwtFilter extends OncePerRequestFilter{
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("token")) {
 					token = cookie.getValue();
-					email = jwtService.extractEmail(token);
-					role = jwtService.extractRole(token);
+					break;
 				}
 			}
 		}
-		else if(authHeader != null && authHeader.startsWith("Bearer ")) {
+		if(token == null && authHeader != null && authHeader.toLowerCase().startsWith("bearer ")) {
 			token = authHeader.substring(7);
+		}
+
+		if(token != null) {
 			email = jwtService.extractEmail(token);
 			role = jwtService.extractRole(token);
 		}
@@ -77,7 +78,8 @@ public class JwtFilter extends OncePerRequestFilter{
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return request.getServletPath().startsWith("/api/user");
+		String path = request.getServletPath();
+		return path.equals("/api/user/login") || path.equals("/api/user/register") || path.equals("/api/user/awake");
 	}
 
 }
