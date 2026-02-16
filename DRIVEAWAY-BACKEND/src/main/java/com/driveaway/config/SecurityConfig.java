@@ -1,6 +1,8 @@
 package com.driveaway.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,8 +53,15 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
-        String normalizedClientApi = clientAPI != null && clientAPI.endsWith("/") ? clientAPI.substring(0, clientAPI.length() - 1) : clientAPI;
-        configuration.setAllowedOrigins(Arrays.asList(normalizedClientApi,  "https://script.google.com", "https://script.googleusercontent.com", "https://docs.google.com"));
+        String normalizedClientApi = clientAPI == null ? null : clientAPI.trim().replaceAll("/+$", "");
+        List<String> allowedOrigins = new ArrayList<>(Arrays.asList(
+        		"https://script.google.com",
+        		"https://script.googleusercontent.com",
+        		"https://docs.google.com"));
+        if (normalizedClientApi != null && !normalizedClientApi.isBlank()) {
+        	allowedOrigins.add(0, normalizedClientApi);
+        }
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
