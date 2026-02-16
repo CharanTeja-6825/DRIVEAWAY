@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public String updateProfileImage(String userId, MultipartFile profileImage) throws Exception {
-		String imageUrl = cloudinaryService.uploadProfile(userId, profileImage);
+		String imageUrl = cloudinaryService.uploadFile(profileImage, userId);
 		return "Profile Updated Successfully";
 	}
 

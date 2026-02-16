@@ -27,8 +27,8 @@ public class CloudinaryConfig {
         Cloudinary myCloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudinaryCloud,
                 "api_key", cloudinaryKey,
-                "api_secret", cloudinarySecret,
-                "secure", true));
+                "api_secret", cloudinarySecret
+                ));
 
         return myCloudinary;
     }

@@ -112,7 +112,7 @@ public class CustomerController {
 	}
 
 	@PostMapping("/profile")
-	public ResponseEntity<String> updateProfileImage(@RequestParam String userId, @RequestParam MultipartFile profileImage) throws Exception {
+	public ResponseEntity<String> updateProfileImage(@RequestParam String userId, @RequestPart MultipartFile profileImage) throws Exception {
 		return ResponseEntity.ok(userService.updateProfileImage(userId, profileImage));
 	}
 
