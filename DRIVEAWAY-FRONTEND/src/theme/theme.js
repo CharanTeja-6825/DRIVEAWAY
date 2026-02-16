@@ -79,12 +79,14 @@ const theme = createTheme({
       fontWeight: 700,
       fontSize: '3.5rem',
       lineHeight: 1.2,
+      letterSpacing: '-0.02em',
     },
     h2: {
       fontFamily: '"Manrope", sans-serif',
       fontWeight: 700,
       fontSize: '2.75rem',
       lineHeight: 1.3,
+      letterSpacing: '-0.01em',
     },
     h3: {
       fontFamily: '"Manrope", sans-serif',
@@ -110,6 +112,18 @@ const theme = createTheme({
       fontSize: '1rem',
       lineHeight: 1.5,
     },
+    subtitle1: {
+      fontFamily: '"Source Sans 3", sans-serif',
+      fontWeight: 500,
+      fontSize: '1rem',
+      lineHeight: 1.6,
+    },
+    subtitle2: {
+      fontFamily: '"Source Sans 3", sans-serif',
+      fontWeight: 500,
+      fontSize: '0.875rem',
+      lineHeight: 1.5,
+    },
     body1: {
       fontFamily: '"Source Sans 3", sans-serif',
       fontWeight: 400,
@@ -126,6 +140,21 @@ const theme = createTheme({
       fontFamily: '"Manrope", sans-serif',
       fontWeight: 600,
       textTransform: 'none',
+      letterSpacing: '0.02em',
+    },
+    caption: {
+      fontFamily: '"Source Sans 3", sans-serif',
+      fontWeight: 400,
+      fontSize: '0.75rem',
+      lineHeight: 1.5,
+    },
+    overline: {
+      fontFamily: '"Manrope", sans-serif',
+      fontWeight: 600,
+      fontSize: '0.75rem',
+      lineHeight: 2,
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
     },
   },
   shape: {
@@ -158,6 +187,87 @@ const theme = createTheme({
     '0px 84px 168px rgba(15, 23, 42, 0.52)',
     '0px 88px 176px rgba(15, 23, 42, 0.54)',
   ],
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          padding: '10px 24px',
+          fontSize: '0.9375rem',
+        },
+        contained: {
+          boxShadow: '0px 4px 6px rgba(15, 23, 42, 0.1)',
+          '&:hover': {
+            boxShadow: '0px 8px 16px rgba(15, 23, 42, 0.14)',
+          },
+        },
+        outlined: {
+          borderWidth: 2,
+          '&:hover': {
+            borderWidth: 2,
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          boxShadow: '0px 4px 6px rgba(15, 23, 42, 0.1)',
+          transition: 'box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: '0px 12px 24px rgba(15, 23, 42, 0.16)',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 12,
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          fontWeight: 500,
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0px 1px 3px rgba(15, 23, 42, 0.08)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        rounded: {
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 20,
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 8,
+          fontSize: '0.8125rem',
+        },
+      },
+    },
+  },
 });
 
 export default theme;
