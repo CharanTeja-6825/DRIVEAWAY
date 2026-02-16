@@ -62,7 +62,7 @@ public class JwtFilter extends OncePerRequestFilter{
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
 			} catch (JwtException | IllegalArgumentException ex) {
-				logger.warn("Invalid JWT cookie token: {}", ex.getClass().getSimpleName());
+				logger.warn("Invalid JWT cookie token: {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
 				token = null;
 			}
 		}
@@ -72,7 +72,7 @@ public class JwtFilter extends OncePerRequestFilter{
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
 			} catch (JwtException | IllegalArgumentException ex) {
-				logger.warn("Invalid JWT authorization token: {}", ex.getClass().getSimpleName());
+				logger.warn("Invalid JWT authorization token: {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
 				token = null;
 			}
 		}
