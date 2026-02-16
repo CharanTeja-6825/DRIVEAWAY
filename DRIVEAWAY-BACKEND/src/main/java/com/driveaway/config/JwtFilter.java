@@ -64,6 +64,8 @@ public class JwtFilter extends OncePerRequestFilter{
 			} catch (JwtException | IllegalArgumentException ex) {
 				logger.warn("Invalid JWT cookie token: {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
 				token = null;
+				email = null;
+				role = null;
 			}
 		}
 		if(token == null && authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -74,6 +76,8 @@ public class JwtFilter extends OncePerRequestFilter{
 			} catch (JwtException | IllegalArgumentException ex) {
 				logger.warn("Invalid JWT authorization token: {} - {}", ex.getClass().getSimpleName(), ex.getMessage());
 				token = null;
+				email = null;
+				role = null;
 			}
 		}
 		
