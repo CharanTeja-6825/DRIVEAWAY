@@ -53,13 +53,13 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
-        String normalizedClientApi = clientAPI == null ? null : clientAPI.trim().replaceAll("/+$", "");
+        String normalizedClientAPI = clientAPI == null ? null : clientAPI.trim().replaceAll("/+$", "");
         List<String> allowedOrigins = new ArrayList<>(Arrays.asList(
         		"https://script.google.com",
         		"https://script.googleusercontent.com",
         		"https://docs.google.com"));
-        if (normalizedClientApi != null && !normalizedClientApi.isBlank()) {
-        	allowedOrigins.add(0, normalizedClientApi);
+        if (normalizedClientAPI != null && !normalizedClientAPI.isBlank()) {
+        	allowedOrigins.add(0, normalizedClientAPI);
         }
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

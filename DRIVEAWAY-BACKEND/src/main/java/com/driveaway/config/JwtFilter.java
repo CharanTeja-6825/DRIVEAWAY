@@ -51,13 +51,22 @@ public class JwtFilter extends OncePerRequestFilter{
 				}
 			}
 		}
+		if(token != null) {
+			try {
+				email = jwtService.extractEmail(token);
+				role = jwtService.extractRole(token);
+			} catch (RuntimeException ex) {
+				token = null;
+			}
+		}
 		if(token == null && authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7);
-		}
-
-		if(token != null) {
-			email = jwtService.extractEmail(token);
-			role = jwtService.extractRole(token);
+			try {
+				email = jwtService.extractEmail(token);
+				role = jwtService.extractRole(token);
+			} catch (RuntimeException ex) {
+				token = null;
+			}
 		}
 		
 		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
