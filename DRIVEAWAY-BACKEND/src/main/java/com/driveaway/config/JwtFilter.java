@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 
 import jakarta.servlet.http.Cookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,8 @@ import com.driveaway.entity.User;
 import com.driveaway.service.JWTService;
 import com.driveaway.service.UserService;
 
+import io.jsonwebtoken.JwtException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +29,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter{
+	
+	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 	
 	@Autowired
 	private JWTService jwtService;
@@ -55,8 +61,8 @@ public class JwtFilter extends OncePerRequestFilter{
 			try {
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
-			} catch (RuntimeException ex) {
-				System.out.println("Invalid JWT cookie token: " + ex.getClass().getSimpleName());
+			} catch (JwtException | IllegalArgumentException ex) {
+				logger.warn("Invalid JWT cookie token: {}", ex.getClass().getSimpleName());
 				token = null;
 			}
 		}
@@ -65,8 +71,8 @@ public class JwtFilter extends OncePerRequestFilter{
 			try {
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
-			} catch (RuntimeException ex) {
-				System.out.println("Invalid JWT authorization token: " + ex.getClass().getSimpleName());
+			} catch (JwtException | IllegalArgumentException ex) {
+				logger.warn("Invalid JWT authorization token: {}", ex.getClass().getSimpleName());
 				token = null;
 			}
 		}
