@@ -13,6 +13,7 @@ import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
 import com.driveaway.enumerations.Roles;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private DealerRepository dealerRepository;
+
+	@Autowired
+	private CloudinaryService cloudinaryService;
 	
 
 	@Override
@@ -52,6 +56,12 @@ public class UserServiceImpl implements UserService{
 
 	public User getUser(String email) {
 		return userRepository.findByUserEmail(email);
+	}
+
+	@Override
+	public String updateProfileImage(String userId, MultipartFile profileImage) throws Exception {
+		String imageUrl = cloudinaryService.uploadProfile(userId, profileImage);
+		return "Profile Updated Successfully";
 	}
 
 	@Override

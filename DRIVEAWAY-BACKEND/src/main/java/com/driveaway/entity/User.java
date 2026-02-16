@@ -18,6 +18,7 @@ public class User {
 	private String password;
 	private String role;
 	private Instant createdAt;
+	private String profileUrl;
 	
 	public String getUserId() {
 		return userId;
@@ -66,5 +67,11 @@ public class User {
 	}
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
+	}
+	public String getProfileUrl() {
+		return profileUrl;
+	}
+	public void setProfileUrl(String profileUrl) {
+		this.profileUrl = profileUrl;
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.driveaway.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,9 @@ public class CustomerController {
 
 	@Autowired
 	private OrderService orderService;
-	
+    @Autowired
+    private UserService userService;
+
 	@GetMapping("/")
 	public String chome() {
 		return "Hello Customer";
@@ -106,6 +109,11 @@ public class CustomerController {
 		String signature = paymentDetails.get("signature");
 
 		return ResponseEntity.ok(orderService.verifySignature(orderId, paymentId, signature) ? "Payment Success" : "Invalid Signature");
+	}
+
+	@PostMapping("/profile")
+	public ResponseEntity<String> updateProfileImage(@RequestParam String userId, @RequestParam MultipartFile profileImage) throws Exception {
+		return ResponseEntity.ok(userService.updateProfileImage(userId, profileImage));
 	}
 
 }

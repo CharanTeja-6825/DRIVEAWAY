@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.List;
 
 @Document(collection = "cars")
 public class Car {
@@ -19,6 +20,8 @@ public class Car {
     private String brand;
     private int year;
     private double pricePerDay;
+
+    private List<String> images;
 
     private Instant createdAt;
     private String carStatus;
@@ -108,5 +111,13 @@ public class Car {
                 ", createdAt=" + createdAt +
                 ", carStatus='" + carStatus + '\'' +
                 '}';
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }
