@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter{
 				}
 			}
 		}
-		if(token == null && authHeader != null && authHeader.regionMatches(true, 0, "Bearer ", 0, 7)) {
+		if(token == null && authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7);
 		}
 
