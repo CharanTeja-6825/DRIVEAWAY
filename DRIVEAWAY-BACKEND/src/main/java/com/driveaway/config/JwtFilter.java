@@ -56,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter{
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
 			} catch (RuntimeException ex) {
+				System.out.println("Invalid JWT cookie token: " + ex.getClass().getSimpleName());
 				token = null;
 			}
 		}
@@ -65,6 +66,7 @@ public class JwtFilter extends OncePerRequestFilter{
 				email = jwtService.extractEmail(token);
 				role = jwtService.extractRole(token);
 			} catch (RuntimeException ex) {
+				System.out.println("Invalid JWT authorization token: " + ex.getClass().getSimpleName());
 				token = null;
 			}
 		}
