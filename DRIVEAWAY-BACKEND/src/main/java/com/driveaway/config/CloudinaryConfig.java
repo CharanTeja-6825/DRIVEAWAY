@@ -3,7 +3,6 @@ package com.driveaway.config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +22,10 @@ public class CloudinaryConfig {
 
     @Bean
     public Cloudinary cloudinary(){
+
+        if (cloudinaryCloud != null && cloudinaryCloud.startsWith("cloudinary://")) {
+            return new Cloudinary(cloudinaryCloud);
+        }
 
         Cloudinary myCloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudinaryCloud,
