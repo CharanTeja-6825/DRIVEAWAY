@@ -1,13 +1,12 @@
 package com.driveaway.service;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,5 +31,23 @@ public class CloudinaryServiceImpl implements CloudinaryService{
         }
 
         return imageUrl;
+    }
+
+    @Override
+    public List<String> uploadCarImages(String carId, MultipartFile[] carImages) throws Exception {
+        Map uploadResult = null;
+        List<String> cars = new ArrayList<>();
+        for(MultipartFile car : carImages){
+            cars.add(
+                    cloudinary.uploader().upload(car.getBytes(),
+                            Map.of(
+                                    "resource_type", "image",
+                                    "folder", "cars/"+carId+"/",
+                                    "public_id", "view_"+cars.size(),
+                                    "overwrite", true
+                            )).get("secure_url").toString()
+            );
+        }
+        return cars;
     }
 }

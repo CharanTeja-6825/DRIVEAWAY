@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class DealerController {
 	}
 
 	@PostMapping("/add/car")
-	public ResponseEntity<String> addCar(@RequestBody Car car){
+	public ResponseEntity<String> addCar(@RequestBody Car car) throws Exception {
 		String response = carService.addCar(car);
 		return ResponseEntity.status(201).body(response);
 	}
@@ -56,6 +57,16 @@ public class DealerController {
 	public ResponseEntity<String> approveBooking(@PathVariable String bookingId, @RequestParam boolean approval){
 		String response = bookingService.validateBooking(bookingId, approval);
 		return ResponseEntity.ok(response);
+	}
+
+	@PutMapping("/update/car-images")
+	public ResponseEntity<String> addCarImages(@RequestParam String carId, @RequestPart MultipartFile[] carImages) throws Exception {
+		try{
+			String response = carService.updateCarImages(carId, carImages);
+			return ResponseEntity.ok(response);
+		}catch(Exception e){
+			return ResponseEntity.status(404).body(e.getMessage());
+		}
 	}
 	
 }

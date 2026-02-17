@@ -21,7 +21,7 @@ public class Car {
     private int year;
     private double pricePerDay;
 
-    private List<String> images;
+    private List<String> carImages;
 
     private Instant createdAt;
     private String carStatus;
@@ -98,6 +98,14 @@ public class Car {
         this.carStatus = carStatus;
     }
 
+    public List<String> getCarImages() {
+        return carImages;
+    }
+
+    public void setCarImages(List<String> carImages) {
+        this.carImages = carImages;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -114,10 +122,10 @@ public class Car {
     }
 
     public List<String> getImages() {
-        return images;
+        return carImages;
     }
 
     public void setImages(List<String> images) {
-        this.images = images;
+        carImages = images;
     }
 }
