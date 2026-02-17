@@ -1,6 +1,7 @@
 package com.driveaway.service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import com.driveaway.dto.LoginDTO;
 import com.driveaway.entity.Dealer;
@@ -60,7 +61,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public String updateProfileImage(String userId, MultipartFile profileImage) throws Exception {
-		String imageUrl = cloudinaryService.uploadFile(profileImage, userId);
+		String imageUrl = cloudinaryService.uploadProfile(userId, profileImage);
+		User user = userRepository.findById(userId).get();
+		user.setProfileUrl(imageUrl);
+		userRepository.save(user);
 		return "Profile Updated Successfully";
 	}
 

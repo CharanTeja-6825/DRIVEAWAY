@@ -65,7 +65,7 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
 
         try {
             const { data } = await createBooking(payload);
-            toast.success(data || "Booking created successfully");
+            toast.success(data || "Booking created successfully", { position : "top-center" });
             setForm({
                 startDate: dayjs(),
                 endDate: dayjs()
@@ -81,7 +81,7 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
             toast.error(
                 err?.response?.data?.message ||
                 err?.message ||
-                "Something went wrong"
+                "Something went wrong", { position : "top-center" }
             );
         } finally {
             setLoading(false);

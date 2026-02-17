@@ -19,16 +19,18 @@ public class CloudinaryServiceImpl implements CloudinaryService{
     @Override
     public String uploadProfile(String userId, MultipartFile profileImage) throws Exception {
 
-        Map uploadResult = cloudinary.uploader().upload(profileImage.getBytes(),
-                ObjectUtils.asMap(
-                        "folder", "avatars/",
-                        "public_id", userId,
-                        "overwrite", true
-        ));
+        Map uploadResult = null;
+        String imageUrl = null;
+        if (!profileImage.isEmpty() && userId != null) {
+            imageUrl = cloudinary.uploader().upload(profileImage.getBytes(),
+                    Map.of(
+                            "resource_type", "image",
+                            "folder", "avatars/",
+                            "public_id", userId.toString(),
+                            "overwrite", true
+                    )).get("secure_url").toString();
+        }
 
-        System.out.println(uploadResult.get("secure_url").toString());
-
-        return uploadResult.get("secure_url").toString();
+        return imageUrl;
     }
-    
 }
