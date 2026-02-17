@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	Card,
 	CardContent,
+	CardMedia,
 	Typography,
 	Grid,
 	Box,
@@ -27,6 +29,7 @@ import CarUpdateModal from "../components/CarUpdateModal";
 export default function DealerCars() {
 	const { user, statusColorMap } = useAuth();
 	const dealerId = user.userId;
+	const navigate = useNavigate();
 
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -178,6 +181,7 @@ export default function DealerCars() {
 					<Grid item xs={12} sm={6} lg={4} xl={3} key={car.carId}>
 						<Card
 							elevation={0}
+							onClick={() => navigate(`/dealer/car/${car.carId}`, { state: { car } })}
 							sx={{
 								height: "100%",
 								display: "flex",
@@ -187,6 +191,7 @@ export default function DealerCars() {
 								borderColor: "divider",
 								bgcolor: "background.paper",
 								overflow: "hidden",
+								cursor: "pointer",
 								transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
 								"&:hover": {
 									transform: "translateY(-4px)",
@@ -200,6 +205,29 @@ export default function DealerCars() {
 								}
 							}}
 						>
+							{/* Car Image */}
+							{car.carImages?.[0] ? (
+								<CardMedia
+									component="img"
+									height="180"
+									image={car.carImages[0]}
+									alt={`${car.brand} ${car.model}`}
+									sx={{ height: 180, objectFit: "cover" }}
+								/>
+							) : (
+								<Box
+									sx={{
+										height: 180,
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										bgcolor: "grey.100",
+									}}
+								>
+									<CarIcon sx={{ fontSize: 64, color: "grey.300" }} />
+								</Box>
+							)}
+
 							{/* Card Header with Brand */}
 							<Box
 								className="card-header"
@@ -340,7 +368,8 @@ export default function DealerCars() {
 									</Typography>
 									<Button
 										variant="outlined"
-										onClick={() => {
+										onClick={(e) => {
+											e.stopPropagation();
 											setSelectedCar(car);
 											setModalOpen(true);
 										}}
