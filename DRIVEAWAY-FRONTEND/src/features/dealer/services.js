@@ -19,3 +19,12 @@ export const validateBooking = (bookingId, approval) => {
 export const updateCar = (payload) => {
     return api.put("/api/dealer/update/car", payload);
 }
+
+export const updateCustomerProfile = (payload) => {
+  // TODO: Replace placeholder path with the actual update endpoint.
+  return api.post("/api/dealer/update/car-images", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
