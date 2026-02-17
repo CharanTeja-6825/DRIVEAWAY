@@ -8,17 +8,15 @@ import {
   Typography,
   Stack,
   Box,
-  Alert,
   Paper,
 } from '@mui/material';
 import { EventNote } from '@mui/icons-material';
+import { toast } from 'sonner';
 
 function CustomerBookings() {
   const { user } = useAuth();
 
-  const [message, setMessage] = useState('');
   const [customerBookings, setCustomerBookings] = useState([]);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
   const fetchCustomerBookings = async () => {
@@ -27,20 +25,19 @@ function CustomerBookings() {
       console.log(data);
       setCustomerBookings(data);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Failed to load bookings");
     } finally {
       setLoading(false);
     }
   };
 
   const handleCancel = async (bookingId) => {
-    // console.log('Booking cancelled', bookingId);
     try {
       const { data } = await cancelBooking(bookingId);
-      setMessage(data);
+      toast.success(data || "Booking cancelled successfully");
       fetchCustomerBookings();  
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Failed to cancel booking");
     }
   };
 
@@ -151,13 +148,6 @@ function CustomerBookings() {
               </Paper>
             </Stack>
           </Stack>
-
-          {/* Error Message */}
-          {error && (
-            <Alert severity="error" sx={{ borderRadius: '12px' }}>
-              {error}
-            </Alert>
-          )}
 
           {/* Bookings List */}
           <BookingsList bookings={customerBookings} reloadBookings={fetchCustomerBookings} onCancel={handleCancel} />

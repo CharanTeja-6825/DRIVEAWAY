@@ -10,7 +10,6 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
   Link,
   CircularProgress,
   InputAdornment,
@@ -23,6 +22,7 @@ import {
   VisibilityOff,
   DirectionsCar,
 } from "@mui/icons-material";
+import { toast } from "sonner";
 
 function UserLogin() {
   const { login } = useAuth();
@@ -38,7 +38,6 @@ function UserLogin() {
     password: "",
   });
 
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -74,11 +73,6 @@ function UserLogin() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
-    
-    // Clear general error
-    if (error) {
-      setError("");
-    }
   };
 
   // Handle blur for inline validation
@@ -111,9 +105,6 @@ function UserLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear previous errors
-    setError("");
-
     // Validate form
     if (!validateForm()) {
       return;
@@ -137,7 +128,7 @@ function UserLogin() {
           navigate("/customer");
       }
     } catch (err) {
-      setError(
+      toast.error(
         err.response?.data?.message || 
         err.response?.data || 
         "Login failed. Please check your credentials and try again."
@@ -217,12 +208,6 @@ function UserLogin() {
 
           {/* Form */}
           <Box sx={{ p: 4 }}>
-            {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
-            )}
-
             <form onSubmit={handleSubmit} noValidate>
               <Stack spacing={3}>
                 {/* Email Field */}

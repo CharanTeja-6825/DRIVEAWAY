@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { applicationStatus, getUserByEmail } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import DealershipModal from "../components/DealershipModal";
-import { Button, TextField, Alert, CircularProgress } from "@mui/material";
+import { Button, TextField, CircularProgress } from "@mui/material";
+import { toast } from "sonner";
+import InlineAlert from "../../../shared/components/InlineAlert";
 
 function CustomerProfile() {
 	const { user } = useAuth();
@@ -11,7 +13,6 @@ function CustomerProfile() {
 	const [approvalStatus, setApprovalStatus] = useState(null);
 	const [statusLoading, setStatusLoading] = useState(true);
 	const [open, setOpen] = useState(false);
-	const [error, setError] = useState("");
 
 	/* 1️⃣ Load user */
 	useEffect(() => {
@@ -20,7 +21,7 @@ function CustomerProfile() {
 				const { data } = await getUserByEmail(user.email);
 				setProfileUser(data);
 			} catch {
-				setError("Failed to load user");
+				toast.error("Failed to load user");
 			}
 		};
 
@@ -63,8 +64,6 @@ function CustomerProfile() {
 		<div className="p-4 flex justify-center mt-10">
 			<div className="flex flex-col gap-4 shadow-2xl p-6 w-96">
 
-				{error && <Alert severity="error">{error}</Alert>}
-
 				<TextField label="Full Name" value={profileUser.userName} disabled />
 				<TextField label="Phone" value={profileUser.userPhone} disabled />
 				<TextField label="Age" value={profileUser.userAge} disabled />
@@ -72,7 +71,7 @@ function CustomerProfile() {
 
 				{/* Status */}
 				{approvalStatus && (
-					<Alert
+					<InlineAlert
 						severity={
 							approvalStatus === "PENDING"
 								? "info"
@@ -82,7 +81,7 @@ function CustomerProfile() {
 						}
 					>
 						Application Status: {approvalStatus}
-					</Alert>
+					</InlineAlert>
 				)}
 
 				{/* Button */}

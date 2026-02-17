@@ -5,9 +5,9 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
   Stack
 } from "@mui/material";
+import { toast } from "sonner";
 import { submitRequest } from "../services";
 
 const style = {
@@ -34,8 +34,6 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
 
 
   const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState("");
-  const [error, setError] = React.useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,8 +48,6 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
       phone: "",
       location: ""
     });
-    setSuccess("");
-    setError("");
     setLoading(false);
   };
 
@@ -62,8 +58,6 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError("");
-    setSuccess("");
 
     const payload = {
       ...form,
@@ -72,7 +66,7 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
 
     try {
       const { data } = await submitRequest(payload);
-      setSuccess(data);
+      toast.success(data || "Request submitted successfully");
       setForm({
         dealershipName: "",
         ownerName: "",
@@ -83,7 +77,7 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
       onClose();
     } catch (err) {
       console.log(err);
-      setError(
+      toast.error(
         err?.response?.data?.message ||
         err?.message ||
         "Something went wrong"
@@ -102,9 +96,6 @@ export default function DealershipModal({ open, handleClose, id, reload }) {
         </Typography>
 
         <Stack spacing={2}>
-          {success && <Alert severity="success">{success}</Alert>}
-          {error && <Alert severity="error">{error}</Alert>}
-
           <TextField
             label="Dealership Name"
             name="dealershipName"

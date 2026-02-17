@@ -4,7 +4,6 @@ import {
 	TextField,
 	Button,
 	Typography,
-	Alert,
 	Stack,
 	Select,
 	MenuItem,
@@ -13,6 +12,7 @@ import {
 	FormControl,
 	InputLabel
 } from "@mui/material";
+import { toast } from "sonner";
 import { addCar } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import { brandsArray } from "../../../shared/constants/brands";
@@ -31,8 +31,6 @@ export default function AddCar() {
 	});
 
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -41,8 +39,6 @@ export default function AddCar() {
 
 	const handleSubmit = async () => {
 		setLoading(true);
-		setError("");
-		setSuccess("");
 
 		try {
 			await addCar({
@@ -51,7 +47,7 @@ export default function AddCar() {
 				pricePerDay: Number(form.pricePerDay)
 			});
 
-			setSuccess("Car added successfully");
+			toast.success("Car added successfully");
 			setForm((prev) => ({
 				...prev,
 				brand: "",
@@ -60,7 +56,7 @@ export default function AddCar() {
 				pricePerDay: ""
 			}));
 		} catch (err) {
-			setError(
+			toast.error(
 				err?.response?.data?.message ||
 				err?.message ||
 				"Failed to add car"
@@ -77,9 +73,6 @@ export default function AddCar() {
 			</Typography>
 
 			<Stack spacing={2}>
-				{success && <Alert severity="success">{success}</Alert>}
-				{error && <Alert severity="error">{error}</Alert>}
-
 				<BrandSelection form={form} handleChange={handleChange}/>
 
 				<TextField
