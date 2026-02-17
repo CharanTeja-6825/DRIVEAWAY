@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-	Alert,
 	Box,
 	Button,
 	Card,
@@ -20,6 +19,7 @@ import {
 	PersonAdd as PersonAddIcon,
 	Shield as ShieldIcon
 } from "@mui/icons-material";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { isHtmlResponse } from "../../../shared/utils/responseUtils";
 import { getAllApplications, getAllUsers } from "../services";
@@ -126,8 +126,6 @@ function AdminHome() {
 	const [users, setUsers] = useState([]);
 	const [applications, setApplications] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-	const [message, setMessage] = useState("");
 
 	useEffect(() => {
 		const fetchAdminData = async () => {
@@ -141,9 +139,9 @@ function AdminHome() {
 					setUsers(usersData);
 				} else if (typeof usersData === "string") {
 					if (isHtmlResponse(usersData)) {
-						setError((prev) => prev || "Unable to load user summary right now.");
+						toast.error("Unable to load user summary right now.");
 					} else {
-						setMessage((prev) => prev || usersData);
+						toast.info(usersData);
 					}
 					setUsers([]);
 				}
@@ -153,14 +151,14 @@ function AdminHome() {
 					setApplications(applicationsData);
 				} else if (typeof applicationsData === "string") {
 					if (isHtmlResponse(applicationsData)) {
-						setError((prev) => prev || "Unable to load dealer requests right now.");
+						toast.error("Unable to load dealer requests right now.");
 					} else {
-						setMessage((prev) => prev || applicationsData);
+						toast.info(applicationsData);
 					}
 					setApplications([]);
 				}
 			} catch {
-				setError("Failed to load admin dashboard data. Please try again later.");
+				toast.error("Failed to load admin dashboard data. Please try again later.");
 			} finally {
 				setLoading(false);
 			}
@@ -254,23 +252,6 @@ function AdminHome() {
 					</Box>
 				</Stack>
 			</Box>
-
-			{error && (
-				<Alert
-					severity="error"
-					sx={{ mb: 3, borderRadius: 2, "& .MuiAlert-icon": { alignItems: "center" } }}
-				>
-					{error}
-				</Alert>
-			)}
-			{message && (
-				<Alert
-					severity="info"
-					sx={{ mb: 3, borderRadius: 2, "& .MuiAlert-icon": { alignItems: "center" } }}
-				>
-					{message}
-				</Alert>
-			)}
 
 			<Grid container spacing={3} sx={{ mb: 3 }}>
 				<Grid item xs={12} sm={6} md={3}>

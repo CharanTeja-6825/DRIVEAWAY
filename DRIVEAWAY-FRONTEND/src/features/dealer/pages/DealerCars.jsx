@@ -6,7 +6,6 @@ import {
 	Grid,
 	Box,
 	CircularProgress,
-	Alert,
 	Chip,
 	Divider,
 	alpha,
@@ -19,6 +18,7 @@ import {
 	CurrencyRupee as PriceIcon,
 	Tag as IdIcon
 } from "@mui/icons-material";
+import { toast } from "sonner";
 import { getCarsByDealer } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import { brandsArray } from "../../../shared/constants/brands";
@@ -30,8 +30,6 @@ export default function DealerCars() {
 
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-	const [message, setMessage] = useState("");
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedCar, setSelectedCar] = useState(null);
 
@@ -39,10 +37,10 @@ export default function DealerCars() {
 	const loadCars = async () => {
 			try {
 				const { data } = await getCarsByDealer(dealerId);
-				if (typeof data === "string") setMessage(data);
+				if (typeof data === "string") toast.info(data);
 				else setCars(data);
 			} catch {
-				setError("Failed to load cars");
+				toast.error("Failed to load cars");
 			} finally {
 				setLoading(false);
 			}
@@ -157,32 +155,6 @@ export default function DealerCars() {
 					</Box>
 				</Stack>
 			</Box>
-
-			{/* Alerts */}
-			{error && (
-				<Alert
-					severity="error"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{error}
-				</Alert>
-			)}
-			{message && (
-				<Alert
-					severity="info"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{message}
-				</Alert>
-			)}
 
 			{/* Cars Count Badge */}
 			{cars.length > 0 && (
@@ -384,7 +356,7 @@ export default function DealerCars() {
 			</Grid>
 
 			{/* Empty State */}
-			{cars.length === 0 && !error && !message && (
+			{cars.length === 0 && (
 				<Box
 					sx={{
 						textAlign: "center",
