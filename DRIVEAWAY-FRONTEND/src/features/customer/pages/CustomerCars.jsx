@@ -3,12 +3,12 @@ import {
 	Box,
 	Typography,
 	CircularProgress,
-	Alert,
 	Stack,
 	Chip,
 	alpha
 } from "@mui/material";
 import { DirectionsCar as CarIcon } from "@mui/icons-material";
+import { toast } from "sonner";
 import { getCars } from "../services";
 import CarsGrid from "../components/CarsGrid";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
@@ -18,22 +18,19 @@ import { useAuth } from "../../../shared/hooks/AuthProvider";
 export default function CustomerCars() {
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-	const [message, setMessage] = useState("");
 	const { user } = useAuth();
 
 	console.log(user);
 
 	const loadCars = async () => {
 		setLoading(true);
-		setError("");
 		try {
 			const { data } = await getCars();
 			console.log(data); 
-			if (typeof (data) == "string") setMessage(data);
+			if (typeof (data) == "string") toast.info(data);
 			else setCars(data);
 		} catch (err) {
-			setError(
+			toast.error(
 				err?.response?.data?.message ||
 				err?.message ||
 				"Failed to load cars"
@@ -108,32 +105,6 @@ export default function CustomerCars() {
 					</Box>
 				</Stack>
 			</Box>
-
-			{/* Alerts */}
-			{error && (
-				<Alert
-					severity="error"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{error}
-				</Alert>
-			)}
-			{message && (
-				<Alert
-					severity="info"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{message}
-				</Alert>
-			)}
 
 			{/* Cars Count Badge */}
 			{cars.length > 0 && (

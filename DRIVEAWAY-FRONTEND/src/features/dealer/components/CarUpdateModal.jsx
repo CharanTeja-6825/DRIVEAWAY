@@ -6,9 +6,9 @@ import {
   TextField,
   Button,
   Stack,
-  Alert,
   CircularProgress,
 } from '@mui/material';
+import { toast } from 'sonner';
 import { updateCar } from '../services';
 
 const style = {
@@ -32,8 +32,6 @@ const CarUpdateModal = ({ open, handleClose, car, onUpdate, reloadCars }) => {
     pricePerDay: ''
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     if (car) {
@@ -58,23 +56,19 @@ const CarUpdateModal = ({ open, handleClose, car, onUpdate, reloadCars }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
 
     try {
       const { data } = await updateCar(formData);
-      setSuccess(data);
-      onUpdate(data); // Update parent component with new data
+      toast.success(typeof data === 'string' ? data : 'Car updated successfully');
+      onUpdate(data);
       setTimeout(() => {
         handleClose();
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update car');
+      toast.error(err.response?.data?.message || 'Failed to update car');
     } finally {
       setLoading(false);
       reloadCars();
-      setError("");
-      setSuccess("");
     }
   };
 
@@ -89,9 +83,6 @@ const CarUpdateModal = ({ open, handleClose, car, onUpdate, reloadCars }) => {
         <Typography variant="h6" component="h2" mb={2}>
           Update Car Details
         </Typography>
-        
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
         
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>

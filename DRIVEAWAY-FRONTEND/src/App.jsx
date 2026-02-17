@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import Navbar from './app/Navbar';
 import UserLogin from './features/auth/pages/UserLogin';
 import UserRegistration from './features/auth/pages/UserRegistration';
@@ -33,6 +34,18 @@ function App() {
 
   return (
     <div>
+      <Toaster
+        position="top-right"
+        richColors
+        closeButton
+        toastOptions={{
+          style: {
+            fontFamily: '"Source Sans 3", sans-serif',
+            borderRadius: '12px',
+          },
+          className: 'driveaway-toast',
+        }}
+      />
       <Navbar />
       <Routes>
         <Route
