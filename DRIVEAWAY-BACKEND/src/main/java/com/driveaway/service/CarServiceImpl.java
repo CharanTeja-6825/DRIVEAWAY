@@ -28,10 +28,12 @@ public class CarServiceImpl implements CarService{
     private CloudinaryService cloudinaryService;
 
     @Override
-    public String addCar(Car car) {
+    public String addCar(Car car, MultipartFile[] carImages) throws Exception {
         Optional<Dealer> opd = dealerRepository.findById(car.getDealerId());
         if(opd.isEmpty()) return "Dealer not found";
+        List<String> carImageUrls = cloudinaryService.uploadCarImages(car.getCarId(), carImages);
         Dealer d = opd.get();
+        car.setCarImages(carImageUrls);
         car.setDealerShipName(d.getDealershipName());
         car.setCreatedAt(Instant.now());
         car.setCarStatus(BookingStatus.AVAILABLE.toString());

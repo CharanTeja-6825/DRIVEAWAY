@@ -5,6 +5,7 @@ import com.driveaway.entity.Car;
 import com.driveaway.service.BookingService;
 import com.driveaway.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,9 @@ public class DealerController {
 		return "Dealer Home";
 	}
 
-	@PostMapping("/add/car")
-	public ResponseEntity<String> addCar(@RequestBody Car car) throws Exception {
-		String response = carService.addCar(car);
+	@PostMapping(value = "/add/car", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<String> addCar(@RequestPart("car") Car car, @RequestPart("images") MultipartFile[] images) throws Exception {
+		String response = carService.addCar(car, images);
 		return ResponseEntity.status(201).body(response);
 	}
 

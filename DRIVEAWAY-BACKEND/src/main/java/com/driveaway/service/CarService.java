@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CarService {
 
-    public String addCar(Car car) throws Exception;
+    public String addCar(Car car, MultipartFile[] carImages) throws Exception;
     public List<Car> allCars();
     public List<Car> dealerCars(String dealerId);
     public String updateCar(Car car);

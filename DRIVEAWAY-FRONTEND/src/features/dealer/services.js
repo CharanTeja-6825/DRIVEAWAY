@@ -1,7 +1,11 @@
 import api from '../../api/axios';
 
 export const addCar = (payload) => {
-    return api.post("/api/dealer/add/car", payload);
+  const config = payload instanceof FormData
+    ? { headers: { "Content-Type": "multipart/form-data" } }
+    : undefined;
+
+  return api.post("/api/dealer/add/car", payload, config);
 }
 
 export const getCarsByDealer = (id) => {
@@ -17,7 +21,11 @@ export const validateBooking = (bookingId, approval) => {
 }
 
 export const updateCar = (payload) => {
-    return api.put("/api/dealer/update/car", payload);
+    return api.put("/api/dealer/update/car", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 }
 
 export const updateCustomerProfile = (payload) => {
