@@ -28,6 +28,11 @@ public class Car {
 
     private String registration;
 
+    private int totalRatingsCount;
+
+    private int totalRatingsSum;
+    private int rating;
+
     public String getCarId() {
         return carId;
     }
@@ -114,6 +119,30 @@ public class Car {
 
     public void setRegistration(String registration) {
         this.registration = registration;
+    }
+
+    public int getTotalRatingsCount() {
+        return totalRatingsCount;
+    }
+
+    public void setTotalRatingsCount(int totalRatingsCount) {
+        this.totalRatingsCount = totalRatingsCount;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public int getTotalRatingsSum() {
+        return totalRatingsSum;
+    }
+
+    public void setTotalRatingsSum(int totalRatingsSum) {
+        this.totalRatingsSum = totalRatingsSum;
     }
 
     @Override
