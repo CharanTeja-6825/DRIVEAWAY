@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Chip,
   Divider,
   Stack,
   Box,
@@ -18,8 +17,31 @@ import {
   Cancel,
   Store,
 } from "@mui/icons-material";
+import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import PaymentButton from "./Payment";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
+
+const statusBadgeVariant = {
+  PENDING: "warning",
+  APPROVED: "info",
+  ACTIVE: "success",
+  COMPLETED: "secondary",
+  CANCELLED: "destructive",
+  REJECTED: "destructive",
+  EXPIRED: "secondary",
+  PAID: "success",
+};
 
 export default function BookingCard({ booking, onCancel, statusColorMap, reloadBookings }) {
 
@@ -72,31 +94,46 @@ export default function BookingCard({ booking, onCancel, statusColorMap, reloadB
                 #{booking._id.slice(-6).toUpperCase()}
               </Typography>
             </Box>
-            <Chip
-              label={getStatusLabel(booking.status)}
-              size="small"
-              sx={{
-                bgcolor: statusColorMap[booking.status],
-                color: "white",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-              }}
-            />
+            <Badge
+              variant={statusBadgeVariant[booking.status] || "default"}
+              className="text-[11px]"
+            >
+              {getStatusLabel(booking.status)}
+            </Badge>
           </Stack>
 
           {isBookingApproved && (
-            <IconButton
-              size="small"
-              onClick={() => onCancel(booking.bookingId)}
-              sx={{
-                color: "error.main",
-                "&:hover": {
-                  bgcolor: "error.lighter",
-                },
-              }}
-            >
-              <Cancel fontSize="small" />
-            </IconButton>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <IconButton
+                  size="small"
+                  sx={{
+                    color: "error.main",
+                    "&:hover": {
+                      bgcolor: "error.lighter",
+                    },
+                  }}
+                >
+                  <Cancel fontSize="small" />
+                </IconButton>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Cancel Booking?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to cancel this booking? This action
+                    cannot be undone. The car will be made available for other
+                    customers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Keep Booking</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => onCancel(booking.bookingId)}>
+                    Yes, Cancel Booking
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </Stack>
 

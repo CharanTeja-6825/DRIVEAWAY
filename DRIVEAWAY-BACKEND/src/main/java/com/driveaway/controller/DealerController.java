@@ -40,11 +40,15 @@ public class DealerController {
 		return cars.size() == 0 ? ResponseEntity.status(200).body("No Cars Found. Add them In the New Car Section."): ResponseEntity.ok(cars);
 	}
 
-	@PutMapping("/update/car")
-	public ResponseEntity<String> editCar(@RequestBody Car car){
-		String response = carService.updateCar(car);
-		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
-		else return ResponseEntity.ok(response);
+	@PutMapping(value = "/update/car", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<String> editCar(@RequestPart("car") Car car, @RequestPart(value = "images", required = false) MultipartFile[] images) {
+		try {
+			String response = carService.updateCar(car, images);
+			if (response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
+			else return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Failed to update car");
+		}
 	}
 
 	@GetMapping("/get/bookings")

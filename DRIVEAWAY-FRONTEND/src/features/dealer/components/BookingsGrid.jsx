@@ -3,21 +3,32 @@ import {
   Card,
   CardContent,
   Typography,
-  Chip,
   Button,
   Divider,
 } from "@mui/material";
+import { Badge } from "@/components/ui/badge";
 import { validateBooking } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 
-const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading }) => {
+const statusBadgeVariant = {
+  PENDING: "warning",
+  APPROVED: "info",
+  ACTIVE: "success",
+  COMPLETED: "secondary",
+  CANCELLED: "destructive",
+  REJECTED: "destructive",
+  PAID: "success",
+};
+
+const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading, reloadBookings }) => {
 	
-  const { getStatusLabel, statusColorMap } = useAuth();
+  const { getStatusLabel } = useAuth();
 
   const handleApproval = async (bookingId, approval) => {
     try {
       const { data } = await validateBooking(bookingId, approval);
       setMessage(data);
+      if (reloadBookings) reloadBookings();
     } catch (error) {
       setError(error);
     }
@@ -36,16 +47,12 @@ const BookingsGrid = ({ bookings = [], setMessage, setError, setLoading }) => {
               <Typography variant="h6" className="font-semibold">
                 Booking #{b.bookingId.slice(-6)}
               </Typography>
-              <Chip
-                label={getStatusLabel(b.status)}
-                size="small"
-                sx={{
-                  bgcolor: statusColorMap[b.status],
-                  color: "white",
-                  fontWeight: 600,
-                  fontSize: "0.75rem",
-                }}
-              />
+              <Badge
+                variant={statusBadgeVariant[b.status] || "default"}
+                className="text-[11px]"
+              >
+                {getStatusLabel(b.status)}
+              </Badge>
             </div>
 
             <Divider />
