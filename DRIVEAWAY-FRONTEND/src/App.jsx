@@ -19,6 +19,7 @@ import DealerCars from './features/dealer/pages/DealerCars';
 import CustomerCars from './features/customer/pages/CustomerCars';
 import DealerBookings from './features/dealer/pages/DealerBookings';
 import CustomerBookings from './features/customer/pages/CustomerBookings';
+import CarDetailPage from './shared/components/CarDetailPage';
 
 function App() {
   const { isLoggedIn, user } = useAuth();
@@ -80,6 +81,7 @@ function App() {
           <Route path="/customer" element={<CustomerHome />} />
           <Route path="/customer/profile" element={<CustomerProfile />} />
           <Route path="/customer/viewCars" element={<CustomerCars />} />
+          <Route path="/customer/car/:carId" element={<CarDetailPage />} />
           <Route path="/customer/myBookings" element={<CustomerBookings />} />
         </Route>
 
@@ -88,6 +90,7 @@ function App() {
           <Route path="/dealer" element={<DealerHome />} />
           <Route path="/dealer/addCar" element={<AddCar />} />
           <Route path="/dealer/allCars" element={<DealerCars />} />
+          <Route path="/dealer/car/:carId" element={<CarDetailPage />} />
           <Route path="/dealer/bookings" element={<DealerBookings />} />
         </Route>
 
