@@ -42,7 +42,7 @@ jobs:
 
           tree = {}
           for path in paths:
-            # Keep a compact snapshot (first 3 path segments) to avoid oversized README diffs.
+            # Use only the first 3 path segments from each tracked file to keep the snapshot compact.
             parts = path.split("/")[:3]
             node = tree
             for part in parts:
