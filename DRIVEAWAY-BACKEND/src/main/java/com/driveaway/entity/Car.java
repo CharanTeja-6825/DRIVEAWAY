@@ -26,6 +26,8 @@ public class Car {
     private Instant createdAt;
     private String carStatus;
 
+    private String registration;
+
     public String getCarId() {
         return carId;
     }
@@ -104,6 +106,14 @@ public class Car {
 
     public void setCarImages(List<String> carImages) {
         this.carImages = carImages;
+    }
+
+    public String getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(String registration) {
+        this.registration = registration;
     }
 
     @Override

@@ -1,17 +1,17 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Chip,
-  Button,
-  Box,
-} from "@mui/material";
-import { DirectionsCar as CarIcon } from "@mui/icons-material";
+import { Car, Calendar, MapPin, IndianRupee } from 'lucide-react';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useAuth } from '../../../shared/hooks/AuthProvider';
+
+const statusBadgeVariant = {
+    AVAILABLE: 'success',
+    PENDING: 'warning',
+    BOOKED: 'info',
+    CANCELLED: 'destructive',
+    COMPLETED: 'secondary',
+};
 
 function CarCard({ car, onBook }) {
 
@@ -25,94 +25,84 @@ function CarCard({ car, onBook }) {
     };
 
     return (
-        <>
-            <Card
-                key={car.carId}
-                className="hover:shadow-2xl transition-all duration-300 rounded-2xl"
-                sx={{ cursor: "pointer" }}
-                onClick={handleCardClick}
-            >
-                {/* Car Image */}
+        <Card
+            className="group cursor-pointer overflow-hidden hover:shadow-xl hover:shadow-slate-200/60 hover:-translate-y-1 border-slate-100"
+            onClick={handleCardClick}
+        >
+            {/* Car Image */}
+            <div className="relative overflow-hidden">
                 {firstImage ? (
-                    <CardMedia
-                        component="img"
-                        height="180"
-                        image={firstImage}
+                    <img
+                        src={firstImage}
                         alt={`${car.brand} ${car.model}`}
-                        sx={{ height: 180, objectFit: "cover" }}
+                        className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                 ) : (
-                    <Box
-                        sx={{
-                            height: 180,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            bgcolor: "grey.100",
-                        }}
-                    >
-                        <CarIcon sx={{ fontSize: 64, color: "grey.300" }} />
-                    </Box>
+                    <div className="flex h-52 items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+                        <Car className="h-16 w-16 text-slate-300" />
+                    </div>
                 )}
-
-                <CardContent className="flex flex-col gap-4">
-                    {/* Header */}
-                    <div className="flex justify-between items-center">
-                        <Typography variant="h6" className="font-bold">
-                            {car.brand}
-                        </Typography>
-
-                        <Chip
-                            label={car.carStatus}
-                            sx={{backgroundColor : statusColorMap[car.carStatus], color:"white"}}
-                            size="small"
-                        />
+                {/* Status Badge Overlay */}
+                <div className="absolute top-3 right-3">
+                    <Badge
+                        variant={statusBadgeVariant[car.carStatus] || 'default'}
+                        className="px-2.5 py-1 text-[11px] uppercase tracking-wider shadow-sm"
+                    >
+                        {car.carStatus}
+                    </Badge>
+                </div>
+                {/* Price Ribbon */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 pb-3 pt-8">
+                    <div className="flex items-baseline gap-1 text-white">
+                        <IndianRupee className="h-4 w-4" />
+                        <span className="text-xl font-bold font-[Manrope] tracking-tight">
+                            {car.pricePerDay?.toLocaleString('en-IN')}
+                        </span>
+                        <span className="text-xs text-white/80 font-[Source_Sans_3]">/ day</span>
                     </div>
+                </div>
+            </div>
 
-                    {/* Model */}
-                    <Typography className="text-gray-600">
-                        Model:{" "}
-                        <span className="font-semibold">{car.model}</span>
-                    </Typography>
+            <CardContent className="p-5">
+                {/* Brand + Model */}
+                <div className="mb-3">
+                    <h3 className="text-lg font-bold font-[Manrope] text-slate-900 tracking-tight">
+                        {car.brand}
+                    </h3>
+                    <p className="text-sm text-slate-500 font-[Source_Sans_3]">
+                        {car.model}
+                    </p>
+                </div>
 
-                    {/* Year */}
-                    <Typography className="text-gray-600">
-                        Year: {car.year}
-                    </Typography>
-
-                    {/* Dealer */}
-                    <Typography className="text-gray-600 truncate">
-                        Dealer: {car.dealerShipName}
-                    </Typography>
-
-                    {/* Price */}
-                    <div className="flex justify-between items-center mt-2">
-                        <Typography className="text-lg font-bold text-indigo-600">
-                            ₹{car.pricePerDay} / day
-                        </Typography>
-
-                        <Button
-                            variant="contained"
-                            size="small"
-                            disabled={car.carStatus !== "AVAILABLE"}
-                            className="!rounded-full"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onBook(car);
-                            }}
-                        >
-                            Book
-                        </Button>
+                {/* Details */}
+                <div className="flex items-center gap-4 text-xs text-slate-500 font-[Source_Sans_3]">
+                    <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{car.year}</span>
                     </div>
+                    <div className="flex items-center gap-1 truncate">
+                        <MapPin className="h-3.5 w-3.5 shrink-0" />
+                        <span className="truncate">{car.dealerShipName}</span>
+                    </div>
+                </div>
+            </CardContent>
 
-                    {/* Footer */}
-                    <Typography className="text-xs text-gray-400">
-                        Added on{" "}
-                        {new Date(car.createdAt).toLocaleDateString("en-IN")}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </>
+            <CardFooter className="px-5 pb-5 pt-0 flex items-center justify-between border-t border-slate-100 mt-0 pt-4">
+                <p className="text-[11px] text-slate-400 font-[Source_Sans_3]">
+                    Added {new Date(car.createdAt).toLocaleDateString('en-IN')}
+                </p>
+                <button
+                    disabled={car.carStatus !== 'AVAILABLE'}
+                    className="rounded-lg bg-[#1E3A8A] px-4 py-2 text-xs font-semibold text-white font-[Manrope] transition-all hover:bg-[#1E40AF] disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onBook(car);
+                    }}
+                >
+                    Book Now
+                </button>
+            </CardFooter>
+        </Card>
     )
 }
 
