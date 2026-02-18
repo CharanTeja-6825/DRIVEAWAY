@@ -28,8 +28,10 @@ jobs:
           end = "<!-- workspace-snapshot:end -->"
 
           content = readme.read_text(encoding="utf-8")
-          if start not in content or end not in content:
-            raise SystemExit("Workspace snapshot markers not found in README.md")
+          if start not in content:
+            raise SystemExit("Missing workspace snapshot start marker in README.md")
+          if end not in content:
+            raise SystemExit("Missing workspace snapshot end marker in README.md")
 
           paths = subprocess.check_output(
             ["git", "ls-files"],
@@ -39,6 +41,7 @@ jobs:
 
           tree = {}
           for path in paths:
+            # Keep a compact snapshot to avoid oversized README diffs.
             parts = path.split("/")[:3]
             node = tree
             for part in parts:
@@ -61,7 +64,9 @@ jobs:
           block = "\n".join(lines)
 
           replacement = f"{start}\n{block}\n{end}"
-          updated = content.split(start)[0] + replacement + content.split(end, 1)[1]
+          before_start, after_start = content.split(start, 1)
+          _, after_end = after_start.split(end, 1)
+          updated = before_start + replacement + after_end
           readme.write_text(updated, encoding="utf-8")
           PY
 
