@@ -355,6 +355,59 @@ DRIVEAWAY/
 └── README.md                      # This file
 ```
 
+## 🧾 Workspace Snapshot (Auto-Updated Weekly)
+
+<!-- workspace-snapshot:start -->
+```text
+DRIVEAWAY/
+├── .github/
+│   ├── dependabot.yml
+│   └── workflows/
+│       └── docker-publish.yml
+├── .gitignore
+├── DRIVEAWAY-BACKEND/
+│   ├── .gitattributes
+│   ├── .gitignore
+│   ├── .mvn/
+│   │   └── wrapper
+│   ├── backend.Dockerfile
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   └── src/
+│       ├── main
+│       └── test
+├── DRIVEAWAY-FRONTEND/
+│   ├── .gitignore
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── frontend.Dockerfile
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public/
+│   │   ├── car-white.svg
+│   │   └── images
+│   ├── src/
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── api
+│   │   ├── app
+│   │   ├── components
+│   │   ├── features
+│   │   ├── index.css
+│   │   ├── lib
+│   │   ├── main.jsx
+│   │   ├── shared
+│   │   └── theme
+│   └── vite.config.js
+├── LICENSE
+├── README.md
+└── docker-compose.yml
+```
+<!-- workspace-snapshot:end -->
+
 ## 📚 API Documentation
 
 ### Swagger UI

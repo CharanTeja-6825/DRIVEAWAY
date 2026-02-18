@@ -1,0 +1,78 @@
+name: Weekly README Workspace Sync
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme-workspace-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update workspace snapshot section in README
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          root = Path.cwd()
+          readme = root / "README.md"
+
+          start = "<!-- workspace-snapshot:start -->"
+          end = "<!-- workspace-snapshot:end -->"
+
+          content = readme.read_text(encoding="utf-8")
+          if start not in content or end not in content:
+            raise SystemExit("Workspace snapshot markers not found in README.md")
+
+          paths = subprocess.check_output(
+            ["git", "ls-files"],
+            cwd=root,
+            text=True
+          ).splitlines()
+
+          tree = {}
+          for path in paths:
+            parts = path.split("/")[:3]
+            node = tree
+            for part in parts:
+              node = node.setdefault(part, {})
+
+          lines = ["```text", "DRIVEAWAY/"]
+
+          def render(node, prefix=""):
+            items = sorted(node.items())
+            for index, (name, child) in enumerate(items):
+              last = index == len(items) - 1
+              connector = "└── " if last else "├── "
+              suffix = "/" if child else ""
+              lines.append(f"{prefix}{connector}{name}{suffix}")
+              if child:
+                render(child, prefix + ("    " if last else "│   "))
+
+          render(tree)
+          lines.append("```")
+          block = "\n".join(lines)
+
+          replacement = f"{start}\n{block}\n{end}"
+          updated = content.split(start)[0] + replacement + content.split(end, 1)[1]
+          readme.write_text(updated, encoding="utf-8")
+          PY
+
+      - name: Commit and push changes
+        run: |
+          if git diff --quiet; then
+            echo "No README changes detected."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update README workspace snapshot"
+          git push
