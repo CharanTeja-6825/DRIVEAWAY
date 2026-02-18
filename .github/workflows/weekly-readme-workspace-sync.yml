@@ -2,6 +2,7 @@ name: Weekly README Workspace Sync
 
 on:
   schedule:
+    # Runs every Monday at 00:00 UTC.
     - cron: "0 0 * * 1"
   workflow_dispatch:
 
@@ -41,7 +42,7 @@ jobs:
 
           tree = {}
           for path in paths:
-            # Keep a compact snapshot to avoid oversized README diffs.
+            # Keep a compact snapshot (first 3 path segments) to avoid oversized README diffs.
             parts = path.split("/")[:3]
             node = tree
             for part in parts:
