@@ -47,7 +47,7 @@ public class DealerController {
 			if (response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
 			else return ResponseEntity.ok(response);
 		} catch (Exception e) {
-			return ResponseEntity.status(500).body(e.getMessage());
+			return ResponseEntity.status(500).body("Failed to update car");
 		}
 	}
 

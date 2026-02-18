@@ -64,12 +64,18 @@ const CarUpdateModal = ({ open, handleClose, car, onUpdate, reloadCars }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+    // Revoke previous blob URLs to avoid memory leaks
+    if (newImages.length > 0) {
+      imagePreviews.forEach(url => URL.revokeObjectURL(url));
+    }
     setNewImages(files);
     const previews = files.map(file => URL.createObjectURL(file));
     setImagePreviews(previews);
   };
 
   const removeNewImages = () => {
+    // Revoke blob URLs before clearing
+    imagePreviews.forEach(url => URL.revokeObjectURL(url));
     setNewImages([]);
     setImagePreviews(car?.carImages || []);
   };
