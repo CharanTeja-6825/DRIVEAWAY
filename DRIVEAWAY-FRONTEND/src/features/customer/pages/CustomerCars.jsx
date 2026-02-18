@@ -4,10 +4,9 @@ import {
 	Typography,
 	CircularProgress,
 	Stack,
-	Chip,
-	alpha
 } from "@mui/material";
-import { DirectionsCar as CarIcon } from "@mui/icons-material";
+import { Car } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { getCars } from "../services";
 import CarsGrid from "../components/CarsGrid";
@@ -20,13 +19,10 @@ export default function CustomerCars() {
 	const [loading, setLoading] = useState(true);
 	const { user } = useAuth();
 
-	console.log(user);
-
 	const loadCars = async () => {
 		setLoading(true);
 		try {
 			const { data } = await getCars();
-			console.log(data); 
 			if (typeof (data) == "string") toast.info(data);
 			else setCars(data);
 		} catch (err) {
@@ -64,66 +60,35 @@ export default function CustomerCars() {
 	}
 
 	return (
-		<Box
-			sx={{
-				p: { xs: 2, sm: 3, md: 4 },
-				minHeight: "100vh",
-				bgcolor: "background.default"
-			}}
-		>
+		<div className="min-h-screen bg-slate-50/50 px-4 py-6 sm:px-6 md:px-8">
 			{/* Page Header */}
-			<Box sx={{ mb: 4 }}>
-				<Stack direction="row" alignItems="center" spacing={2} mb={1}>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							width: 48,
-							height: 48,
-							borderRadius: 2,
-							background: (theme) =>
-								`linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-							boxShadow: (theme) =>
-								`0 4px 14px ${alpha(theme.palette.primary.main, 0.4)}`
-						}}
-					>
-						<CarIcon sx={{ color: "white", fontSize: 28 }} />
-					</Box>
-					<Box>
-						<Typography
-							variant="h4"
-							fontWeight={700}
-							color="text.primary"
-							sx={{ letterSpacing: "-0.02em" }}
-						>
+			<div className="mb-8">
+				<div className="flex items-center gap-3 mb-1">
+					<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1E3A8A] to-[#1E40AF] shadow-lg shadow-blue-900/25">
+						<Car className="h-6 w-6 text-white" />
+					</div>
+					<div>
+						<h1 className="text-2xl font-bold font-[Manrope] text-slate-900 tracking-tight">
 							Available Cars
-						</Typography>
-						<Typography variant="body2" color="text.secondary">
+						</h1>
+						<p className="text-sm text-slate-500 font-[Source_Sans_3]">
 							Browse and book your perfect vehicle
-						</Typography>
-					</Box>
-				</Stack>
-			</Box>
+						</p>
+					</div>
+				</div>
+			</div>
 
 			{/* Cars Count Badge */}
 			{cars.length > 0 && (
-				<Box sx={{ mb: 3 }}>
-					<Chip
-						label={`${cars.length} ${cars.length === 1 ? "Vehicle" : "Vehicles"} Available`}
-						size="small"
-						sx={{
-							bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-							color: "primary.main",
-							fontWeight: 600,
-							px: 1
-						}}
-					/>
-				</Box>
+				<div className="mb-6">
+					<Badge variant="info" className="px-3 py-1">
+						{cars.length} {cars.length === 1 ? "Vehicle" : "Vehicles"} Available
+					</Badge>
+				</div>
 			)}
 
 			{/* Cars Grid */}
 			<CarsGrid cars={cars} reloadCars={loadCars} />
-		</Box>
+		</div>
 	);
 }

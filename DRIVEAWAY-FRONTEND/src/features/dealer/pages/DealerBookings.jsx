@@ -12,18 +12,19 @@ function DealerBookings() {
 
     const { user } = useAuth();
 
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const { data } = await getBookings(user.userId);
-                if (typeof (data) === "string") toast.info(data);
-                else setBookings(data);
-            } catch (err) {
-                toast.error(err?.message || "Failed to load bookings");
-            } finally{
-                setLoading(false);
-            }
+    const fetchBookings = async () => {
+        try {
+            const { data } = await getBookings(user.userId);
+            if (typeof (data) === "string") toast.info(data);
+            else setBookings(data);
+        } catch (err) {
+            toast.error(err?.message || "Failed to load bookings");
+        } finally{
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
         fetchBookings();
     }, [])
 
@@ -94,6 +95,7 @@ function DealerBookings() {
 				bookings={bookings} 
 				setMessage={(msg) => toast.success(msg)} 
 				setError={(err) => toast.error(err)}
+				reloadBookings={fetchBookings}
 			/>
 		</Box>
     )
