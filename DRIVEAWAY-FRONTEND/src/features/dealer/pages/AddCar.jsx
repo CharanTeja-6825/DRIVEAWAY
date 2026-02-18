@@ -27,7 +27,8 @@ export default function AddCar() {
 		brand: "",
 		model: "",
 		year: "",
-		pricePerDay: ""
+		pricePerDay: "",
+		registration: ""
 	});
 
 	const [loading, setLoading] = useState(false);
@@ -105,6 +106,19 @@ export default function AddCar() {
 						setForm((p) => ({
 							...p,
 							pricePerDay: e.target.value.replace(/\D/g, "")
+						}))
+					}
+					fullWidth
+				/>
+
+				<TextField
+					label="Car Registration Number"
+					name="registration"
+					value={form.registration}
+					onChange={(e) =>
+						setForm((p) => ({
+							...p,
+							registration: e.target.value.replace(/\D/g, "")
 						}))
 					}
 					fullWidth
