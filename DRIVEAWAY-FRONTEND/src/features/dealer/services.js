@@ -28,6 +28,19 @@ export const updateCar = (payload) => {
   });
 }
 
+export const updateCarImages = (carId, images) => {
+  const formData = new FormData();
+  formData.append("carId", carId);
+  for (const img of images) {
+    formData.append("carImages", img);
+  }
+  return api.put("/api/dealer/update/car-images", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 export const updateCustomerProfile = (payload) => {
   // TODO: Replace placeholder path with the actual update endpoint.
   return api.post("/api/dealer/update/car-images", payload, {

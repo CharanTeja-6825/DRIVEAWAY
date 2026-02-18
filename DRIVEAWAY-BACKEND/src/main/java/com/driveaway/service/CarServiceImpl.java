@@ -56,8 +56,19 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public String updateCar(Car car) {
-        return carRepository.updateCar(car);
+    public String updateCar(Car car, MultipartFile[] carImages) throws Exception {
+        String result = carRepository.updateCar(car);
+        if (result.equals("Car Not Found")) return result;
+        if (carImages != null && carImages.length > 0) {
+            List<String> imageUrls = cloudinaryService.uploadCarImages(car.getCarId(), carImages);
+            Optional<Car> carOptional = carRepository.findById(car.getCarId());
+            if (carOptional.isPresent()) {
+                Car existingCar = carOptional.get();
+                existingCar.setCarImages(imageUrls);
+                carRepository.save(existingCar);
+            }
+        }
+        return result;
     }
 
     @Override
