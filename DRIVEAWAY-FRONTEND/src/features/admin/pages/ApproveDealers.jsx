@@ -109,7 +109,7 @@ function ApproveDealers() {
     }
 
     return (
-        <Box sx={{ p: 3, maxWidth: 1400, mx: 'auto' }}>
+        <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 1400, mx: 'auto' }}>
             <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 600 }}>
                 Dealer Applications
             </Typography>
@@ -119,8 +119,8 @@ function ApproveDealers() {
                     <CircularProgress size={60} />
                 </Box>
             ) : (
-                <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflow: 'hidden' }}>
-                    <Table>
+                <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflowX: 'auto' }}>
+                    <Table sx={{ minWidth: 900 }}>
                         <TableHead>
                             <TableRow sx={{ bgcolor: 'primary.main' }}>
                                 <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>S.No</TableCell>
@@ -226,7 +226,8 @@ function ApproveDealers() {
                 PaperProps={{
                     sx: {
                         borderRadius: 3,
-                        minWidth: 400
+                        width: 'calc(100% - 32px)',
+                        maxWidth: 400
                     }
                 }}
             >

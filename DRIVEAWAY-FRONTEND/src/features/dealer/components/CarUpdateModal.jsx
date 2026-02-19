@@ -18,12 +18,13 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 480,
+  width: 'calc(100% - 32px)',
+  maxWidth: 480,
   maxHeight: '90vh',
   overflow: 'auto',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4,
+  p: { xs: 3, sm: 4 },
   borderRadius: 2
 };
 

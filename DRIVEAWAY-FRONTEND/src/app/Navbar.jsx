@@ -137,7 +137,7 @@ function Navbar() {
           </Stack>
 
           {/* Navigation Links */}
-          {!isLoggedIn && (
+          {!isLoggedIn && !isMobile && (
             <Stack direction="row" spacing={1}>
               <Button
                 component={Link}
@@ -169,6 +169,37 @@ function Navbar() {
                 Register
               </Button>
             </Stack>
+          )}
+
+          {!isLoggedIn && isMobile && (
+            <IconButton onClick={handleMenuOpen} sx={{ color: 'text.primary' }}>
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          {!isLoggedIn && isMobile && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              PaperProps={{
+                sx: {
+                  mt: 1.5,
+                  minWidth: 180,
+                  borderRadius: '12px',
+                },
+              }}
+            >
+              <MenuItem onClick={() => handleNavClick('/')}>
+                <ListItemText>Home</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => handleNavClick('/login')}>
+                <ListItemText>Login</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => handleNavClick('/register')}>
+                <ListItemText>Register</ListItemText>
+              </MenuItem>
+            </Menu>
           )}
 
           {/* Logged In Navigation - Desktop */}
@@ -273,4 +304,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
