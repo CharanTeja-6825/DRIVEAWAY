@@ -177,7 +177,7 @@ function Navbar() {
             </IconButton>
           )}
 
-          {!isLoggedIn && isMobile && (
+          {!isLoggedIn && isMobile && Boolean(anchorEl) && (
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
