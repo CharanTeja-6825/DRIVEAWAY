@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build Docker Images and Deploy to Render
 
 on:
   push:
@@ -55,3 +55,53 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:${{ github.sha }}
           platforms: linux/amd64, linux/arm64
+
+  deploy-to-render:
+    environment: DOCKER
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Backend Deployment on Render
+        run: |
+          response=$(curl -X POST https://api.render.com/v1/services/${{ secrets.RENDER_BACKEND_SERVICE_ID }}/deploys \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -w "%{http_code}" -o /tmp/backend_response.json)
+          
+          if [ $response -eq 201 ]; then
+            echo "✅ Backend deployment triggered successfully"
+            cat /tmp/backend_response.json
+          else
+            echo "❌ Backend deployment failed with status: $response"
+            cat /tmp/backend_response.json
+            exit 1
+          fi
+      
+      - name: Trigger Frontend Deployment on Render
+        run: |
+          response=$(curl -X POST https://api.render.com/v1/services/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}/deploys \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -w "%{http_code}" -o /tmp/frontend_response.json)
+          
+          if [ $response -eq 201 ]; then
+            echo "✅ Frontend deployment triggered successfully"
+            cat /tmp/frontend_response.json
+          else
+            echo "❌ Frontend deployment failed with status: $response"
+            cat /tmp/frontend_response.json
+            exit 1
+          fi
+      
+      - name: Summary
+        run: |
+          echo "🚀 Deployment Summary"
+          echo "===================="
+          echo "✅ Docker images pushed to Docker Hub"
+          echo "✅ Backend deployment triggered on Render"
+          echo "✅ Frontend deployment triggered on Render"
+          echo ""
+          echo "Check your Render dashboard for deployment status:"
+          echo "https://dashboard.render.com/"
