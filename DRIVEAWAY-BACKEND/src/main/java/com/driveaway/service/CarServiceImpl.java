@@ -1,10 +1,14 @@
 package com.driveaway.service;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
+import com.driveaway.entity.Review;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
+import com.driveaway.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +30,11 @@ public class CarServiceImpl implements CarService{
 
     @Autowired
     private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public String addCar(Car car, MultipartFile[] carImages) throws Exception {
@@ -81,5 +90,32 @@ public class CarServiceImpl implements CarService{
         car.setCarImages(cars);
         carRepository.save(car);
         return "Car Images Updated Successfully !";
+    }
+
+    @Override
+    public String addReviewCar(Review review) {
+        Optional<Car> optionalCar = carRepository.findById(review.getCarId());
+
+        if(optionalCar.isEmpty()) return "Car is not found";
+        Car car = optionalCar.get();
+
+//      Rating Calculation
+        int totalCount = car.getTotalRatingsCount() + 1;
+        int totalSum = car.getTotalRatingsSum() + review.getStarRating();
+        int updatedRating = totalSum / totalCount;
+
+//      New Rating Update per Car.
+        car.setRating(updatedRating);
+        car.setTotalRatingsSum(totalSum);
+        car.setTotalRatingsCount(totalCount);
+
+//      TIMESTAMP Audit
+        review.setCreatedAt(Instant.now());
+        review.setUpdatedAt(Instant.now());
+
+//      DB Save
+        reviewRepository.save(review);
+        carRepository.save(car);
+        return "We're as thrilled As you !!";
     }
 }
