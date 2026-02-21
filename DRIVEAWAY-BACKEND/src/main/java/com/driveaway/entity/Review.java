@@ -10,6 +10,7 @@ public class Review {
     @Id
     private String reviewId;
 
+    private String bookingId;
     private String carId;
     private String customerId;
     private String review;
@@ -65,6 +66,14 @@ public class Review {
 
     public void setStarRating(int starRating) {
         this.starRating = starRating;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 
     public Instant getUpdatedAt() {

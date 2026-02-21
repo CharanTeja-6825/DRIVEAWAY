@@ -1,9 +1,11 @@
 package com.driveaway.service;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
 import com.driveaway.entity.Review;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.ReviewRepository;
@@ -31,6 +33,8 @@ public class CarServiceImpl implements CarService{
 
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public String addCar(Car car, MultipartFile[] carImages) throws Exception {
@@ -113,10 +117,5 @@ public class CarServiceImpl implements CarService{
         reviewRepository.save(review);
         carRepository.save(car);
         return "We're as thrilled As you !!";
-    }
-
-    @Override
-    public List<Review> reviewsByCar(String carId) {
-        return reviewRepository.findReviewsByCarId(carId);
     }
 }

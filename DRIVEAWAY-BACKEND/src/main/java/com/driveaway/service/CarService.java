@@ -15,5 +15,4 @@ public interface CarService {
     public String deleteCar(String carId);
     public String updateCarImages(String carId, MultipartFile[] carImages) throws Exception;
     public String addReviewCar(Review review);
-    public List<Review> reviewsByCar(String carId);
 }

@@ -38,6 +38,8 @@ public class CustomerController {
 	private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReviewService reviewService;
 
 	@GetMapping("/")
 	public String chome() {
@@ -120,7 +122,7 @@ public class CustomerController {
 
 	@GetMapping("/reviews/{carId}")
 	public ResponseEntity<List<Review>> getReviewsByCar(@PathVariable String carId){
-		return ResponseEntity.ok(carService.reviewsByCar(carId));
+		return ResponseEntity.ok(reviewService.getReviewsByCar(carId));
 	}
 
 }
