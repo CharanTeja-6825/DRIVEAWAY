@@ -34,6 +34,17 @@ import { useAuth } from "../../../shared/hooks/AuthProvider";
 import { isHtmlResponse } from "../../../shared/utils/responseUtils";
 import { getBookings, getCarsByDealer } from "../services";
 
+const getBookingDate = (booking) => new Date(booking.startDate || booking.createdAt);
+
+const formatCompactCurrency = (amount) => {
+	if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
+	if (amount >= 1000) return `₹${(amount / 1000).toFixed(1)}K`;
+	return `₹${amount}`;
+};
+
+const pluralize = (count, singular, plural = `${singular}s`) =>
+	count === 1 ? `${count} ${singular}` : `${count} ${plural}`;
+
 const StatCard = ({ icon: Icon, title, value, helper, color, bgColor, trend }) => (
 	<Card
 		elevation={0}
@@ -278,13 +289,14 @@ function DealerHome() {
 					(b) => b.status === "COMPLETED" || b.status === "PAID"
 				)
 				.filter((b) => {
-					const d = new Date(b.startDate || b.createdAt);
+					const d = getBookingDate(b);
 					return d.getMonth() === month && d.getFullYear() === year;
 				})
 				.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
 
 		const thisMonthRevenue = getMonthRevenue(thisMonth, thisYear);
 		const lastMonthRevenue = getMonthRevenue(lastMonth, lastYear);
+		// Only show trend when prior month has data for a meaningful comparison
 		const percentChange =
 			lastMonthRevenue > 0
 				? Math.round(
@@ -292,9 +304,7 @@ function DealerHome() {
 							lastMonthRevenue) *
 							100
 					)
-				: thisMonthRevenue > 0
-					? 100
-					: null;
+				: null;
 
 		return { thisMonthRevenue, lastMonthRevenue, percentChange };
 	}, [bookings]);
@@ -318,7 +328,7 @@ function DealerHome() {
 				(b) => b.status === "COMPLETED" || b.status === "PAID"
 			)
 			.forEach((b) => {
-				const date = new Date(b.startDate || b.createdAt);
+				const date = getBookingDate(b);
 				const entry = months.find(
 					(m) =>
 						m.month === date.getMonth() &&
@@ -601,11 +611,12 @@ function DealerHome() {
 													maxMonthlyRevenue) *
 												170
 											: 0;
-									const isCurrentMonth = index === monthlyRevenue.length - 1;
+									const now = new Date();
+									const isCurrentMonth = month.month === now.getMonth() && month.year === now.getFullYear();
 									return (
 										<Tooltip
 											key={index}
-											title={`₹${month.revenue.toLocaleString("en-IN")} • ${month.count} booking${month.count !== 1 ? "s" : ""}`}
+											title={`₹${month.revenue.toLocaleString("en-IN")} • ${pluralize(month.count, "booking")}`}
 											arrow
 										>
 											<Box
@@ -626,7 +637,7 @@ function DealerHome() {
 													}}
 												>
 													{month.revenue > 0
-														? `₹${month.revenue >= 1000 ? `${(month.revenue / 1000).toFixed(1)}K` : month.revenue}`
+														? formatCompactCurrency(month.revenue)
 														: ""}
 												</Typography>
 												<Box
@@ -1017,12 +1028,7 @@ function DealerHome() {
 																variant="caption"
 																color="text.secondary"
 															>
-																{car.bookings}{" "}
-																booking
-																{car.bookings !==
-																1
-																	? "s"
-																	: ""}
+																{pluralize(car.bookings, "booking")}
 															</Typography>
 														</Box>
 													</Stack>
