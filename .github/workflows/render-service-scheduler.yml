@@ -40,15 +40,8 @@ jobs:
           elif [ "${{ github.event.schedule }}" = "0 9 * * *" ]; then
             action="start"
           else
-            hour_utc=$(date -u +%H)
-            if [ "$hour_utc" = "00" ]; then
-              action="stop"
-            elif [ "$hour_utc" = "09" ]; then
-              action="start"
-            else
-              echo "Unsupported UTC hour for scheduled run: $hour_utc"
-              exit 1
-            fi
+            echo "Unable to map scheduled event to start/stop action."
+            exit 1
           fi
 
           echo "action=$action" >> "$GITHUB_OUTPUT"
@@ -60,6 +53,11 @@ jobs:
             endpoint="suspend"
           else
             endpoint="resume"
+          fi
+
+          if [ -z "$RENDER_API_KEY" ] || [ -z "$RENDER_BACKEND_SERVICE_ID" ] || [ -z "$RENDER_FRONTEND_SERVICE_ID" ]; then
+            echo "Required Render secrets are missing."
+            exit 1
           fi
 
           for service_id in "$RENDER_BACKEND_SERVICE_ID" "$RENDER_FRONTEND_SERVICE_ID"; do
