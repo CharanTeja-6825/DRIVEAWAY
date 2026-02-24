@@ -2,8 +2,8 @@ name: Schedule Render Services
 
 on:
   schedule:
-    - cron: "0 0 * * *"
-    - cron: "0 9 * * *"
+    - cron: "0 0 * * *" # 00:00 UTC
+    - cron: "0 9 * * *" # 09:00 UTC
   workflow_dispatch:
     inputs:
       action:
@@ -37,8 +37,18 @@ jobs:
             action="${{ inputs.action }}"
           elif [ "${{ github.event.schedule }}" = "0 0 * * *" ]; then
             action="stop"
-          else
+          elif [ "${{ github.event.schedule }}" = "0 9 * * *" ]; then
             action="start"
+          else
+            hour_utc=$(date -u +%H)
+            if [ "$hour_utc" = "00" ]; then
+              action="stop"
+            elif [ "$hour_utc" = "09" ]; then
+              action="start"
+            else
+              echo "Unsupported UTC hour for scheduled run: $hour_utc"
+              exit 1
+            fi
           fi
 
           echo "action=$action" >> "$GITHUB_OUTPUT"
@@ -60,8 +70,10 @@ jobs:
               -o /tmp/render_response.json \
               -w "%{http_code}")
 
-            if { [ "$status_code" -ge 200 ] && [ "$status_code" -lt 300 ]; } || [ "$status_code" -eq 409 ]; then
+            if [ "$status_code" -ge 200 ] && [ "$status_code" -lt 300 ]; then
               echo "Successfully applied ${{ steps.decide.outputs.action }} to service $service_id"
+            elif [ "$status_code" -eq 409 ]; then
+              echo "Service $service_id is already in the requested state (${{ steps.decide.outputs.action }})."
             else
               echo "Failed to apply ${{ steps.decide.outputs.action }} to service $service_id. HTTP status: $status_code"
               cat /tmp/render_response.json
