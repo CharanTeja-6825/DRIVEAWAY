@@ -1,0 +1,70 @@
+name: Schedule Render Services
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action to apply to Render services"
+        required: true
+        type: choice
+        options:
+          - start
+          - stop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-service-scheduler
+  cancel-in-progress: false
+
+jobs:
+  manage-render-services:
+    runs-on: ubuntu-latest
+    environment: DOCKER
+    env:
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      RENDER_BACKEND_SERVICE_ID: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+      RENDER_FRONTEND_SERVICE_ID: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
+    steps:
+      - name: Decide scheduled action
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            action="${{ inputs.action }}"
+          elif [ "${{ github.event.schedule }}" = "0 0 * * *" ]; then
+            action="stop"
+          else
+            action="start"
+          fi
+
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+          echo "Selected action: $action"
+
+      - name: Apply action to Render services
+        run: |
+          if [ "${{ steps.decide.outputs.action }}" = "stop" ]; then
+            endpoint="suspend"
+          else
+            endpoint="resume"
+          fi
+
+          for service_id in "$RENDER_BACKEND_SERVICE_ID" "$RENDER_FRONTEND_SERVICE_ID"; do
+            status_code=$(curl -sS -X POST "https://api.render.com/v1/services/$service_id/$endpoint" \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{}' \
+              -o /tmp/render_response.json \
+              -w "%{http_code}")
+
+            if [ "$status_code" -ge 200 ] && [ "$status_code" -lt 300 ]; then
+              echo "Successfully applied ${{ steps.decide.outputs.action }} to service $service_id"
+            else
+              echo "Failed to apply ${{ steps.decide.outputs.action }} to service $service_id. HTTP status: $status_code"
+              cat /tmp/render_response.json
+              exit 1
+            fi
+          done
