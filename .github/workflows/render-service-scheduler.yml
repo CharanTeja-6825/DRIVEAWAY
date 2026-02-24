@@ -60,7 +60,7 @@ jobs:
               -o /tmp/render_response.json \
               -w "%{http_code}")
 
-            if [ "$status_code" -ge 200 ] && [ "$status_code" -lt 300 ]; then
+            if { [ "$status_code" -ge 200 ] && [ "$status_code" -lt 300 ]; } || [ "$status_code" -eq 409 ]; then
               echo "Successfully applied ${{ steps.decide.outputs.action }} to service $service_id"
             else
               echo "Failed to apply ${{ steps.decide.outputs.action }} to service $service_id. HTTP status: $status_code"
