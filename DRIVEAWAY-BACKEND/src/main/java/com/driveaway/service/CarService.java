@@ -2,13 +2,15 @@ package com.driveaway.service;
 
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Review;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface CarService {
 
-    public String addCar(Car car, MultipartFile[] carImages) throws Exception;
+    @CacheEvict(value = "cars", allEntries = true)
+    String addCar(Car car, MultipartFile[] carImages) throws Exception;
     public List<Car> allCars();
     public List<Car> dealerCars(String dealerId);
     public String updateCar(Car car, MultipartFile[] carImages) throws Exception;

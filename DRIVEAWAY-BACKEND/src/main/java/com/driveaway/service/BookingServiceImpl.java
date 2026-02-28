@@ -9,6 +9,7 @@ import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
