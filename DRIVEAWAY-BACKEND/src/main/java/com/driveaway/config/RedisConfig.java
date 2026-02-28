@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -49,21 +48,19 @@ public class RedisConfig {
   public ObjectMapper redisObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
     JavaTimeModule javaTimeModule = new JavaTimeModule();
-    SimpleModule instantModule = new SimpleModule();
-    instantModule.addSerializer(Instant.class, new StdSerializer<>(Instant.class) {
+    javaTimeModule.addSerializer(Instant.class, new StdSerializer<>(Instant.class) {
       @Override
       public void serialize(Instant value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeString(DateTimeFormatter.ISO_INSTANT.format(value));
       }
     });
-    instantModule.addDeserializer(Instant.class, new StdDeserializer<>(Instant.class) {
+    javaTimeModule.addDeserializer(Instant.class, new StdDeserializer<>(Instant.class) {
       @Override
       public Instant deserialize(JsonParser p, com.fasterxml.jackson.databind.DeserializationContext ctxt) throws IOException {
         return Instant.parse(p.getValueAsString());
       }
     });
     mapper.registerModule(javaTimeModule);
-    mapper.registerModule(instantModule);
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.activateDefaultTyping(
         BasicPolymorphicTypeValidator.builder()
