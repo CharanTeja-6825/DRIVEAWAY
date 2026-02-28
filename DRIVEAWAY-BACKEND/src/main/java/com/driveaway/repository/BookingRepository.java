@@ -52,7 +52,7 @@ public interface BookingRepository extends MongoRepository<Booking, String>, Boo
 
     List<Booking> findBookingsByCreatedAtLessThan(Instant createdAtIsLessThan);
 
-    List<Booking> findBookingsByStartDate(Instant startDate);
+    List<Booking> findBookingsByStatusAndStartDateLessThanEqual(String status, Instant startDateIsLessThan);
 
-    List<Booking> findBookingsByEndDate(Instant endDate);
+    List<Booking> findBookingsByStatusAndEndDateLessThanEqual(String status, Instant endDateIsLessThan);
 }

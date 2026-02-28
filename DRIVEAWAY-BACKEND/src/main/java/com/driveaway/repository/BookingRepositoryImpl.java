@@ -65,7 +65,7 @@ public class BookingRepositoryImpl implements BookingRepositoryCustom{
 
         Query carQuery = Query.query(Criteria.where("_id").in(cars)
                 .and("carStatus")
-                .is(BookingStatus.COMPLETED.toString()));
+                .in(BookingStatus.ACTIVE.toString(), BookingStatus.BOOKED.toString()));
 
         Update carUpdate = new Update().set("carStatus", BookingStatus.AVAILABLE.toString());
 
