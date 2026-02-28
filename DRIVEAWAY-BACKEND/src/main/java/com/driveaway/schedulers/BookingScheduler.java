@@ -19,7 +19,7 @@ public class BookingScheduler {
         bookingService.expirePendingBookings();
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void updateCarsAndBookings(){
         System.out.println("Cars Updated");
         bookingService.updateBookingsAndCars(Instant.now());
