@@ -1,7 +1,9 @@
 package com.driveaway.service;
 
 import java.time.Instant;
+import java.util.Optional;
 
+import com.driveaway.dto.LoginDTO;
 import com.driveaway.entity.Dealer;
 import com.driveaway.repository.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.User;
 import com.driveaway.repository.UserRepository;
 import com.driveaway.enumerations.Roles;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -26,6 +29,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private DealerRepository dealerRepository;
+
+	@Autowired
+	private CloudinaryService cloudinaryService;
 	
 
 	@Override
@@ -41,13 +47,25 @@ public class UserServiceImpl implements UserService{
 				userId = d.getId();
 			}
 
-			return new ResponseDTO(email, user.getRole(), token, userId);
+
+			LoginDTO loginDTO = new LoginDTO(email, user.getRole(), userId);
+
+			return new ResponseDTO(loginDTO, token);
 		}
 		else return null;
 	}
 
 	public User getUser(String email) {
 		return userRepository.findByUserEmail(email);
+	}
+
+	@Override
+	public String updateProfileImage(String userId, MultipartFile profileImage) throws Exception {
+		String imageUrl = cloudinaryService.uploadProfile(userId, profileImage);
+		User user = userRepository.findById(userId).get();
+		user.setProfileUrl(imageUrl);
+		userRepository.save(user);
+		return "Profile Updated Successfully";
 	}
 
 	@Override

@@ -23,8 +23,6 @@ import java.util.Optional;
 @Service
 public class BookingServiceImpl implements BookingService{
 
-    private final Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
-
     @Autowired
     private CarRepository carRepository;
     @Autowired
@@ -154,6 +152,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public void expirePendingBookings() {
+        Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
         List<Booking> expiredBookings = bookingRepository.findBookingsByCreatedAtLessThan(timeoutDuration);
 
         if(expiredBookings.size() == 0) return;
@@ -171,17 +170,25 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public void updateBookingsAndCars(Instant currentDate) {
-        List<String> startedCars = bookingRepository.findAll().stream()
-                .filter(booking -> booking.getStartDate().equals(currentDate))
+
+        List<String> startCars = bookingRepository.findBookingsByStatusAndStartDateLessThanEqual(
+                        BookingStatus.PAID.toString(),
+                        currentDate
+                )
+                .stream()
                 .map(Booking::getCarId)
                 .toList();
 
-        List<String> endCars = bookingRepository.findAll().stream()
-                .filter(booking -> booking.getEndDate().equals(currentDate))
+        List<String> endCars = bookingRepository.findBookingsByStatusAndEndDateLessThanEqual(
+                        BookingStatus.ACTIVE.toString(),
+                        currentDate
+                )
+                .stream()
                 .map(Booking::getCarId)
                 .toList();
 
-        bookingRepository.activateBooking(currentDate, startedCars);
+
+        bookingRepository.activateBooking(currentDate, startCars);
         bookingRepository.completeBooking(currentDate, endCars);
     }
 }

@@ -9,7 +9,6 @@ import {
 	Stack,
 	Chip,
 	CircularProgress,
-	Alert,
 	alpha,
 	Divider,
 	Avatar
@@ -24,6 +23,7 @@ import {
 	ArrowForward as ArrowIcon,
 	Dashboard as DashboardIcon
 } from '@mui/icons-material';
+import { toast } from 'sonner';
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import { getCustomerBookings, getCars } from '../services';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +39,6 @@ function CustomerHome() {
 		cancelled: 0
 	});
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState('');
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -48,7 +47,7 @@ function CustomerHome() {
 				if (typeof data === 'string') {
 					setBookings([]);
 				} else {
-          console.log(data);
+          
 					setBookings(data);
 					// Calculate stats
 					const total = data.length;
@@ -61,7 +60,7 @@ function CustomerHome() {
 					setStats({ total, upcoming, completed, cancelled });
 				}
 			} catch (err) {
-				setError('Failed to load dashboard data');
+				toast.error('Failed to load dashboard data');
 			} finally {
 				setLoading(false);
 			}
@@ -295,20 +294,6 @@ function CustomerHome() {
 				</Stack>
 			</Box>
 
-			{/* Error Alert */}
-			{error && (
-				<Alert
-					severity="error"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						'& .MuiAlert-icon': { alignItems: 'center' }
-					}}
-				>
-					{error}
-				</Alert>
-			)}
-
 			{/* Stats Cards */}
 			<Grid container spacing={3} mb={4}>
 				<Grid item xs={12} sm={6} md={3}>
@@ -437,7 +422,7 @@ function CustomerHome() {
 						<Button
 							variant="contained"
 							startIcon={<CarIcon />}
-							onClick={() => navigate('/customer/cars')}
+							onClick={() => navigate('/customer/viewCars')}
 							sx={{
 								textTransform: 'none',
 								fontWeight: 600,

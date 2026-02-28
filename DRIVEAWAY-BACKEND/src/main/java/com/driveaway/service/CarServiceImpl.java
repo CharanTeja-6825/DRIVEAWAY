@@ -1,12 +1,17 @@
 package com.driveaway.service;
 
+import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
+import com.driveaway.entity.Review;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
+import com.driveaway.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -23,11 +28,21 @@ public class CarServiceImpl implements CarService{
     @Autowired
     private DealerRepository dealerRepository;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
+
     @Override
-    public String addCar(Car car) {
+    public String addCar(Car car, MultipartFile[] carImages) throws Exception {
         Optional<Dealer> opd = dealerRepository.findById(car.getDealerId());
         if(opd.isEmpty()) return "Dealer not found";
+        List<String> carImageUrls = cloudinaryService.uploadCarImages(car.getCarId(), carImages);
         Dealer d = opd.get();
+        car.setCarImages(carImageUrls);
         car.setDealerShipName(d.getDealershipName());
         car.setCreatedAt(Instant.now());
         car.setCarStatus(BookingStatus.AVAILABLE.toString());
@@ -45,13 +60,62 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public String updateCar(Car car) {
-        return carRepository.updateCar(car);
+    public String updateCar(Car car, MultipartFile[] carImages) throws Exception {
+        String result = carRepository.updateCar(car);
+        if (result.equals("Car Not Found")) return result;
+        if (carImages != null && carImages.length > 0) {
+            List<String> imageUrls = cloudinaryService.uploadCarImages(car.getCarId(), carImages);
+            Optional<Car> carOptional = carRepository.findById(car.getCarId());
+            if (carOptional.isPresent()) {
+                Car existingCar = carOptional.get();
+                existingCar.setCarImages(imageUrls);
+                carRepository.save(existingCar);
+            }
+        }
+        return result;
     }
 
     @Override
     public String deleteCar(String carId) {
         carRepository.deleteById(carId);
         return "Car Deleted Successfully";
+    }
+
+    @Override
+    public String updateCarImages(String carId, MultipartFile[] carImages) throws Exception {
+        Optional<Car> carOptional = carRepository.findById(carId);
+        if(carOptional.isEmpty()) return "Car Not Found";
+        List<String> cars = cloudinaryService.uploadCarImages(carId, carImages);
+        Car car = carOptional.get();
+        car.setCarImages(cars);
+        carRepository.save(car);
+        return "Car Images Updated Successfully !";
+    }
+
+    @Override
+    public String addReviewCar(Review review) {
+        Optional<Car> optionalCar = carRepository.findById(review.getCarId());
+
+        if(optionalCar.isEmpty()) return "Car is not found";
+        Car car = optionalCar.get();
+
+//      Rating Calculation
+        int totalCount = car.getTotalRatingsCount() + 1;
+        int totalSum = car.getTotalRatingsSum() + review.getStarRating();
+        int updatedRating = totalSum / totalCount;
+
+//      New Rating Update per Car.
+        car.setRating(updatedRating);
+        car.setTotalRatingsSum(totalSum);
+        car.setTotalRatingsCount(totalCount);
+
+//      TIMESTAMP Audit
+        review.setCreatedAt(Instant.now());
+        review.setUpdatedAt(Instant.now());
+
+//      DB Save
+        reviewRepository.save(review);
+        carRepository.save(car);
+        return "We're as thrilled As you !!";
     }
 }

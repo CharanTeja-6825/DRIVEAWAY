@@ -9,7 +9,6 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
   Link,
   CircularProgress,
   InputAdornment,
@@ -26,6 +25,7 @@ import {
   DirectionsCar,
   Cake,
 } from "@mui/icons-material";
+import { toast } from "sonner";
 
 function UserRegistration() {
   const navigate = useNavigate();
@@ -48,8 +48,6 @@ function UserRegistration() {
     confirmPassword: "",
   });
 
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -143,10 +141,6 @@ function UserRegistration() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
-
-    // Clear general messages
-    if (error) setError("");
-    if (message) setMessage("");
   };
 
   // Handle blur for inline validation
@@ -221,10 +215,6 @@ function UserRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear previous messages
-    setError("");
-    setMessage("");
-
     // Validate form
     if (!validateForm()) {
       return;
@@ -244,14 +234,14 @@ function UserRegistration() {
       const response = await register(registrationData);
       
       if (response.data) {
-        setMessage("Registration successful! Redirecting to login...");
+        toast.success("Registration successful! Redirecting to login...");
         // Redirect to login after 2 seconds
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       }
     } catch (err) {
-      setError(
+      toast.error(
         err.response?.data?.message ||
         err.response?.data ||
         "Registration failed. Please try again."
@@ -331,18 +321,6 @@ function UserRegistration() {
 
           {/* Form */}
           <Box sx={{ p: 4 }}>
-            {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
-            )}
-
-            {message && (
-              <Alert severity="success" sx={{ mb: 3 }}>
-                {message}
-              </Alert>
-            )}
-
             <form onSubmit={handleSubmit} noValidate>
               <Stack spacing={3}>
                 {/* Name Field */}

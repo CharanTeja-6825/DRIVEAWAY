@@ -5,13 +5,12 @@ import {
     TextField,
     Button,
     Typography,
-    Alert,
     Stack,
 } from "@mui/material";
 
 import { DatePicker } from "@mui/x-date-pickers";
 
-
+import { toast } from "sonner";
 import { createBooking } from "../services";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
 import dayjs from "dayjs";
@@ -21,10 +20,13 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 420,
+    width: "calc(100% - 32px)",
+    maxWidth: 420,
+    maxHeight: "90vh",
+    overflow: "auto",
     bgcolor: "background.paper",
     boxShadow: 24,
-    p: 4,
+    p: { xs: 3, sm: 4 },
     borderRadius: 2
 };
 
@@ -40,16 +42,12 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
 
 
     const [loading, setLoading] = React.useState(false);
-    const [success, setSuccess] = React.useState("");
-    const [error, setError] = React.useState("");
 
     const resetState = () => {
         setForm({
             startDate: dayjs(),
             endDate: dayjs()
         });
-        setSuccess("");
-        setError("");
         setLoading(false);
     };
 
@@ -60,8 +58,6 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
 
     const handleSubmit = async () => {
         setLoading(true);
-        setError("");
-        setSuccess("");
 
         const payload = {
             ...form,
@@ -72,7 +68,7 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
 
         try {
             const { data } = await createBooking(payload);
-            setSuccess(data);
+            toast.success(data || "Booking created successfully", { position : "top-center" });
             setForm({
                 startDate: dayjs(),
                 endDate: dayjs()
@@ -85,10 +81,10 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
             }, 2000);
         } catch (err) {
             console.log(err);
-            setError(
+            toast.error(
                 err?.response?.data?.message ||
                 err?.message ||
-                "Something went wrong"
+                "Something went wrong", { position : "top-center" }
             );
         } finally {
             setLoading(false);
@@ -103,9 +99,6 @@ export default function BookingModal({ open, handleClose, car, reloadCars }) {
                 </Typography>
 
                 <Stack spacing={2}>
-                    {success && <Alert severity="success">{success}</Alert>}
-                    {error && <Alert severity="error">{error}</Alert>}
-
                     <DatePicker 
                         minDate={dayjs().get('h') > 10 ? dayjs().add(1, 'day') : dayjs()} 
                         format="DD/MM/YYYY" 

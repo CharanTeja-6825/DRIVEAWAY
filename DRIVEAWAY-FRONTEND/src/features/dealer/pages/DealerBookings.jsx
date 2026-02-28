@@ -2,29 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../../shared/hooks/AuthProvider';
 import { getBookings } from '../services';
 import BookingsGrid from '../components/BookingsGrid';
-import { Alert, CircularProgress, Stack, Box, Typography, alpha } from '@mui/material';
+import { CircularProgress, Stack, Box, Typography, alpha } from '@mui/material';
 import { EventNote as BookingIcon } from '@mui/icons-material';
+import { toast } from 'sonner';
 
 function DealerBookings() {
     const [bookings, setBookings] = useState([]);
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
 
     const { user } = useAuth();
 
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const { data } = await getBookings(user.userId);
-                if (typeof (data) === "string") setMessage(data);
-                else setBookings(data);
-            } catch (err) {
-                setError(err);
-            } finally{
-                setLoading(false);
-            }
+    const fetchBookings = async () => {
+        try {
+            const { data } = await getBookings(user.userId);
+            if (typeof (data) === "string") toast.info(data);
+            else setBookings(data);
+        } catch (err) {
+            toast.error(err?.message || "Failed to load bookings");
+        } finally{
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
         fetchBookings();
     }, [])
 
@@ -89,38 +89,13 @@ function DealerBookings() {
 				</Stack>
 			</Box>
 
-			{/* Alerts */}
-			{message && (
-				<Alert
-					severity="success"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{message}
-				</Alert>
-			)}
-			{error && (
-				<Alert
-					severity="error"
-					sx={{
-						mb: 3,
-						borderRadius: 2,
-						"& .MuiAlert-icon": { alignItems: "center" }
-					}}
-				>
-					{error}
-				</Alert>
-			)}
-
 			{/* Bookings Grid */}
 			<BookingsGrid 
 				setLoading={setLoading}  
 				bookings={bookings} 
-				setMessage={setMessage} 
-				setError={setError}
+				setMessage={(msg) => toast.success(msg)} 
+				setError={(err) => toast.error(err)}
+				reloadBookings={fetchBookings}
 			/>
 		</Box>
     )

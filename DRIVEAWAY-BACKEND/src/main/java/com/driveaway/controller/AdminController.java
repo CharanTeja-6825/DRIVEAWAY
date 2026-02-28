@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin("*")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 	

@@ -1,7 +1,11 @@
 import api from '../../api/axios';
 
 export const addCar = (payload) => {
-    return api.post("/api/dealer/add/car", payload);
+  const config = payload instanceof FormData
+    ? { headers: { "Content-Type": "multipart/form-data" } }
+    : undefined;
+
+  return api.post("/api/dealer/add/car", payload, config);
 }
 
 export const getCarsByDealer = (id) => {
@@ -17,5 +21,31 @@ export const validateBooking = (bookingId, approval) => {
 }
 
 export const updateCar = (payload) => {
-    return api.put("/api/dealer/update/car", payload);
+    return api.put("/api/dealer/update/car", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 }
+
+export const updateCarImages = (carId, images) => {
+  const formData = new FormData();
+  formData.append("carId", carId);
+  for (const img of images) {
+    formData.append("carImages", img);
+  }
+  return api.put("/api/dealer/update/car-images", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export const updateCustomerProfile = (payload) => {
+  // TODO: Replace placeholder path with the actual update endpoint.
+  return api.post("/api/dealer/update/car-images", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { approveDealer, getAllApplications } from '../services';
 import { 
-    Alert, 
     Table, 
     TableBody, 
     TableCell, 
@@ -22,12 +21,10 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { toast } from 'sonner';
 
 function ApproveDealers() {
     const [applicationList, setApplicationList] = useState([]);
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
-    const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
     const [actionLoading, setActionLoading] = useState(null);
     const [confirmDialog, setConfirmDialog] = useState({
@@ -39,26 +36,22 @@ function ApproveDealers() {
 
     const getApplications = async () => {
             setLoading(true);
-            setError("");
-            setMessage("");
             try {
                 const { data } = await getAllApplications();
                 if(typeof(data) === "string") {
-                    setMessage(data);
+                    toast.info(data);
                     setApplicationList([]);
                 }
                 else if (Array.isArray(data)) {
                     setApplicationList(data);
-                    setMessage("");
-                    setError("");
                 } else {
-                    setError("Invalid data format received");
+                    toast.error("Invalid data format received");
                     setApplicationList([]);
                 }
                 console.log(data);
             } catch (error) {
                 console.log(error);
-                setError(error?.response?.data?.message || error.message || "Failed to fetch applications");
+                toast.error(error?.response?.data?.message || error.message || "Failed to fetch applications");
                 setApplicationList([]);
             } finally {
                 setLoading(false);
@@ -71,7 +64,7 @@ function ApproveDealers() {
 
     const handleOpenConfirm = (id, approval, dealerName) => {
         if (!id) {
-            setError("Invalid dealer ID");
+            toast.error("Invalid dealer ID");
             return;
         }
         setConfirmDialog({
@@ -95,25 +88,20 @@ function ApproveDealers() {
         const { id, approval } = confirmDialog;
         
         if (!id) {
-            setError("Invalid dealer ID");
+            toast.error("Invalid dealer ID");
             return;
         }
 
         setActionLoading(id);
-        setError("");
-        setSuccess("");
         
         try {
             const { data } = await approveDealer(id, approval);
             console.log(data);
-            setSuccess(data || `Dealer ${approval ? 'approved' : 'rejected'} successfully`);
-            setTimeout(() => {
-                setSuccess("");
-            }, 3000);
+            toast.success(data || `Dealer ${approval ? 'approved' : 'rejected'} successfully`);
             await getApplications();
         } catch (error) {
             console.error(error);
-            setError(error?.response?.data?.message || error.message || "Failed to process request");
+            toast.error(error?.response?.data?.message || error.message || "Failed to process request");
         } finally {
             setActionLoading(null);
             handleCloseConfirm();
@@ -121,22 +109,18 @@ function ApproveDealers() {
     }
 
     return (
-        <Box sx={{ p: 3, maxWidth: 1400, mx: 'auto' }}>
+        <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 1400, mx: 'auto' }}>
             <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 600 }}>
                 Dealer Applications
             </Typography>
-            
-            {error && <Alert severity='error' sx={{ mb: 2 }}>{error}</Alert>}
-            {message && <Alert severity='info' sx={{ mb: 2 }}>{message}</Alert>}
-            {success && <Alert severity='success' sx={{ mb: 2 }}>{success}</Alert>}
 
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
                     <CircularProgress size={60} />
                 </Box>
             ) : (
-                <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflow: 'hidden' }}>
-                    <Table>
+                <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflowX: 'auto' }}>
+                    <Table sx={{ minWidth: 900 }}>
                         <TableHead>
                             <TableRow sx={{ bgcolor: 'primary.main' }}>
                                 <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>S.No</TableCell>
@@ -242,7 +226,8 @@ function ApproveDealers() {
                 PaperProps={{
                     sx: {
                         borderRadius: 3,
-                        minWidth: 400
+                        width: 'calc(100% - 32px)',
+                        maxWidth: 400
                     }
                 }}
             >

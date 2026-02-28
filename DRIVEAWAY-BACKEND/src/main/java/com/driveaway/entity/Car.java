@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 @Document(collection = "cars")
 public class Car implements Serializable{
@@ -21,8 +22,17 @@ public class Car implements Serializable{
     private int year;
     private double pricePerDay;
 
+    private List<String> carImages;
+
     private Instant createdAt;
     private String carStatus;
+
+    private String registration;
+
+    private int totalRatingsCount;
+
+    private int totalRatingsSum;
+    private int rating;
 
     public String getCarId() {
         return carId;
@@ -96,6 +106,46 @@ public class Car implements Serializable{
         this.carStatus = carStatus;
     }
 
+    public List<String> getCarImages() {
+        return carImages;
+    }
+
+    public void setCarImages(List<String> carImages) {
+        this.carImages = carImages;
+    }
+
+    public String getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
+
+    public int getTotalRatingsCount() {
+        return totalRatingsCount;
+    }
+
+    public void setTotalRatingsCount(int totalRatingsCount) {
+        this.totalRatingsCount = totalRatingsCount;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public int getTotalRatingsSum() {
+        return totalRatingsSum;
+    }
+
+    public void setTotalRatingsSum(int totalRatingsSum) {
+        this.totalRatingsSum = totalRatingsSum;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -109,5 +159,13 @@ public class Car implements Serializable{
                 ", createdAt=" + createdAt +
                 ", carStatus='" + carStatus + '\'' +
                 '}';
+    }
+
+    public List<String> getImages() {
+        return carImages;
+    }
+
+    public void setImages(List<String> images) {
+        carImages = images;
     }
 }

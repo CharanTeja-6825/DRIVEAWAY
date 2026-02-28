@@ -1,0 +1,24 @@
+services:
+  backend:
+    container_name: springboot
+    image: charanteja1964/driveaway-backend
+    ports:
+      - "2025:2006"
+    restart: on-failure
+    networks:
+      - app-net
+
+  frontend:
+    container_name: react
+    image: charanteja1964/driveaway-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+# Declare volumes at the bottom
+networks:
+  app-net:
+    driver: bridge

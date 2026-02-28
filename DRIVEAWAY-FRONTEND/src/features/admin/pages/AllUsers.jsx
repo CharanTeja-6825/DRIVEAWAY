@@ -122,7 +122,7 @@ function AllUsers() {
 
     return (
         <>
-            <div className='flex gap-3 p-4'>
+            <div className='flex flex-wrap gap-3 p-4'>
                 <Button
                     variant="contained"
                     onClick={() => {
@@ -144,8 +144,8 @@ function AllUsers() {
                 </Button>
 
             </div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+            <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: { xs: 520, sm: 650 } }} aria-label='simple table'>
                     <TableHead>
                         <TableRow>
                             <TableCell className="px-4 py-2 text-center">S.No</TableCell>

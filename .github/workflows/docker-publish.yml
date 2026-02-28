@@ -1,0 +1,107 @@
+name: Build Docker Images and Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: docker-publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: DOCKER
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./DRIVEAWAY-BACKEND
+          file: ./DRIVEAWAY-BACKEND/backend.Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-backend:${{ github.sha }}
+          platforms: linux/amd64, linux/arm64
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./DRIVEAWAY-FRONTEND
+          file: ./DRIVEAWAY-FRONTEND/frontend.Dockerfile
+          push: true
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_RAZORPAY_KEY=${{ secrets.VITE_RAZORPAY_KEY }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/driveaway-frontend:${{ github.sha }}
+          platforms: linux/amd64, linux/arm64
+
+  deploy-to-render:
+    environment: DOCKER
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Backend Deployment on Render
+        run: |
+          response=$(curl -X POST https://api.render.com/v1/services/${{ secrets.RENDER_BACKEND_SERVICE_ID }}/deploys \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -w "%{http_code}" -o /tmp/backend_response.json)
+          
+          if [ $response -eq 201 ]; then
+            echo "✅ Backend deployment triggered successfully"
+            cat /tmp/backend_response.json
+          else
+            echo "❌ Backend deployment failed with status: $response"
+            cat /tmp/backend_response.json
+            exit 1
+          fi
+      
+      - name: Trigger Frontend Deployment on Render
+        run: |
+          response=$(curl -X POST https://api.render.com/v1/services/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}/deploys \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -w "%{http_code}" -o /tmp/frontend_response.json)
+          
+          if [ $response -eq 201 ]; then
+            echo "✅ Frontend deployment triggered successfully"
+            cat /tmp/frontend_response.json
+          else
+            echo "❌ Frontend deployment failed with status: $response"
+            cat /tmp/frontend_response.json
+            exit 1
+          fi
+      
+      - name: Summary
+        run: |
+          echo "🚀 Deployment Summary"
+          echo "===================="
+          echo "✅ Docker images pushed to Docker Hub"
+          echo "✅ Backend deployment triggered on Render"
+          echo "✅ Frontend deployment triggered on Render"
+          echo ""
+          echo "Check your Render dashboard for deployment status:"
+          echo "https://dashboard.render.com/"

@@ -2,26 +2,23 @@ package com.driveaway.controller;
 
 import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.dto.DealerRequestDTO;
-import com.driveaway.entity.Booking;
-import com.driveaway.entity.Car;
+import com.driveaway.entity.*;
 import com.driveaway.enumerations.BookingStatus;
-import com.driveaway.service.BookingService;
-import com.driveaway.service.CarService;
-import com.driveaway.service.DealerApplicationService;
+import com.driveaway.service.*;
+import com.razorpay.RazorpayException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.driveaway.entity.User;
-import com.driveaway.service.CustomerService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/customer")
-@CrossOrigin("*")
 @PreAuthorize("hasRole('CUSTOMER')")
 public class CustomerController {
 	
@@ -36,7 +33,14 @@ public class CustomerController {
 
 	@Autowired
 	private BookingService bookingService;
-	
+
+	@Autowired
+	private OrderService orderService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ReviewService reviewService;
+
 	@GetMapping("/")
 	public String chome() {
 		return "Hello Customer";
@@ -71,7 +75,7 @@ public class CustomerController {
 													 			   .equals(BookingStatus.AVAILABLE.toString()))
 											 .toList();
 		return cars.size() == 0 ?
-				ResponseEntity.status(HttpStatus.ACCEPTED).body("No Cars Found"):
+				ResponseEntity.status(HttpStatus.OK).body("No Cars Found"):
 				ResponseEntity.ok(cars);
 	}
 
@@ -79,7 +83,7 @@ public class CustomerController {
 	public ResponseEntity<String> addBooking(@RequestBody Booking booking){
 		String response = bookingService.createBooking(booking);
 		if(response.equals("Car Not Found")) return ResponseEntity.status(404).body(response);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.status(201).body(response);
 	}
 
 	@GetMapping("/bookings")
@@ -90,6 +94,35 @@ public class CustomerController {
 	@PostMapping("/cancel/booking")
 	public ResponseEntity<String> cancelBooking(@RequestParam String bookingId){
 		return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
+	}
+
+	@PostMapping("/create/order")
+	public ResponseEntity<Order> createPayment(@RequestBody Order order) throws RazorpayException {
+		return ResponseEntity.status(201).body(orderService.createOrder(order));
+	}
+
+	@PostMapping("/verify")
+	public ResponseEntity<String> verifyPayment(@RequestBody Map<String, String> paymentDetails){
+		String orderId = paymentDetails.get("orderId");
+		String paymentId = paymentDetails.get("paymentId");
+		String signature = paymentDetails.get("signature");
+
+		return ResponseEntity.ok(orderService.verifySignature(orderId, paymentId, signature) ? "Payment Success" : "Invalid Signature");
+	}
+
+	@PostMapping("/profile")
+	public ResponseEntity<String> updateProfileImage(@RequestParam String userId, @RequestPart MultipartFile profileImage) throws Exception {
+		return ResponseEntity.ok(userService.updateProfileImage(userId, profileImage));
+	}
+
+	@PostMapping("/review")
+	public ResponseEntity<String> addReview(@RequestBody Review review){
+		return ResponseEntity.status(201).body(carService.addReviewCar(review));
+	}
+
+	@GetMapping("/reviews/{carId}")
+	public ResponseEntity<List<Review>> getReviewsByCar(@PathVariable String carId){
+		return ResponseEntity.ok(reviewService.getReviewsByCar(carId));
 	}
 
 }
