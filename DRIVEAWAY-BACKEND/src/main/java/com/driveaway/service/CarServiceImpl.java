@@ -6,6 +6,8 @@ import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -24,6 +26,7 @@ public class CarServiceImpl implements CarService{
     private DealerRepository dealerRepository;
 
     @Override
+    @CacheEvict(value = "cars", allEntries = true)
     public String addCar(Car car) {
         Optional<Dealer> opd = dealerRepository.findById(car.getDealerId());
         if(opd.isEmpty()) return "Dealer not found";
@@ -36,6 +39,7 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
+    @Cacheable(value = "cars", unless = "#result == null || #result.isEmpty()")
     public List<Car> allCars() {
         return carRepository.findAll();
     }
@@ -45,11 +49,13 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
+    @CacheEvict(value = "cars", allEntries = true)
     public String updateCar(Car car) {
         return carRepository.updateCar(car);
     }
 
     @Override
+    @CacheEvict(value = "cars", allEntries = true)
     public String deleteCar(String carId) {
         carRepository.deleteById(carId);
         return "Car Deleted Successfully";
