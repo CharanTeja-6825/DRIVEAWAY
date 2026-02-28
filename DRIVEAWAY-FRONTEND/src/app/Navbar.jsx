@@ -110,8 +110,7 @@ function Navbar() {
         <Toolbar disableGutters sx={{ py: 1 }}>
           {/* Logo */}
           <Stack direction="row" spacing={1} alignItems="center" sx={{ flexGrow: 1 }}>
-            <DirectionsCar sx={{ fontSize: 32, color: 'primary.main' }} />
-            <Typography
+            <Box
               variant="h5"
               component={Link}
               to={
@@ -132,8 +131,8 @@ function Navbar() {
                 },
               }}
             >
-              DriveAway
-            </Typography>
+              <img src="/driveaway.png" alt="Driveaway" width={125}/>
+            </Box>
           </Stack>
 
           {/* Navigation Links */}
