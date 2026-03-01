@@ -56,6 +56,7 @@ public class CarServiceImpl implements CarService{
         return carRepository.findAll();
     }
 
+    @Cacheable(value = "dealer_cars", key = "#dealerId")
     public List<Car> dealerCars(String dealerId){
         return carRepository.findCarsByDealerId(dealerId);
     }
