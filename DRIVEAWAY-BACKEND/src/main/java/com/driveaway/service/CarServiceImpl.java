@@ -1,6 +1,5 @@
 package com.driveaway.service;
 
-import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.entity.Dealer;
 import com.driveaway.entity.Review;
@@ -10,12 +9,12 @@ import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +35,7 @@ public class CarServiceImpl implements CarService{
     @Autowired
     private BookingRepository bookingRepository;
 
+    @CacheEvict(value = "cars", allEntries = true)
     @Override
     public String addCar(Car car, MultipartFile[] carImages) throws Exception {
         Optional<Dealer> opd = dealerRepository.findById(car.getDealerId());
@@ -51,15 +51,18 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
+    @Cacheable(value = "cars", unless = "#result == null || #result.isEmpty()")
     public List<Car> allCars() {
         return carRepository.findAll();
     }
 
+    @Cacheable(value = "dealer_cars", key = "#dealerId")
     public List<Car> dealerCars(String dealerId){
         return carRepository.findCarsByDealerId(dealerId);
     }
 
     @Override
+    @CacheEvict(value = "cars", allEntries = true)
     public String updateCar(Car car, MultipartFile[] carImages) throws Exception {
         String result = carRepository.updateCar(car);
         if (result.equals("Car Not Found")) return result;
@@ -76,7 +79,8 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public String deleteCar(String carId) {
+    @CacheEvict(value = "cars", allEntries = true)
+        public String deleteCar(String carId) {
         carRepository.deleteById(carId);
         return "Car Deleted Successfully";
     }

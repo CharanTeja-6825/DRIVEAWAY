@@ -8,11 +8,11 @@ import java.time.Instant;
 import java.util.List;
 
 public interface BookingService {
-    public String createBooking(Booking booking);
-    public List<BookingDTO> bookingsByDealer(String dealerId);
-    public String validateBooking(String bookingId, boolean approval);
-    public List<CustomerBookingDTO> bookingsByCustomer(String customerId);
-    public String cancelBooking(String BookingId);
-    public void expirePendingBookings();
-    public void updateBookingsAndCars(Instant currentDate);
+    String createBooking(Booking booking);
+    List<BookingDTO> bookingsByDealer(String dealerId);
+    String validateBooking(String bookingId, boolean approval);
+    List<CustomerBookingDTO> bookingsByCustomer(String customerId);
+    String cancelBooking(String BookingId);
+    void expirePendingBookings();
+    void updateBookingsAndCars(Instant currentDate);
 }

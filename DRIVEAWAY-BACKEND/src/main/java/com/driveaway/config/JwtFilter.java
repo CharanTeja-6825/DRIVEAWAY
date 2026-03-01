@@ -3,6 +3,7 @@ package com.driveaway.config;
 import java.io.IOException;
 import java.util.Collections;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,6 @@ import com.driveaway.entity.User;
 import com.driveaway.service.JWTService;
 import com.driveaway.service.UserService;
 
-import io.jsonwebtoken.JwtException;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter{
 	
 	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
-	
+
 	@Autowired
 	private JWTService jwtService;
 	

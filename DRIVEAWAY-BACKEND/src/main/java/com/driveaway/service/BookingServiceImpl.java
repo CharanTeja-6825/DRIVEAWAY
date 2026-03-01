@@ -9,6 +9,9 @@ import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -31,13 +34,17 @@ public class BookingServiceImpl implements BookingService{
     private BookingRepository bookingRepository;
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "customer_bookings", key = "#booking.customerId"),
+            @CacheEvict(value = "dealer_bookings", key = "#booking.dealerId")
+    })
     public String createBooking(Booking booking) {
 
         /// Finding Car using carId as base condition.
-        Optional<Car> opcar = carRepository.findById(booking.getCarId());
-        if(opcar.isEmpty()) return "Car Not Found";
+        Optional<Car> optionalCar = carRepository.findById(booking.getCarId());
+        if(optionalCar.isEmpty()) return "Car Not Found";
 
-        Car car = opcar.get();
+        Car car = optionalCar.get();
         String status = car.getCarStatus();
 
         ///  Checking for existing status of the car.
@@ -81,6 +88,8 @@ public class BookingServiceImpl implements BookingService{
         return "Booking Successful !";
     }
 
+    @Override
+    @Cacheable(key = "#dealerId", value = "dealer_bookings")
     public List<BookingDTO> bookingsByDealer(String dealerId){
         List<Booking> bookings = bookingRepository.findBookingsByDealerId(dealerId);
         List<BookingDTO> bookingDTOS = new ArrayList<>();
@@ -102,6 +111,10 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "customer_bookings", allEntries = true),
+            @CacheEvict(value = "dealer_bookings", allEntries = true)
+    })
     public String validateBooking(String bookingId, boolean approval) {
 
         Optional<Booking> opbook = bookingRepository.findById(bookingId);
@@ -123,6 +136,7 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
+    @Cacheable(key = "#customerId", value = "customer_bookings")
     public List<CustomerBookingDTO> bookingsByCustomer(String customerId) {
 //        List<Booking> bookings = bookingRepository.findBookingsByCustomerId(customerId);
         List<CustomerBookingDTO> customerBookingDTOS = bookingRepository.findCustomerBookings(customerId);
@@ -130,6 +144,10 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "customer_bookings", allEntries = true),
+            @CacheEvict(value = "dealer_bookings", allEntries = true)
+    })
     public String cancelBooking(String bookingId) {
         Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
         if(optionalBooking.isEmpty()) return "Booking Not found";
@@ -151,6 +169,10 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "customer_bookings", allEntries = true),
+            @CacheEvict(value = "dealer_bookings", allEntries = true)
+    })
     public void expirePendingBookings() {
         Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
         List<Booking> expiredBookings = bookingRepository.findBookingsByCreatedAtLessThan(timeoutDuration);
@@ -169,6 +191,10 @@ public class BookingServiceImpl implements BookingService{
 
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "customer_bookings", allEntries = true),
+            @CacheEvict(value = "dealer_bookings", allEntries = true)
+    })
     public void updateBookingsAndCars(Instant currentDate) {
 
         List<String> startCars = bookingRepository.findBookingsByStatusAndStartDateLessThanEqual(

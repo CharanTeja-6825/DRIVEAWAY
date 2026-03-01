@@ -4,10 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Document(collection = "dealer_applications")
-public class DealerApplications {
+public class DealerApplications implements Serializable{
     @Id
     private String id;
 

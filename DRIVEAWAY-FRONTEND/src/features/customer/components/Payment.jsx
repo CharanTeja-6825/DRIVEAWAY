@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import { createOrder, verfiyOrder } from '../services';
-import { useAuth } from '../../../shared/hooks/AuthProvider';
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import { createOrder, verfiyOrder } from "../services";
+import { useAuth } from "../../../shared/hooks/AuthProvider";
+import { Toaster } from "sonner";
+import { toast } from "sonner";
 
 function PaymentButton({ booking, reloadBookings }) {
   const { user, email } = useAuth();
@@ -23,9 +25,9 @@ function PaymentButton({ booking, reloadBookings }) {
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: data.amount,
-        currency: 'INR',
+        currency: "INR",
         order_id: data.order_id,
-        name: 'Driveaway ',
+        name: "Driveaway ",
         handler: async function (response) {
           const { data } = await verfiyOrder(
             response.razorpay_order_id,
@@ -33,14 +35,15 @@ function PaymentButton({ booking, reloadBookings }) {
             response.razorpay_signature,
           );
 
-          alert(data);
+          // alert(data);
+          toast.info(data);
           reloadBookings();
         },
         prefill: {
           email: JSON.stringify(email),
         },
         theme: {
-          color: '#3370cc',
+          color: "#3370cc",
         },
       };
 
@@ -52,26 +55,42 @@ function PaymentButton({ booking, reloadBookings }) {
   };
 
   return (
-    <Button
-      variant="contained"
-      size="small"
-      disableElevation
-      onClick={handlePayment}
-      disabled={isProcessing}
-      sx={{
-        textTransform: 'none',
-        fontWeight: 600,
-        borderRadius: '999px',
-        px: 2.5,
-        py: 0.75,
-        bgcolor: 'secondary.main',
-        '&:hover': {
-          bgcolor: 'secondary.dark',
-        },
-      }}
-    >
-      {isProcessing ? 'Processing…' : `Pay ₹${booking.totalAmount.toLocaleString('en-IN')}`}
-    </Button>
+    <div>
+      <Toaster
+        position="top-right"
+        richColors
+        closeButton
+        toastOptions={{
+          style: {
+            fontFamily: '"Source Sans 3", sans-serif',
+            borderRadius: "12px",
+          },
+          className: "driveaway-toast",
+        }}
+      />
+      <Button
+        variant="contained"
+        size="small"
+        disableElevation
+        onClick={handlePayment}
+        disabled={isProcessing}
+        sx={{
+          textTransform: "none",
+          fontWeight: 600,
+          borderRadius: "999px",
+          px: 2.5,
+          py: 0.75,
+          bgcolor: "secondary.main",
+          "&:hover": {
+            bgcolor: "secondary.dark",
+          },
+        }}
+      >
+        {isProcessing
+          ? "Processing…"
+          : `Pay ₹${booking.totalAmount.toLocaleString("en-IN")}`}
+      </Button>
+    </div>
   );
 }
 

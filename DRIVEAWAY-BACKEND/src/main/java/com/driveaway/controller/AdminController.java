@@ -4,6 +4,7 @@ import java.util.List;
 import com.driveaway.entity.DealerApplications;
 import com.driveaway.service.DealerApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class AdminController {
 	public String test(HttpServletRequest request) {
 		return "Jai Balayya : "+request.getSession().getId();
 	}
-	
+
 	@GetMapping("/all")
 	public List<User> getAllUsers(){
 		List<User> users = adminService.getAllUsers();

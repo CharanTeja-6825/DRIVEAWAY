@@ -1,5 +1,6 @@
 package com.driveaway.entity;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import org.springframework.data.annotation.Id;
@@ -17,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
         def = "{ 'customerId': 1, 'createdAt': -1 }"
 )
 
-public class Booking {
+public class Booking implements Serializable{
 
     @Id
     private String bookingId;
