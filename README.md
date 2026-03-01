@@ -1,4 +1,9 @@
-# 🚗 DRIVEAWAY - Car Rental Marketplace Platform
+<div>
+  <h1 align="center">DRIVEAWAY - Car Rental Marketplace Platform</h1>
+  <p align="center">
+    <img src="https://res.cloudinary.com/dgmk3fhuz/image/upload/v1772253701/driveaway_k2zbak.png" alt="DRIVEAWAY Logo" width="300" />
+  </p>
+</div>
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-19.2.3-blue.svg)](https://reactjs.org/)
@@ -9,7 +14,6 @@
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF.svg)](https://github.com/features/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-DRIVEAWAY is a comprehensive full-stack car rental marketplace platform that connects customers seeking rental vehicles with dealers offering cars. The platform features role-based access control, integrated Razorpay payments, automated booking lifecycle management with scheduled tasks, and a modern, responsive user interface — all deployed via a CI/CD pipeline with multi-platform Docker support.
 
 ## 🌐 Live Demo
 
