@@ -35,9 +35,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             action="${{ inputs.action }}"
-          elif [ "${{ github.event.schedule }}" = "0 0 * * *" ]; then
+          elif [ "${{ github.event.schedule }}" = "30 5 * * *" ]; then
             action="stop"
-          elif [ "${{ github.event.schedule }}" = "0 9 * * *" ]; then
+          elif [ "${{ github.event.schedule }}" = "30 14 * * *" ]; then
             action="start"
           else
             echo "Unable to map scheduled event to start/stop action."
