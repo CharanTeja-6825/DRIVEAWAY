@@ -106,7 +106,7 @@ function Navbar() {
         borderColor: 'grey.200',
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
         <Toolbar disableGutters sx={{ py: 1 }}>
           {/* Logo */}
           <Stack direction="row" spacing={1} alignItems="center" sx={{ flexGrow: 1 }}>
