@@ -29,20 +29,9 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 public class RedisConfig {
 
-  @Value("${spring.data.redis.host}")
-  private String redisHost;
-
-  @Value("${spring.data.redis.port}")
-  private int redisPort;
-
   @Value("${spring.cache.redis.time-to-live:30000ms}")
   private Duration redisCacheTtl;
 
-  @Bean
-  public RedisConnectionFactory redisConnectionFactory() {
-    RedisStandaloneConfiguration redisConfiguration = new RedisStandaloneConfiguration(redisHost, redisPort);
-    return new LettuceConnectionFactory(redisConfiguration);
-  }
 
   @Bean
   public ObjectMapper redisObjectMapper() {
