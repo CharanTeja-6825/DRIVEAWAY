@@ -2,8 +2,8 @@ name: Schedule Render Services
 
 on:
   schedule:
-    - cron: "30 5 * * *" # 00:00 UTC
-    - cron: "30 14 * * *" # 09:00 UTC
+    - cron: "50 3 * * *" # 09:20 IST (03:50 UTC)
+    - cron: "0 17 * * *" # 22:30 IST (17:00 UTC)
   workflow_dispatch:
     inputs:
       action:
@@ -35,10 +35,10 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             action="${{ inputs.action }}"
-          elif [ "${{ github.event.schedule }}" = "30 5 * * *" ]; then
-            action="stop"
-          elif [ "${{ github.event.schedule }}" = "30 14 * * *" ]; then
+          elif [ "${{ github.event.schedule }}" = "50 3 * * *" ]; then
             action="start"
+          elif [ "${{ github.event.schedule }}" = "0 17 * * *" ]; then
+            action="stop"
           else
             echo "Unable to map scheduled event to start/stop action."
             exit 1
