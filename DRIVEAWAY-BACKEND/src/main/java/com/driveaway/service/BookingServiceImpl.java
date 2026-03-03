@@ -5,6 +5,7 @@ import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.events.BookingCreatedEvent;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -32,6 +34,8 @@ public class BookingServiceImpl implements BookingService{
     private UserRepository userRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Caching(evict = {
@@ -85,6 +89,9 @@ public class BookingServiceImpl implements BookingService{
         booking.setTotalAmount(price*days);
 
         bookingRepository.save(booking);
+
+        BookingCreatedEvent bk = new BookingCreatedEvent(booking);
+        applicationEventPublisher.publishEvent(bk);
         return "Booking Successful !";
     }
 
