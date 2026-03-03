@@ -127,6 +127,14 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
+
+		<!-- Source: https://mvnrepository.com/artifact/com.brevo/brevo -->
+		<dependency>
+			<groupId>com.brevo</groupId>
+			<artifactId>brevo</artifactId>
+			<version>1.1.2</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -11,10 +11,10 @@ public interface CarService {
 
     @CacheEvict(value = "cars", allEntries = true)
     String addCar(Car car, MultipartFile[] carImages) throws Exception;
-    public List<Car> allCars();
-    public List<Car> dealerCars(String dealerId);
-    public String updateCar(Car car, MultipartFile[] carImages) throws Exception;
-    public String deleteCar(String carId);
-    public String updateCarImages(String carId, MultipartFile[] carImages) throws Exception;
-    public String addReviewCar(Review review);
+    List<Car> allCars();
+    List<Car> dealerCars(String dealerId);
+    String updateCar(Car car, MultipartFile[] carImages) throws Exception;
+    String deleteCar(String carId);
+    String updateCarImages(String carId, MultipartFile[] carImages) throws Exception;
+    String addReviewCar(Review review);
 }
