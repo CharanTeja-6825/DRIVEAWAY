@@ -137,30 +137,30 @@ DRIVEAWAY follows a **modern full-stack architecture** with clear separation of 
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                   Client Layer                       │
-│  React SPA (Vite) - Material-UI + Tailwind CSS     │
-│              Port: 3000 (Dev) / 80 (Prod)          │
+│                   Client Layer                      │
+│  React SPA (Vite) - Material-UI + Tailwind CSS      │
+│              Port: 3000 (Dev) / 80 (Prod)           │
 └─────────────────┬───────────────────────────────────┘
                   │ REST API (JSON)
                   │ JWT Authentication (HttpOnly Cookie)
                   ▼
 ┌─────────────────────────────────────────────────────┐
-│                Application Layer                     │
-│       Spring Boot REST Controllers                   │
+│                Application Layer                    │
+│       Spring Boot REST Controllers                  │
 │     JWT Filter → Security → Business Logic          │
 │     Scheduled Tasks (Booking Expiry & Lifecycle)    │
 │              Port: 2006 (Internal)                  │
 └─────────┬───────────────────────────────┬───────────┘
           │ Spring Data MongoDB           │ Razorpay API
           ▼                               ▼
-┌──────────────────────────┐  ┌────────────────────────┐
-│       Data Layer          │  │   Payment Gateway       │
-│  MongoDB Atlas Cloud DB   │  │   Razorpay (Orders +    │
-│  Collections: users,      │  │   Signature Verify)     │
-│  cars, bookings, dealers, │  └────────────────────────┘
-│  dealer_applications,     │
-│  orders                   │
-└──────────────────────────┘
+┌─────────────────────────┐ ┌───────────────────────┐
+│       Data Layer        │ │   Payment Gateway     │
+│  MongoDB Atlas Cloud DB │ │   Razorpay (Orders +  │
+│  Collections: users,    │ │   Signature Verify)   │
+│  cars, bookings, dealers│ └───────────────────────┘
+│  dealer_applications,   │
+│  orders                 │
+└─────────────────────────┘
 ```
 
 ### Architecture Highlights
