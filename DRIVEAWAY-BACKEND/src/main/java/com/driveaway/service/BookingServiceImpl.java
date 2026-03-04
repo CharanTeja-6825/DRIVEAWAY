@@ -40,7 +40,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", key = "#booking.customerId"),
-            @CacheEvict(value = "dealer_bookings", key = "#booking.dealerId")
+            @CacheEvict(value = "dealer_bookings", key = "#booking.dealerId"),
+            @CacheEvict(value = "cars", allEntries = true)
     })
     public String createBooking(Booking booking) {
 
@@ -81,15 +82,15 @@ public class BookingServiceImpl implements BookingService{
         double price = car.getPricePerDay();
 
         /// Updating the car Status to Pending.
-
+        if(car.getCarStatus().equals(BookingStatus.AVAILABLE.toString()))
         car.setCarStatus(BookingStatus.PENDING.toString());
-        carRepository.save(car);
+        else return "Car is Already Booked by Someone else please try again.";
 
         /// Calculating and setting the price.
         booking.setTotalAmount(price*days);
 
         bookingRepository.save(booking);
-
+        carRepository.save(car);
         BookingCreatedEvent bk = new BookingCreatedEvent(booking);
         applicationEventPublisher.publishEvent(bk);
         return "Booking Successful !";
