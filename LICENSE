@@ -1,21 +1,63 @@
-MIT License
+SPDX-License-Identifier: LicenseRef-Charan-Proprietary-1.0
 
-Copyright (c) 2026 RATHIKINDI CHARAN TEJA
+============================================================
+  Rathikindi Charan Teja Proprietary License 1.0
+============================================================
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Copyright (c) 2026 Rathikindi Charan Teja. All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+--- Grant of Permission (Viewing Only) ---
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+This source code is made publicly visible on GitHub solely for
+the purposes of viewing and educational reference. No other
+rights are granted by this license.
+
+--- Restrictions ---
+
+No person, organization, or entity is permitted to copy, modify,
+fork, reproduce, distribute, sublicense, or use the code or any
+portion of it in any form, whether in source or compiled form,
+without prior written permission from the copyright holder.
+
+Any attempt to reuse the code, algorithms, architecture, or
+implementation details contained within this repository is
+considered a violation of this license.
+
+--- No Derivative Works ---
+
+The code may not be used to recreate, replicate, or build
+derivative versions of the project, prototype, or any part
+thereof. Creating works based on or inspired by the structure,
+logic, or design of this code is strictly prohibited.
+
+--- No Commercial Use ---
+
+Commercial and non-commercial use of this code are both strictly
+prohibited without explicit written permission from the copyright
+holder.
+
+--- Disclaimer of Warranty ---
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. THE COPYRIGHT HOLDER MAKES NO REPRESENTATIONS OR
+WARRANTIES REGARDING THE ACCURACY, COMPLETENESS, OR SUITABILITY
+OF THE CODE FOR ANY PURPOSE.
+
+--- Limitation of Liability ---
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+--- Contact for Licensing Permission ---
+
+To request permission for use, distribution, or licensing of this
+software, please contact the copyright holder:
+
+  Rathikindi Charan Teja
+  GitHub: https://github.com/CharanTeja-6825
+
+All rights reserved.
