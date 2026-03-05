@@ -208,7 +208,7 @@ DRIVEAWAY is not just another CRUD app — it's a **production-ready marketplace
 Customer books a car
         │
         ▼
-    ┌────────┐   30 min timeout   ┌─────────┐
+    ┌────────┐   5 min timeout    ┌─────────┐
     │PENDING │──────────────────→ │ EXPIRED  │  (car unlocked)
     └───┬────┘                    └──────────┘
         │
