@@ -104,7 +104,8 @@ function CustomerProfile() {
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
+    const sanitized = name === "userAge" ? value.replace(/\D/g, "") : value;
+    setEditForm((prev) => ({ ...prev, [name]: sanitized }));
   };
 
   const handleSaveProfile = async () => {
@@ -362,12 +363,7 @@ function CustomerProfile() {
                   label="Age"
                   name="userAge"
                   value={editForm.userAge}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({
-                      ...prev,
-                      userAge: e.target.value.replace(/\D/g, ""),
-                    }))
-                  }
+                  onChange={handleFieldChange}
                   size="small"
                   fullWidth
                   inputProps={{ maxLength: 3 }}

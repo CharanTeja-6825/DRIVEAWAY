@@ -22,26 +22,23 @@ const BrandSelection = ({ form, handleChange }) => {
       }}
       getOptionLabel={(option) => option.label}
       isOptionEqualToValue={(option, value) => option.value === value.value}
-      renderOption={(props, option) => {
-        const { key, ...rest } = props;
-        return (
-          <Box
-            key={key}
-            component="li"
-            {...rest}
-            sx={{ display: "flex", alignItems: "center", gap: 1.5, py: 1 }}
-          >
-            <img
-              src={option.logo}
-              alt={option.label}
-              width={24}
-              height={24}
-              style={{ objectFit: "contain", flexShrink: 0 }}
-            />
-            {option.label}
-          </Box>
-        );
-      }}
+      renderOption={({ key, ...rest }, option) => (
+        <Box
+          key={key}
+          component="li"
+          {...rest}
+          sx={{ display: "flex", alignItems: "center", gap: 1.5, py: 1 }}
+        >
+          <img
+            src={option.logo}
+            alt={option.label}
+            width={24}
+            height={24}
+            style={{ objectFit: "contain", flexShrink: 0 }}
+          />
+          {option.label}
+        </Box>
+      )}
       renderInput={(params) => (
         <TextField
           {...params}
