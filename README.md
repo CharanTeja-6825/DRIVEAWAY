@@ -1,420 +1,263 @@
-<div>
-  <h1 align="center">DRIVEAWAY - Car Rental Marketplace Platform</h1>
-  <p align="center">
-    <img src="https://res.cloudinary.com/dgmk3fhuz/image/upload/v1772253701/driveaway_k2zbak.png" alt="DRIVEAWAY Logo" width="300" />
-  </p>
+<div align="center">
+
+<img src="https://res.cloudinary.com/dgmk3fhuz/image/upload/v1772253701/driveaway_k2zbak.png" alt="DRIVEAWAY" width="280" />
+
+# DRIVEAWAY
+
+### A Production-Grade Car Rental Marketplace
+
+*Full-stack platform with multi-role access, integrated payments, automated booking lifecycle, and containerized deployment*
+
+&nbsp;
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-driveaway--jhee.onrender.com-1E3A8A?style=for-the-badge)](https://driveaway-jhee.onrender.com/)
+
+&nbsp;
+
+<table>
+<tr>
+<td align="center"><strong>Backend</strong></td>
+<td align="center"><strong>Frontend</strong></td>
+<td align="center"><strong>Database & Cache</strong></td>
+<td align="center"><strong>DevOps</strong></td>
+</tr>
+<tr>
+<td align="center">
+<img src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white" alt="Java 21" /><br/>
+<img src="https://img.shields.io/badge/Spring_Boot-4.0.2-6DB33F?logo=springboot&logoColor=white" alt="Spring Boot" /><br/>
+<img src="https://img.shields.io/badge/Spring_Security-7.3.1-6DB33F?logo=springsecurity&logoColor=white" alt="Spring Security" /><br/>
+<img src="https://img.shields.io/badge/Razorpay-1.4.8-0C2451?logo=razorpay&logoColor=white" alt="Razorpay" />
+</td>
+<td align="center">
+<img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React 19" /><br/>
+<img src="https://img.shields.io/badge/Vite-7.3-646CFF?logo=vite&logoColor=white" alt="Vite" /><br/>
+<img src="https://img.shields.io/badge/MUI-7.3-007FFF?logo=mui&logoColor=white" alt="MUI" /><br/>
+<img src="https://img.shields.io/badge/Tailwind-4.2-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind" />
+</td>
+<td align="center">
+<img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white" alt="MongoDB" /><br/>
+<img src="https://img.shields.io/badge/Redis-Cache-DC382D?logo=redis&logoColor=white" alt="Redis" /><br/>
+<img src="https://img.shields.io/badge/Cloudinary-Storage-3448C5?logo=cloudinary&logoColor=white" alt="Cloudinary" /><br/>
+<img src="https://img.shields.io/badge/Brevo-Email-0B996E?logo=sendinblue&logoColor=white" alt="Brevo" />
+</td>
+<td align="center">
+<img src="https://img.shields.io/badge/Docker-Multi--Platform-2496ED?logo=docker&logoColor=white" alt="Docker" /><br/>
+<img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?logo=githubactions&logoColor=white" alt="CI/CD" /><br/>
+<img src="https://img.shields.io/badge/Nginx-Reverse_Proxy-009639?logo=nginx&logoColor=white" alt="Nginx" /><br/>
+<img src="https://img.shields.io/badge/Render-Deployed-46E3B7?logo=render&logoColor=white" alt="Render" />
+</td>
+</tr>
+</table>
+
 </div>
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![React](https://img.shields.io/badge/React-19.2.3-blue.svg)](https://reactjs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/)
-[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
-[![Razorpay](https://img.shields.io/badge/Razorpay-Integrated-blue.svg)](https://razorpay.com/)
-[![Docker](https://img.shields.io/badge/Docker-Multi--Platform-2496ED.svg)](https://www.docker.com/)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF.svg)](https://github.com/features/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+---
 
+## 📑 Table of Contents
 
-## 🌐 Live Demo
-
-**🚀 Application URL:** [https://driveaway-jhee.onrender.com/](https://driveaway-jhee.onrender.com/)
-
-### 🎨 Landing Page Preview
-
-The DRIVEAWAY application features a modern, intuitive landing page where users can:
-- **Browse** the car rental marketplace
-- **Sign up** as a customer or apply to become a dealer
-- **Login** to access role-specific dashboards
-- **Explore** available vehicles from verified dealers
-
-**Key Landing Page Features:**
-- 🎯 Clean, responsive Material-UI design
-- 🔐 Secure authentication interface
-- 🚗 Quick access to car browsing
-- 📱 Mobile-friendly navigation
-- ⚡ Fast loading with Vite optimization
-
-Visit the live application to see the landing page in action!
-
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
+- [Why DRIVEAWAY](#-why-driveaway)
+- [System Architecture](#-system-architecture)
+- [Features at a Glance](#-features-at-a-glance)
+- [Tech Stack Deep Dive](#-tech-stack-deep-dive)
+- [Booking Lifecycle](#-booking-lifecycle)
+- [API Reference](#-api-reference)
+- [Database Design](#-database-design)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [User Roles & Capabilities](#-user-roles--capabilities)
-- [Database Schema](#-database-schema)
-- [Development](#-development)
-- [CI/CD & Automation](#-cicd--automation)
-- [Deployment](#-deployment)
-- [Technical Highlights & Developer Competencies](#-technical-highlights--developer-competencies)
-- [Contributing](#-contributing)
+- [CI/CD & Deployment](#-cicd--deployment)
+- [Technical Highlights](#-technical-highlights)
+- [Author](#-author)
 
-## ✨ Features
+---
 
-### 🎯 Core Functionality
-- **Multi-Role System**: Distinct interfaces and capabilities for Customers, Dealers, and Admins
-- **JWT Authentication**: Secure, stateless authentication with role-based access control (HttpOnly cookies + Bearer tokens)
-- **Car Listing Management**: Dealers can add, update, and manage their vehicle inventory
-- **Booking System**: Customers can browse and book cars with date range selection
-- **Razorpay Payment Integration**: Secure online payments with order creation, checkout overlay, and server-side signature verification
-- **Approval Workflows**: Multi-stage approval process for dealer applications and bookings
-- **Automated Booking Lifecycle**: Scheduled tasks handle pending booking expiration (5-minute timeout), activation on start date, and completion on end date
-- **Real-time Status Tracking**: Monitor booking status across the full lifecycle (Pending → Approved → Paid → Active → Completed)
-- **Responsive Design**: Modern UI built with Material-UI and Tailwind CSS
+## 🎯 Why DRIVEAWAY
 
-### 👤 Customer Features
-- Browse available cars from verified dealers
-- Filter and search car listings
-- Book cars with flexible date ranges via DatePicker
-- Make secure online payments through Razorpay
+DRIVEAWAY is not just another CRUD app — it's a **production-ready marketplace** that solves real-world problems with enterprise-grade patterns:
+
+| Challenge | Solution |
+|-----------|----------|
+| **Multi-tenant access** | Three-role RBAC system (Customer, Dealer, Admin) with method-level `@PreAuthorize` guards |
+| **Secure payments** | End-to-end Razorpay integration with server-side order creation and HMAC SHA-256 signature verification |
+| **Stale booking cleanup** | Cron-based scheduler auto-expires unanswered bookings and transitions statuses at midnight |
+| **Scalable deployment** | Multi-stage Docker builds, Docker Compose orchestration, CI/CD to Docker Hub + Render |
+| **Performance** | Redis caching (30s TTL) for car listings, MongoDB compound indexes, Nginx static file serving |
+| **Cross-origin auth** | Dual JWT extraction (HttpOnly cookies + Bearer header), dynamic SameSite policy |
+
+---
+
+## 🏗 System Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  CLIENT LAYER                                                            │
+│  React 19 SPA · Vite · MUI 7 + Tailwind CSS 4 · Axios                   │
+│  Port 3000 (dev) / 80 (prod via Nginx)                                   │
+└──────────────────────────┬───────────────────────────────────────────────┘
+                           │  REST / JSON
+                           │  JWT (HttpOnly Cookie + Bearer Header)
+                           ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  APPLICATION LAYER                                                       │
+│  Spring Boot 4.0.2 · Java 21 · Spring Security 7.3                      │
+│  ┌────────────┐  ┌──────────────┐  ┌──────────────┐  ┌───────────────┐  │
+│  │ Controllers │→│   Services   │→│ Repositories  │→│  MongoDB Atlas │  │
+│  │ (4 REST)   │  │ (12+ impls)  │  │ (7 + custom) │  │  (7 collections│  │
+│  └────────────┘  └──────┬───────┘  └──────────────┘  └───────────────┘  │
+│                         │                                                │
+│  ┌──────────────────────┼──────────────────────────────────────────────┐ │
+│  │  INTEGRATIONS        │                                              │ │
+│  │  ◆ Razorpay ─ Payment orders + signature verification              │ │
+│  │  ◆ Redis ─ Car listing cache (30s TTL, auto-eviction)              │ │
+│  │  ◆ Cloudinary ─ Car images & profile avatars                       │ │
+│  │  ◆ Brevo SMTP ─ Booking notification emails (Thymeleaf templates)  │ │
+│  │  ◆ BookingScheduler ─ Cron: expire pending / activate / complete   │ │
+│  └─────────────────────────────────────────────────────────────────────┘ │
+│  Port 2006                                                               │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## ✨ Features at a Glance
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 👤 Customer
+- Browse cars from verified dealers
+- Book with flexible date ranges
+- Pay securely via **Razorpay** checkout
+- Track booking status in real-time
 - Cancel approved bookings
-- View and manage booking history with stats dashboard
-- Track booking status (Pending → Approved → Paid → Active → Completed / Expired / Cancelled)
-- Apply to become a dealer directly from the profile page
-- View dealer application status
-- Responsive dashboard with total, upcoming, completed, and cancelled booking counts
+- Submit car **reviews & star ratings**
+- Apply to become a dealer
+- Stats dashboard (total, upcoming, completed, cancelled)
 
-### 🏪 Dealer Features
-- Apply to become a verified dealer (with GST and business details)
-- Manage dealership information (name, location, GST)
-- Add and update car listings with brand selection (51 supported brands with logos)
+</td>
+<td width="33%" valign="top">
+
+### 🏪 Dealer
+- Apply with GST & business details
+- Add cars with images (Cloudinary upload)
+- Select from **51 supported brands** with logos
 - Set daily rental prices
-- Approve or reject customer booking requests
-- View and manage all bookings for their vehicles
-- Dashboard with analytics (total cars, bookings, revenue, pending approvals)
+- Approve / reject booking requests
+- Manage vehicle inventory
+- Analytics dashboard (cars, bookings, revenue, pending)
 
-### 👨‍💼 Admin Features
+</td>
+<td width="33%" valign="top">
+
+### 🛡️ Admin
 - Approve or reject dealer applications
-- Monitor platform activity with stats dashboard (total users, dealers, applications, vehicles)
-- Manage all users in the system (filterable table, excludes admin accounts)
+- Monitor platform-wide stats (users, dealers, vehicles, applications)
+- Manage all users (filterable table)
 - Oversee booking transactions
-- System administration and configuration
+- Role-change authority (Customer → Dealer)
 
-## 🛠️ Tech Stack
+</td>
+</tr>
+</table>
 
-### Frontend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **React** | 19.2.3 | UI Framework |
-| **Vite** | 7.3.1 | Build Tool & Dev Server |
-| **React Router** | 7.13.0 | Client-side Routing |
-| **Material-UI (MUI)** | 7.3.6 | Component Library |
-| **MUI X Date Pickers** | 8.27.0 | Date Range Selection |
-| **Tailwind CSS** | 4.1.13 | Utility-first Styling |
-| **Axios** | 1.13.5 | HTTP Client |
-| **Day.js** | 1.11.19 | Date Manipulation |
-| **Emotion** | 11.14.0 | CSS-in-JS Styling |
-| **Sonner** | 2.0.3 | Toast Notifications |
+---
+
+## 🛠 Tech Stack Deep Dive
 
 ### Backend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Spring Boot** | 4.0.2 | Application Framework |
-| **Java** | 21 | Programming Language |
-| **MongoDB** | Atlas | NoSQL Database |
-| **Spring Security** | 7.3.1 | Security Framework |
-| **JWT (JJWT)** | 0.13.0 | Token-based Authentication |
-| **Razorpay Java** | 1.4.8 | Payment Gateway Integration |
-| **Springdoc OpenAPI** | 3.0.1 | API Documentation |
-| **Maven** | Latest | Build & Dependency Management |
 
-### DevOps & Tools
-- **Docker & Docker Compose**: Containerization and orchestration
-- **GitHub Actions**: CI/CD pipeline with multi-platform Docker builds (linux/amd64, linux/arm64)
-- **Dependabot**: Automated weekly dependency updates for npm and Maven
-- **Nginx**: Frontend web server in production with SPA routing support
-- **Docker Hub**: Container registry for image distribution
-- **Render**: Cloud deployment platform
-- **Git**: Version control
-- **ESLint**: Code quality for frontend
+| Layer | Technology | Details |
+|-------|-----------|---------|
+| **Runtime** | Java 21 + Spring Boot 4.0.2 | Latest LTS with virtual threads support |
+| **Security** | Spring Security 7.3 + JJWT 0.13 | Custom `JwtFilter` with cookie & header extraction, `@PreAuthorize` RBAC |
+| **Database** | MongoDB Atlas + Spring Data | 7 collections, compound indexes, `$lookup` aggregation pipelines |
+| **Cache** | Redis (Lettuce) | 30s TTL car listing cache with `@Cacheable` / `@CacheEvict` |
+| **Payments** | Razorpay Java SDK 1.4.8 | Server-side order creation, HMAC SHA-256 signature verification |
+| **Storage** | Cloudinary 1.39 | Car images (`cars/{carId}/`) and profile avatars (`avatars/`) |
+| **Email** | Brevo API + Thymeleaf | HTML booking notification templates via SMTP REST |
+| **Scheduler** | `@Scheduled` cron | Pending expiry (every 5 min), lifecycle transitions (midnight) |
+| **API Docs** | Springdoc OpenAPI 3.0.1 | Swagger UI (dev mode) |
 
-## 🏗️ Architecture
+### Frontend
 
-DRIVEAWAY follows a **modern full-stack architecture** with clear separation of concerns:
+| Layer | Technology | Details |
+|-------|-----------|---------|
+| **Framework** | React 19.2 + Vite 7.3 | Fast HMR, optimized production builds |
+| **Styling** | MUI 7.3 + Tailwind CSS 4.2 + Emotion | Custom theme (Manrope + Source Sans 3 typography), responsive breakpoints |
+| **Routing** | React Router 7.13 | Nested layouts, `ProtectedRoute` guards |
+| **State** | Context API + localStorage | `AuthProvider` with role, email, userId, token |
+| **HTTP** | Axios with interceptors | Auto 401 redirect, `withCredentials` for cookies |
+| **UI Components** | Radix UI, Embla Carousel, Lucide Icons, Sonner | Accessible dialogs, image carousels, toast notifications |
+| **Date Handling** | Day.js + MUI X DatePickers 8.27 | Booking date range selection |
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   Client Layer                      │
-│  React SPA (Vite) - Material-UI + Tailwind CSS      │
-│              Port: 3000 (Dev) / 80 (Prod)           │
-└─────────────────┬───────────────────────────────────┘
-                  │ REST API (JSON)
-                  │ JWT Authentication (HttpOnly Cookie)
-                  ▼
-┌─────────────────────────────────────────────────────┐
-│                Application Layer                    │
-│       Spring Boot REST Controllers                  │
-│     JWT Filter → Security → Business Logic          │
-│     Scheduled Tasks (Booking Expiry & Lifecycle)    │
-│              Port: 2006 (Internal)                  │
-└─────────┬───────────────────────────────┬───────────┘
-          │ Spring Data MongoDB           │ Razorpay API
-          ▼                               ▼
-┌─────────────────────────┐ ┌───────────────────────┐
-│       Data Layer        │ │   Payment Gateway     │
-│  MongoDB Atlas Cloud DB │ │   Razorpay (Orders +  │
-│  Collections: users,    │ │   Signature Verify)   │
-│  cars, bookings, dealers│ └───────────────────────┘
-│  dealer_applications,   │
-│  orders                 │
-└─────────────────────────┘
-```
+### Infrastructure
 
-### Architecture Highlights
+| Layer | Technology | Details |
+|-------|-----------|---------|
+| **Containers** | Docker (multi-stage builds) | Backend: `eclipse-temurin:21-jdk` → slim runtime · Frontend: `node:22-alpine` → `nginx:alpine` |
+| **Orchestration** | Docker Compose | Bridge network, service dependencies, port mapping |
+| **CI/CD** | GitHub Actions | Multi-platform builds (`linux/amd64` + `linux/arm64`), push to Docker Hub, deploy to Render |
+| **Dependency Updates** | Dependabot | Weekly automated PRs for npm + Maven |
+| **Hosting** | Render | Continuous deployment via Render API hooks |
 
-#### **Monolithic REST API Design**
-- Frontend communicates with backend via RESTful endpoints
-- Stateless authentication using JWT tokens (HttpOnly cookies + Bearer header support)
-- Role-based authorization at method level using `@PreAuthorize`
+---
 
-#### **Security Architecture**
-- Custom JWT authentication filter with dual token extraction (cookies and Authorization header)
-- Password encryption with Spring Security
-- CORS configured for specific origins with credentials support
-- Dynamic SameSite cookie policy (None for HTTPS, Lax for HTTP)
-- Public endpoints: `/api/user/login`, `/api/user/register`, `/api/user/awake`
-- Protected endpoints require valid JWT token with role verification
-
-#### **Payment Architecture**
-- **Razorpay Integration**: Server-side order creation with amount conversion to paise
-- **Secure Verification**: HMAC SHA256 signature validation for payment authenticity
-- **Atomic Updates**: Payment verification atomically updates Order and Booking statuses
-
-#### **Scheduled Task Architecture**
-- **Pending Booking Expiration**: Runs every 5 minutes — expires unanswered bookings and unlocks cars
-- **Daily Lifecycle Updates**: Runs at midnight — activates bookings on start date, completes bookings on end date, updates car availability
-
-#### **Database Design**
-- **MongoDB Atlas**: Cloud-hosted NoSQL database
-- **Document-based**: Flexible schema for entities
-- **Indexed fields**: Email (users), compound indexes for bookings, GST (dealers)
-- **Relationships**: Referenced via IDs (users → dealers → cars → bookings → orders)
-- **Aggregation Pipelines**: Complex `$lookup` joins for enriched booking queries with dealer and car details
-
-#### **Containerization**
-- **Docker Compose** orchestrates multi-container deployment
-- **Backend container**: Spring Boot application
-- **Frontend container**: Nginx serving React build
-- **Bridge network**: Inter-service communication
-
-## 🚀 Getting Started
-
-### Prerequisites
-- **Java 21** or higher
-- **Node.js 18+** and npm
-- **Docker & Docker Compose** (for containerized deployment)
-- **MongoDB Atlas account** (or local MongoDB instance)
-
-### Environment Setup
-
-#### Backend Configuration
-Create `application.properties` in `DRIVEAWAY-BACKEND/src/main/resources/`:
-
-```properties
-spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>
-spring.data.mongodb.database=driveaway_db
-server.port=2006
-
-# JWT Configuration
-jwt.secret=your-secret-key-here
-jwt.expiration=86400000
-
-# Swagger Configuration
-springdoc.api-docs.path=/v3/api-docs
-springdoc.swagger-ui.path=/swagger-ui.html
-```
-
-#### Frontend Configuration
-Create `.env` in `DRIVEAWAY-FRONTEND/`:
-
-```env
-VITE_API_URL=http://localhost:2025
-```
-
-### Local Development
-
-#### 1. Backend Setup
-```bash
-cd DRIVEAWAY-BACKEND
-mvn clean install
-mvn spring-boot:run
-```
-Backend will start at `http://localhost:2006`
-
-#### 2. Frontend Setup
-```bash
-cd DRIVEAWAY-FRONTEND
-npm install
-npm run dev
-```
-Frontend will start at `http://localhost:3000`
-
-### Docker Deployment
-
-```bash
-# Build and start all services
-docker-compose up --build
-
-# Run in detached mode
-docker-compose up -d
-
-# Stop all services
-docker-compose down
-```
-
-**Access Points:**
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:2025`
-- Swagger UI: `http://localhost:2025/swagger-ui.html`
-
-## 📁 Project Structure
+## 🔄 Booking Lifecycle
 
 ```
-DRIVEAWAY/
-├── DRIVEAWAY-FRONTEND/           # React Frontend Application
-│   ├── public/                    # Static assets & brand logos
-│   ├── src/
-│   │   ├── api/                   # Axios configuration & interceptors
-│   │   │   └── axios.js           # Base URL, credentials, 401 handler
-│   │   ├── app/                   # App-level components
-│   │   │   ├── Navbar.jsx         # Role-aware responsive navigation
-│   │   │   ├── Home.jsx           # Landing page with hero & features
-│   │   │   └── ProtectedRoute.jsx # Route guards (auth + role check)
-│   │   ├── features/              # Feature-based organization
-│   │   │   ├── auth/              # Login & Registration pages
-│   │   │   ├── customer/          # Customer dashboard, cars, bookings, payment
-│   │   │   ├── dealer/            # Dealer dashboard, car management, bookings
-│   │   │   ├── admin/             # Admin dashboard, users, dealer approvals
-│   │   │   ├── bookings/          # Shared booking services
-│   │   │   └── cars/              # Shared car services
-│   │   ├── shared/                # Reusable components, hooks, constants
-│   │   │   ├── components/        # InlineAlert, PageNotFound
-│   │   │   ├── hooks/             # AuthProvider (context), useLogout
-│   │   │   ├── constants/         # 51 car brands with logos
-│   │   │   └── utils/             # Response utilities
-│   │   ├── theme/                 # MUI theme customization
-│   │   ├── App.jsx                # Root routing component
-│   │   └── main.jsx               # Entry point with providers
-│   ├── nginx.conf                 # SPA routing for production
-│   ├── frontend.Dockerfile        # Multi-stage: Node 22 → Nginx Alpine
-│   ├── package.json               # Dependencies
-│   └── vite.config.js             # Vite + Tailwind CSS config
-│
-├── DRIVEAWAY-BACKEND/             # Spring Boot Backend
-│   ├── src/main/java/com/driveaway/
-│   │   ├── controller/            # REST API Controllers
-│   │   │   ├── UserController.java      # Auth & keep-alive endpoints
-│   │   │   ├── CustomerController.java  # Cars, bookings, payments, dealer apps
-│   │   │   ├── DealerController.java    # Car CRUD, booking approval
-│   │   │   └── AdminController.java     # User management, dealer approvals
-│   │   ├── service/               # Business Logic (interfaces + impls)
-│   │   │   ├── UserService.java         # Auth, registration
-│   │   │   ├── CarService.java          # Car inventory
-│   │   │   ├── BookingService.java      # Booking lifecycle
-│   │   │   ├── DealerApplicationService.java  # Dealer workflow
-│   │   │   ├── OrderService.java        # Razorpay orders & verification
-│   │   │   ├── CustomerService.java     # Customer queries
-│   │   │   ├── AdminService.java        # Admin queries
-│   │   │   └── JWTService.java          # Token generation & validation
-│   │   ├── repository/            # Data Access Layer
-│   │   │   ├── UserRepository.java
-│   │   │   ├── CarRepository.java       # + CarRepositoryCustom
-│   │   │   ├── BookingRepository.java   # + BookingRepositoryCustom + aggregation
-│   │   │   ├── DealerRepository.java
-│   │   │   ├── DealerApplicationRepository.java
-│   │   │   └── OrderRepository.java
-│   │   ├── entity/                # MongoDB Document Models
-│   │   │   ├── User.java
-│   │   │   ├── Car.java
-│   │   │   ├── Booking.java
-│   │   │   ├── Dealer.java
-│   │   │   ├── DealerApplications.java
-│   │   │   └── Order.java
-│   │   ├── dto/                   # Data Transfer Objects (Java Records)
-│   │   ├── enums/                 # Roles, Approval, BookingStatus
-│   │   ├── config/                # Configuration Classes
-│   │   │   ├── SecurityConfig.java      # CORS, CSRF, session, filters
-│   │   │   ├── JwtFilter.java           # Cookie + header JWT extraction
-│   │   │   ├── JwtUtil.java             # Token creation & parsing
-│   │   │   ├── SwaggerConfig.java       # OpenAPI docs config
-│   │   │   └── RazorpayConfig.java      # Payment gateway setup
-│   │   ├── scheduler/             # Scheduled Tasks
-│   │   │   └── BookingScheduler.java    # Expiration & lifecycle crons
-│   │   └── exceptions/            # Custom exceptions
-│   ├── src/main/resources/
-│   │   └── application.properties # Environment-driven configuration
-│   ├── backend.Dockerfile         # Multi-stage: JDK 21 build → JDK 21 runtime
-│   └── pom.xml                    # Maven dependencies
-│
-├── .github/
-│   ├── workflows/
-│   │   └── docker-publish.yml     # CI/CD: Build & push to Docker Hub
-│   └── dependabot.yml             # Weekly npm + Maven updates
-├── docker-compose.yml             # Multi-container orchestration
-├── .gitignore                     # Git ignore rules
-├── LICENSE                        # MIT License
-└── README.md                      # This file
+Customer books a car
+        │
+        ▼
+    ┌────────┐   5 min timeout    ┌─────────┐
+    │PENDING │──────────────────→ │ EXPIRED  │  (car unlocked)
+    └───┬────┘                    └──────────┘
+        │
+   Dealer decides
+   ┌────┴─────┐
+   ▼          ▼
+┌────────┐  ┌──────────┐
+│APPROVED│  │ REJECTED │  (car unlocked)
+└───┬────┘  └──────────┘
+    │
+    │  Customer cancels ──→ CANCELLED (car unlocked)
+    │
+    ▼
+ Razorpay Payment
+    │
+    ▼
+┌────────┐   start date    ┌────────┐   end date    ┌───────────┐
+│  PAID  │────────────────→│ ACTIVE │──────────────→│ COMPLETED │
+└────────┘  (midnight cron) └────────┘ (midnight cron)└─────┬─────┘
+                                                           │
+                                                    Customer review
+                                                           │
+                                                           ▼
+                                                     ┌──────────┐
+                                                     │ REVIEWED │
+                                                     └──────────┘
 ```
 
-## 📚 API Documentation
+> **Automated transitions**: A `@Scheduled` cron job runs every 5 minutes to expire stale `PENDING` bookings, and at midnight to activate/complete bookings based on their dates.
 
-### Swagger UI
-Interactive API documentation available at: `http://localhost:2025/swagger-ui.html`
+---
 
-### Main API Endpoints
+## 📡 API Reference
 
-#### Authentication (`/api/user`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/user/register` | Register new user | Public |
-| POST | `/api/user/login` | User login (returns JWT in HttpOnly cookie) | Public |
-| GET | `/api/user/awake` | Keep-alive health check | Public |
+All protected endpoints require a valid JWT (sent as an `HttpOnly` cookie or `Authorization: Bearer` header).
 
-#### Customer Operations (`/api/customer`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/customer/{email}` | Get user profile by email | Required |
-| GET | `/api/customer/get/cars` | List available cars | Required |
-| POST | `/api/customer/add/booking` | Create booking | Required |
-| GET | `/api/customer/bookings` | View customer bookings (enriched with dealer/car info) | Required |
-| POST | `/api/customer/cancel/booking` | Cancel an approved booking | Required |
-| POST | `/api/customer/add` | Submit dealer application | Required |
-| GET | `/api/customer/status/{id}` | Check dealer application status | Required |
-| POST | `/api/customer/create/order` | Create Razorpay payment order | Required |
-| POST | `/api/customer/verify` | Verify Razorpay payment signature | Required |
+<details>
+<summary><strong>🔓 Authentication — <code>/api/user</code></strong></summary>
 
-#### Dealer Operations (`/api/dealer`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/dealer/add/car` | Add car listing | Required |
-| GET | `/api/dealer/cars/{dealerId}` | View dealer cars | Required |
-| PUT | `/api/dealer/update/car` | Update car details | Required |
-| GET | `/api/dealer/get/bookings` | View pending bookings (with customer details) | Required |
-| PUT | `/api/dealer/approve/booking/{id}` | Approve/Reject booking | Required |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/register` | Register a new user |
+| `POST` | `/login` | Login → JWT set as HttpOnly cookie |
+| `GET` | `/awake` | Health check / keep-alive |
 
-#### Admin Operations (`/api/admin`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/admin/all` | List all users (excludes admins) | Required |
-| GET | `/api/admin/applications` | Get pending dealer applications | Required |
-| POST | `/api/admin/approve/{id}` | Approve/Reject dealer application | Required |
-
-### Request/Response Examples
-
-#### User Login
+**Login Response:**
 ```json
-// POST /api/user/login
 {
-  "email": "user@example.com",
-  "password": "password123"
-}
-
-// Response (JWT set as HttpOnly cookie)
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token": "eyJhbGciOi...",
   "loginDTO": {
     "email": "user@example.com",
     "role": "CUSTOMER",
@@ -422,355 +265,320 @@ Interactive API documentation available at: `http://localhost:2025/swagger-ui.ht
   }
 }
 ```
+</details>
 
-#### Book a Car
-```json
-// POST /api/customer/add/booking
-{
-  "carId": "64abc123...",
-  "startDate": "2024-03-01T00:00:00Z",
-  "endDate": "2024-03-05T00:00:00Z"
-}
+<details>
+<summary><strong>👤 Customer — <code>/api/customer</code> &nbsp; <code>@PreAuthorize("hasRole('CUSTOMER')")</code></strong></summary>
 
-// Response
-"Booking Successful !"
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/{email}` | Get user profile |
+| `GET` | `/get/cars` | List available cars *(cached)* |
+| `POST` | `/add/booking` | Create a booking |
+| `GET` | `/bookings` | Get customer's bookings (enriched with dealer/car info) |
+| `POST` | `/cancel/booking?bookingId={id}` | Cancel an approved booking |
+| `POST` | `/create/order` | Create Razorpay payment order |
+| `POST` | `/verify` | Verify Razorpay payment (HMAC SHA-256) |
+| `POST` | `/add` | Submit dealer application |
+| `GET` | `/status/{id}` | Check dealer application status |
+| `POST` | `/profile` | Update profile (multipart: image upload) |
+| `POST` | `/review` | Submit car review & star rating |
+| `GET` | `/reviews/{carId}` | Get reviews for a car |
 
-#### Create Payment Order
-```json
-// POST /api/customer/create/order
-{
-  "amount": 2000,
-  "customer_id": "64abc123...",
-  "booking_id": "64def456..."
-}
+</details>
 
-// Response
-{
-  "order_id": "order_RZP123...",
-  "amount": 2000,
-  "status": "created"
-}
-```
+<details>
+<summary><strong>🏪 Dealer — <code>/api/dealer</code> &nbsp; <code>@PreAuthorize("hasRole('DEALER')")</code></strong></summary>
 
-## 👥 User Roles & Capabilities
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/add/car` | Add new car (multipart: JSON + images) |
+| `GET` | `/cars/{dealerId}` | Get dealer's car inventory |
+| `PUT` | `/update/car` | Update car details (multipart) |
+| `PUT` | `/update/car-images?carId={id}` | Replace car images |
+| `GET` | `/get/bookings?dealerId={id}` | Get dealer's bookings |
+| `PUT` | `/approve/booking/{bookingId}?approval={bool}` | Approve or reject a booking |
 
-### Role Hierarchy
-```
-Admin (Highest Privilege)
-  ├─ Full system access
-  ├─ User management (view all, filter)
-  └─ Dealer approval authority
-      │
-Dealer (Medium Privilege)
-  ├─ Car inventory management (add, update)
-  ├─ Booking approval/rejection
-  └─ Revenue and analytics dashboard
-      │
-Customer (Standard Privilege)
-  ├─ Browse and book cars
-  ├─ Online payments via Razorpay
-  ├─ Cancel bookings
-  └─ Apply for dealer role upgrade
-```
+</details>
 
-### Booking Lifecycle
-```
-Customer books car → PENDING (5-min auto-expiry if unanswered)
-  → Dealer approves → APPROVED
-    → Customer pays via Razorpay → PAID
-      → Start date reached (midnight cron) → ACTIVE (car status: ACTIVE)
-        → End date reached (midnight cron) → COMPLETED (car status: AVAILABLE)
-  → Dealer rejects → REJECTED (car unlocked)
-  → Timeout → EXPIRED (car unlocked)
-  → Customer cancels → CANCELLED (car unlocked)
-```
+<details>
+<summary><strong>🛡️ Admin — <code>/api/admin</code> &nbsp; <code>@PreAuthorize("hasRole('ADMIN')")</code></strong></summary>
 
-### Access Control
-- **Authentication**: JWT token required for all protected endpoints
-- **Authorization**: Method-level security with `@PreAuthorize` annotations
-- **Role Validation**: Each endpoint validates user role before processing
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/all` | List all users (excludes admins) |
+| `GET` | `/applications` | Get all dealer applications |
+| `POST` | `/approve/{id}?approval={bool}` | Approve or reject dealer application |
 
-## 🗄️ Database Schema
-
-### Collections
-
-#### `users`
-```javascript
-{
-  _id: ObjectId,
-  userName: String,
-  userEmail: String,     // Unique indexed
-  password: String,      // Encrypted
-  userPhone: String,
-  userAge: Number,
-  role: String,          // CUSTOMER, DEALER, ADMIN
-  createdAt: Instant
-}
-```
-
-#### `dealers`
-```javascript
-{
-  _id: ObjectId,
-  userId: String,        // Reference to users
-  dealershipName: String,
-  ownerName: String,
-  gstIn: String,         // Unique indexed
-  phone: String,
-  location: String,
-  createdAt: Instant,
-  approvalStatus: String
-}
-```
-
-#### `dealer_applications`
-```javascript
-{
-  _id: ObjectId,
-  userId: String,        // Unique indexed
-  dealerShipName: String,
-  ownerName: String,
-  gstIn: String,
-  phone: String,
-  location: String,
-  approvalStatus: String, // PENDING, APPROVED, REJECTED
-  createdAt: Instant
-}
-```
-
-#### `cars`
-```javascript
-{
-  _id: ObjectId,
-  dealerId: String,      // Indexed, reference to dealers
-  dealerShipName: String,
-  brand: String,
-  model: String,
-  year: Number,
-  pricePerDay: Number,
-  carStatus: String,     // AVAILABLE, PENDING, BOOKED, ACTIVE, COMPLETED
-  createdAt: Instant
-}
-```
-
-#### `bookings`
-```javascript
-{
-  _id: ObjectId,
-  carId: String,         // Indexed, reference to cars
-  dealerId: String,      // Indexed, reference to dealers
-  customerId: String,    // Indexed, reference to users
-  startDate: Instant,
-  endDate: Instant,
-  totalAmount: Number,
-  status: String,        // PENDING, APPROVED, PAID, ACTIVE, COMPLETED, EXPIRED, CANCELLED, REJECTED
-  createdAt: Instant,
-  approvedAt: Instant
-}
-```
-
-#### `orders`
-```javascript
-{
-  _id: ObjectId,         // Razorpay order ID
-  amount: Number,
-  customer_id: String,   // Reference to users
-  booking_id: String,    // Reference to bookings
-  status: String
-}
-```
-
-### Indexes
-- **users.userEmail**: Unique index for fast lookup and login
-- **bookings**: Compound indexes — `unique_active_booking_per_car` (carId + status), `customer_bookings_idx` (customerId + createdAt)
-- **cars.dealerId**: Index for dealer car queries
-- **dealers.gstIn**: Unique index for GST verification
-- **dealer_applications.userId**: Unique index to prevent duplicate applications
-
-## 💻 Development
-
-### Code Style & Linting
-
-#### Frontend
-```bash
-# Run ESLint
-npm run lint
-
-# Fix auto-fixable issues
-npm run lint -- --fix
-```
-
-#### Backend
-```bash
-# Maven compile (includes checkstyle if configured)
-mvn clean compile
-
-# Run tests
-mvn test
-```
-
-### Building for Production
-
-#### Frontend
-```bash
-npm run build
-# Output: dist/ folder with optimized build
-```
-
-#### Backend
-```bash
-mvn clean package
-# Output: target/DRIVEAWAY-BACKEND-0.0.1-SNAPSHOT.jar
-```
-
-### Testing
-```bash
-# Frontend tests (if configured)
-npm test
-
-# Backend tests
-mvn test
-
-# Integration tests
-mvn verify
-```
-
-## 🔄 CI/CD & Automation
-
-### GitHub Actions Pipeline
-The project uses a **Docker Build & Publish** workflow (`.github/workflows/docker-publish.yml`) triggered on every push to `main` or via manual dispatch:
-
-1. **Checkout** — Pulls repository code
-2. **Docker Buildx Setup** — Enables multi-platform builds
-3. **Docker Hub Login** — Authenticates using GitHub Secrets
-4. **Backend Build & Push** — Multi-stage Docker build (`eclipse-temurin:21-jdk`), tagged `latest` + git SHA, platforms: `linux/amd64`, `linux/arm64`
-5. **Frontend Build & Push** — Multi-stage Docker build (`node:22-alpine` → `nginx:alpine`), injects `VITE_API_URL` and `VITE_RAZORPAY_KEY` as build args, tagged `latest` + git SHA
-
-### Dependabot
-Automated weekly dependency updates configured for both:
-- **npm** (frontend — `/DRIVEAWAY-FRONTEND`)
-- **Maven** (backend — `/DRIVEAWAY-BACKEND`)
-
-## 🐳 Deployment
-
-### Production Deployment
-The application is deployed on **Render** and accessible at:
-**🌐 [https://driveaway-jhee.onrender.com/](https://driveaway-jhee.onrender.com/)**
-
-### Docker Deployment
-The application is containerized for easy deployment:
-
-```bash
-# Production deployment
-docker-compose -f docker-compose.yml up -d
-
-# View logs
-docker-compose logs -f
-
-# Scale services (if needed)
-docker-compose up -d --scale backend=3
-```
-
-### Environment Variables
-Configure these in your deployment environment:
-
-**Backend:**
-- `DB_URL`: MongoDB connection string
-- `DB_NAME`: MongoDB database name
-- `JWT_SECRET`: Secret key for JWT signing
-- `RZP_KEY`: Razorpay API key
-- `RZP_SECRET`: Razorpay API secret
-- `CLIENT_API`: Frontend URL for CORS
-
-**Frontend:**
-- `VITE_API_URL`: Backend API URL
-- `VITE_RAZORPAY_KEY`: Razorpay public key
-
-### Cloud Deployment Options
-- **Render** ✅ (Currently deployed)
-- **AWS**: EC2 with Docker, or ECS for container orchestration
-- **Azure**: Azure Container Instances or App Service
-- **Google Cloud**: Cloud Run or GKE
-- **Heroku**: Container deployment with MongoDB Atlas
-
-## 🧠 Technical Highlights & Developer Competencies
-
-This project demonstrates proficiency across a wide range of full-stack development skills:
-
-### Backend Engineering
-| Competency | Implementation |
-|------------|----------------|
-| **RESTful API Design** | Clean controller-service-repository architecture with DTOs for decoupled data transfer |
-| **Spring Security & JWT** | Custom `JwtFilter` with dual token extraction (HttpOnly cookies + Bearer headers), `@PreAuthorize` method-level authorization |
-| **MongoDB Aggregation** | Complex `$lookup` pipelines to join bookings with dealer and car data, custom repository implementations |
-| **Payment Gateway Integration** | Full Razorpay lifecycle — server-side order creation, client checkout overlay, HMAC SHA256 signature verification |
-| **Scheduled Task Automation** | Cron-based schedulers for booking expiration (every 5 min) and lifecycle transitions (daily at midnight) |
-| **Multi-Stage Docker Builds** | Optimized images using `eclipse-temurin:21-jdk` builder and slim runtime stages |
-| **Custom Repository Pattern** | `BookingRepositoryCustom` / `CarRepositoryCustom` with `MongoTemplate` for atomic bulk updates |
-
-### Frontend Engineering
-| Competency | Implementation |
-|------------|----------------|
-| **Modern React (v19)** | Functional components, hooks, context API for global state management |
-| **Role-Based UI** | Dynamic navigation, route guards (`ProtectedRoute`), and role-specific dashboards |
-| **Material-UI Theming** | Custom theme with branded colors, typography (Manrope + Source Sans 3), and component overrides |
-| **Payment UX** | Seamless Razorpay checkout overlay integration with order creation and verification flow |
-| **Form Validation** | Comprehensive inline validation on blur, real-time error clearing, and form-wide validation |
-| **Responsive Design** | MUI Grid with breakpoints + Tailwind CSS utilities, mobile-friendly hamburger navigation |
-| **State & Status Management** | Centralized status color mapping and label system across all booking/car states |
-
-### DevOps & Architecture
-| Competency | Implementation |
-|------------|----------------|
-| **CI/CD Pipeline** | GitHub Actions workflow for automated multi-platform Docker builds and pushes to Docker Hub |
-| **Containerization** | Docker Compose orchestration with bridge networking, Nginx SPA routing, and multi-stage builds |
-| **Dependency Management** | Dependabot for automated weekly security and version updates (npm + Maven) |
-| **Cloud Deployment** | Production deployment on Render with environment-based configuration |
-| **Security Best Practices** | Password encryption, CORS configuration, HttpOnly cookies, stateless JWT sessions, HMAC signature verification |
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
-
-### Development Guidelines
-- Follow existing code style and conventions
-- Write meaningful commit messages
-- Add tests for new features
-- Update documentation as needed
-- Ensure all tests pass before submitting PR
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👨‍💻 Authors
-
-**CharanTeja-6825**
-- GitHub: [@CharanTeja-6825](https://github.com/CharanTeja-6825)
-
-## 🙏 Acknowledgments
-
-- Spring Boot team for the excellent framework
-- React community for the powerful UI library
-- MongoDB Atlas for reliable cloud database hosting
-- Razorpay for seamless payment gateway integration
-- Render for seamless cloud deployment
-- All contributors who help improve this project
-
-## 📞 Support
-
-For support, please:
-- Open an issue in the GitHub repository
-- Contact the maintainers
-- Check the [API Documentation](http://localhost:2025/swagger-ui.html) for API-related questions
+</details>
 
 ---
 
-**Made with ❤️ for the car rental community**
+## 🗃 Database Design
+
+**7 MongoDB collections** with strategic indexing for query performance:
+
+```
+┌──────────┐       ┌──────────┐       ┌──────────┐
+│  users   │──1:1─→│ dealers  │──1:N─→│   cars   │
+│          │       │          │       │          │
+│ email ⚡ │       │ gstIn ⚡ │       │ dealerId⚡│
+│ role     │       │ status   │       │ status   │
+└──────┬───┘       └──────────┘       └────┬─────┘
+       │                                    │
+       │ 1:N                           1:N  │
+       ▼                                    ▼
+┌──────────────────┐              ┌──────────────┐
+│    bookings      │──────1:1────→│   orders     │
+│                  │              │ (Razorpay)   │
+│ carId+status ⚡  │              │              │
+│ customerId    ⚡  │              └──────────────┘
+└──────┬───────────┘
+       │ 1:1
+       ▼
+┌──────────────┐         ┌─────────────────────┐
+│   reviews    │         │ dealer_applications  │
+│              │         │                      │
+│ bookingId    │         │ userId ⚡ (unique)    │
+│ starRating   │         │ approvalStatus       │
+└──────────────┘         └─────────────────────┘
+
+⚡ = indexed field
+```
+
+<details>
+<summary><strong>View collection schemas</strong></summary>
+
+**users** — `userEmail` (unique), `password` (encrypted), `role` (CUSTOMER / DEALER / ADMIN), `profileUrl`, `createdAt`
+
+**dealers** — `userId`, `dealershipName`, `gstIn` (unique), `location`, `approvalStatus`, `createdAt`
+
+**cars** — `dealerId` (indexed), `brand`, `model`, `year`, `pricePerDay`, `carImages[]` (Cloudinary URLs), `carStatus`, `rating`, `createdAt`
+
+**bookings** — `carId` + `status` (compound unique), `customerId` + `createdAt` (compound), `totalAmount`, `startDate`, `endDate`, `approvedAt`
+
+**orders** — `_id` (Razorpay order ID), `amount` (paise), `customer_id`, `booking_id`, `status`
+
+**reviews** — `bookingId`, `carId`, `customerId`, `review`, `starRating`, `createdAt`
+
+**dealer_applications** — `userId` (unique), `dealerShipName`, `gstIn`, `approvalStatus` (PENDING / APPROVED / REJECTED)
+
+</details>
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+| Tool | Version |
+|------|---------|
+| Java | 21+ |
+| Node.js | 18+ |
+| Docker & Docker Compose | Latest |
+| MongoDB Atlas | Free tier works |
+
+### 1. Clone & Configure
+
+```bash
+git clone https://github.com/CharanTeja-6825/DRIVEAWAY.git
+cd DRIVEAWAY
+```
+
+**Backend** — set environment variables or edit `DRIVEAWAY-BACKEND/src/main/resources/application.properties`:
+
+```properties
+spring.data.mongodb.uri=${DB_URL}
+spring.data.mongodb.database=${DB_NAME}
+jwt.secret=${JWT_SECRET}
+razorpay.keyId=${RZP_KEY}
+razorpay.secret=${RZP_SECRET}
+spring.data.redis.url=${REDIS_URL}
+cloudinary.cloud=${CLOUDINARY_CLOUD}
+cloudinary.key=${CLOUDINARY_KEY}
+cloudinary.secret=${CLOUDINARY_SECRET}
+spring.brevo.api=${BREVO_API}
+spring.client=${CLIENT_API}
+```
+
+**Frontend** — create `DRIVEAWAY-FRONTEND/.env`:
+
+```env
+VITE_API_URL=http://localhost:2006
+VITE_RAZORPAY_KEY=rzp_test_xxxxx
+```
+
+### 2. Run Locally
+
+```bash
+# Backend (terminal 1)
+cd DRIVEAWAY-BACKEND
+./mvnw clean install -DskipTests
+./mvnw spring-boot:run            # → http://localhost:2006
+
+# Frontend (terminal 2)
+cd DRIVEAWAY-FRONTEND
+npm install --legacy-peer-deps
+npm run dev                        # → http://localhost:3000
+```
+
+### 3. Or Use Docker
+
+```bash
+docker-compose up -d
+# Frontend → http://localhost:3000
+# Backend  → http://localhost:2025
+```
+
+---
+
+## 📁 Project Structure
+
+```
+DRIVEAWAY/
+│
+├─ DRIVEAWAY-BACKEND/                       # Spring Boot REST API
+│  ├─ src/main/java/com/driveaway/
+│  │  ├─ controller/                        # 4 REST controllers (User, Customer, Dealer, Admin)
+│  │  ├─ service/                           # 12+ service interfaces & implementations
+│  │  ├─ repository/                        # 7 repos + custom impls with MongoTemplate
+│  │  ├─ entity/                            # 7 MongoDB document models
+│  │  ├─ dto/                               # Java Records for API data transfer
+│  │  ├─ enumerations/                      # Roles, BookingStatus, Approval
+│  │  ├─ config/                            # Security, JWT, Redis, Razorpay, Cloudinary, Swagger
+│  │  ├─ scheduler/                         # BookingScheduler (cron-based lifecycle)
+│  │  ├─ events/ & listeners/               # Spring event-driven email notifications
+│  │  └─ exceptions/                        # Custom exception classes
+│  ├─ src/main/resources/
+│  │  ├─ application.properties             # Environment-driven config
+│  │  └─ templates/booking-creation.html    # Thymeleaf email template
+│  ├─ backend.Dockerfile                    # Multi-stage: JDK 21 build → JDK 21 runtime
+│  └─ pom.xml
+│
+├─ DRIVEAWAY-FRONTEND/                      # React 19 SPA
+│  ├─ src/
+│  │  ├─ features/                          # Feature-based modules
+│  │  │  ├─ auth/                           # Login & Registration
+│  │  │  ├─ customer/                       # Dashboard, Cars, Bookings, Payment, Reviews
+│  │  │  ├─ dealer/                         # Dashboard, AddCar, CarManagement, Bookings
+│  │  │  ├─ admin/                          # Dashboard, UserManagement, DealerApprovals
+│  │  │  ├─ cars/ & bookings/               # Shared service layers
+│  │  ├─ app/                               # Navbar, Home, ProtectedRoute
+│  │  ├─ shared/                            # Hooks (AuthProvider, useLogout), constants, utils
+│  │  ├─ theme/                             # MUI theme (colors, typography, component overrides)
+│  │  ├─ api/axios.js                       # Axios instance + 401 interceptor
+│  │  └─ components/ui/                     # Radix-based UI primitives
+│  ├─ nginx.conf                            # SPA routing (try_files → index.html)
+│  ├─ frontend.Dockerfile                   # Multi-stage: Node 22 build → Nginx Alpine
+│  └─ package.json
+│
+├─ .github/
+│  ├─ workflows/docker-publish.yml          # CI/CD: build, push, deploy
+│  └─ dependabot.yml                        # Weekly npm + Maven updates
+├─ docker-compose.yml                       # Multi-container orchestration
+└─ LICENSE
+```
+
+---
+
+## ⚙ CI/CD & Deployment
+
+```
+ Push to main / Manual trigger
+          │
+          ▼
+ ┌─ GitHub Actions ──────────────────────────────────┐
+ │  1. Checkout code                                  │
+ │  2. Set up Docker Buildx (multi-platform)          │
+ │  3. Login to Docker Hub                            │
+ │  4. Build & push backend image                     │
+ │     → eclipse-temurin:21-jdk · linux/amd64+arm64   │
+ │     → Tagged: latest + commit SHA                  │
+ │  5. Build & push frontend image                    │
+ │     → node:22-alpine → nginx:alpine                │
+ │     → Build args: VITE_API_URL, VITE_RAZORPAY_KEY  │
+ │  6. Deploy to Render (API hook trigger)            │
+ └────────────────────────────────────────────────────┘
+          │
+          ▼
+ ┌─ Production (Render) ─┐
+ │  Backend  → Port 2006  │
+ │  Frontend → Port 80    │
+ └────────────────────────┘
+```
+
+**Dependabot** runs weekly to keep npm and Maven dependencies updated with automated PRs.
+
+---
+
+## 🧠 Technical Highlights
+
+> A summary of the engineering decisions and patterns that power DRIVEAWAY.
+
+### Backend Engineering
+
+| Pattern | Implementation |
+|---------|----------------|
+| **Clean Architecture** | Controller → Service → Repository with DTOs (Java Records) for decoupled data transfer |
+| **JWT Authentication** | Custom `JwtFilter` extracts tokens from HttpOnly cookies *or* `Authorization` header; `@PreAuthorize` enforces RBAC |
+| **MongoDB Aggregation** | `$lookup` pipelines join bookings with dealer + car data; `BookingRepositoryCustom` uses `MongoTemplate` for atomic bulk updates |
+| **Payment Security** | Full Razorpay lifecycle: server-side order creation → client overlay → HMAC SHA-256 signature verification → atomic status update |
+| **Event-Driven Emails** | `BookingCreatedEvent` → `BookingCreatedListener` → Thymeleaf HTML template → Brevo SMTP API |
+| **Scheduled Automation** | Cron-based `BookingScheduler`: expire pending (every 5 min), activate on start date, complete on end date (midnight) |
+| **Cache Strategy** | Redis `@Cacheable` on car listings (30s TTL), `@CacheEvict` on add/update/delete; custom `Instant` serialization for ISO-8601 |
+| **Custom Repositories** | `CarRepositoryCustom` + `BookingRepositoryCustom` with `MongoTemplate` for complex queries beyond Spring Data defaults |
+
+### Frontend Engineering
+
+| Pattern | Implementation |
+|---------|----------------|
+| **Feature-Based Modules** | `features/{auth,customer,dealer,admin}` — each with pages, components, and service layers |
+| **Role-Based UI** | `ProtectedRoute` HOC with role validation; dynamic `Navbar` menu items; role-specific dashboards |
+| **Custom MUI Theme** | Branded palette (`#1E3A8A` primary, `#D97706` accent), Manrope + Source Sans 3 typography, 12px border radius |
+| **Payment UX** | Seamless Razorpay overlay: create order → open modal → verify signature → update UI |
+| **Inline Validation** | On-blur validation with real-time error clearing; form-wide validation before submit |
+| **Responsive Design** | MUI Grid breakpoints (`xs`/`sm`/`md`) + Tailwind utilities; mobile hamburger navigation |
+| **Auth State** | `AuthProvider` Context + localStorage persistence; Axios interceptor auto-redirects on 401 |
+
+### DevOps & Security
+
+| Practice | Implementation |
+|----------|----------------|
+| **Multi-Stage Builds** | Separate build and runtime stages minimize image size and attack surface |
+| **Multi-Platform Images** | `linux/amd64` + `linux/arm64` for broad deployment compatibility |
+| **Environment Isolation** | All secrets via environment variables; zero hardcoded credentials |
+| **Automated Dependencies** | Dependabot weekly PRs for both npm and Maven ecosystems |
+| **Cookie Security** | `HttpOnly`, `Secure` (HTTPS), `SameSite=None` (cross-origin); 1-hour expiry |
+| **Password Encryption** | Spring Security `BCryptPasswordEncoder` |
+| **CORS Policy** | Whitelisted origins with credentials support |
+
+---
+
+## 👨‍💻 Author
+
+<table>
+<tr>
+<td align="center">
+<strong>Rathikindi Charan Teja</strong><br/>
+<a href="https://github.com/CharanTeja-6825">
+<img src="https://img.shields.io/badge/GitHub-CharanTeja--6825-181717?logo=github&logoColor=white&style=for-the-badge" alt="GitHub" />
+</a>
+</td>
+</tr>
+</table>
+
+---
+
+## 📄 License
+
+This project is under the **Rathikindi Charan Teja Proprietary License 1.0** — view-only permission. See [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built with** &nbsp; ☕ Java 21 &nbsp;·&nbsp; ⚛️ React 19 &nbsp;·&nbsp; 🍃 MongoDB &nbsp;·&nbsp; 🐳 Docker &nbsp;·&nbsp; 💙 Passion
+
+*If you found this project interesting, consider giving it a* ⭐
+
+</div>
