@@ -41,7 +41,7 @@ public class BookingServiceImpl implements BookingService{
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", key = "#booking.customerId"),
             @CacheEvict(value = "dealer_bookings", key = "#booking.dealerId"),
-            @CacheEvict(value = "cars", allEntries = true)
+            @CacheEvict(value = "cars", allEntries = true),
     })
     public String createBooking(Booking booking) {
 
@@ -121,7 +121,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", allEntries = true),
-            @CacheEvict(value = "dealer_bookings", allEntries = true)
+            @CacheEvict(value = "dealer_bookings", allEntries = true),
+            @CacheEvict(value = "cars", allEntries = true),
     })
     public String validateBooking(String bookingId, boolean approval) {
 
@@ -154,7 +155,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", allEntries = true),
-            @CacheEvict(value = "dealer_bookings", allEntries = true)
+            @CacheEvict(value = "dealer_bookings", allEntries = true),
+            @CacheEvict(value = "cars", allEntries = true)
     })
     public String cancelBooking(String bookingId) {
         Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
@@ -179,7 +181,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", allEntries = true),
-            @CacheEvict(value = "dealer_bookings", allEntries = true)
+            @CacheEvict(value = "dealer_bookings", allEntries = true),
+            @CacheEvict(value = "cars", allEntries = true)
     })
     public void expirePendingBookings() {
         Instant timeoutDuration = Instant.now().minus(Duration.ofMinutes(5));
@@ -201,7 +204,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Caching(evict = {
             @CacheEvict(value = "customer_bookings", allEntries = true),
-            @CacheEvict(value = "dealer_bookings", allEntries = true)
+            @CacheEvict(value = "dealer_bookings", allEntries = true),
+            @CacheEvict(value = "cars", allEntries = true)
     })
     public void updateBookingsAndCars(Instant currentDate) {
 
