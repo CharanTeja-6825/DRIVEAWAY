@@ -1,6 +1,6 @@
 package com.driveaway.listeners;
 
-import com.driveaway.events.BookingCreatedEvent;
+import com.driveaway.events.BookingRejectedEvent;
 import com.driveaway.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -9,16 +9,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingCreatedListener implements ApplicationListener<BookingCreatedEvent> {
+public class BookingRejectedListener implements ApplicationListener<BookingRejectedEvent> {
 
     @Autowired
     private EmailService emailService;
 
-    @Override
-    @EventListener
     @Async
-    public void onApplicationEvent(BookingCreatedEvent bookingCreatedEvent){
-        emailService.sendBookingApprovedEmail(bookingCreatedEvent.getBooking());
-        System.out.println(bookingCreatedEvent.getBooking().toString());
+    @EventListener
+    @Override
+    public void onApplicationEvent(BookingRejectedEvent event) {
+
     }
 }

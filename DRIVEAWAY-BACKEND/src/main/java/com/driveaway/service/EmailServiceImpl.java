@@ -2,10 +2,11 @@ package com.driveaway.service;
 
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
+import com.driveaway.entity.Order;
 import com.driveaway.entity.User;
+import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.UserRepository;
-import org.apache.http.entity.BasicHttpEntity;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +46,8 @@ public class EmailServiceImpl implements EmailService{
 
     @Autowired
     private CarRepository carRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public void sendBookingApprovedEmail(Booking booking) {
@@ -75,6 +78,25 @@ public class EmailServiceImpl implements EmailService{
 
         System.out.println(response.getStatusCode());
         System.out.println(response.getBody().toString());
+    }
+
+    @Override
+    public void sendValidationMail(Booking booking, boolean validate) {
+
+    }
+
+    @Override
+    public void sendCancellationMail(Booking booking) {
+
+    }
+
+    @Override
+    public void sendPaymentConfirmationMail(Order order) {
+        User user = userRepository.findById(order.getCustomer_id()).orElseThrow();
+        Booking booking = bookingRepository.findById(order.getBooking_id()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+
+        
     }
 
     private HttpEntity<Map<String, Object>> getMapHttpEntity(User user, String htmlContent, HttpHeaders httpHeaders) {

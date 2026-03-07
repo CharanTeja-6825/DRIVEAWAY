@@ -5,7 +5,10 @@ import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Car;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.events.BookingCancelledEvent;
+import com.driveaway.events.BookingConfirmedEvent;
 import com.driveaway.events.BookingCreatedEvent;
+import com.driveaway.events.BookingRejectedEvent;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.CarRepository;
 import com.driveaway.repository.UserRepository;
@@ -141,6 +144,11 @@ public class BookingServiceImpl implements BookingService{
         bookingRepository.save(booking);
         carRepository.save(car);
 
+        applicationEventPublisher.publishEvent(booking.getStatus().equals(BookingStatus.APPROVED.toString())
+                ? new BookingConfirmedEvent(booking)
+                : new BookingRejectedEvent(booking));
+
+
         return approval ? "Booking Approved Successfully" : "Booking Rejected Successfully";
     }
 
@@ -174,6 +182,8 @@ public class BookingServiceImpl implements BookingService{
 
         bookingRepository.save(b);
         carRepository.save(car);
+
+        applicationEventPublisher.publishEvent(new BookingCancelledEvent(b));
 
         return "Booking Cancelled Successfully";
     }

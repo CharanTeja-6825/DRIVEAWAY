@@ -3,6 +3,7 @@ package com.driveaway.service;
 import com.driveaway.entity.Booking;
 import com.driveaway.entity.Order;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.events.BookingPaidEvent;
 import com.driveaway.exception.BookingNotFoundException;
 import com.driveaway.repository.BookingRepository;
 import com.driveaway.repository.OrderRepository;
@@ -12,8 +13,10 @@ import com.razorpay.Utils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -30,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public Order createOrder(Order order) throws RazorpayException {
@@ -46,6 +51,8 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrder_id(razpOrder.get("id"));
         order.setStatus(razpOrder.get("status"));
+        order.setCreatedAt(Instant.now());
+        order.setUpdatedAt(order.getCreatedAt());
 
         orderRepository.save(order);
 
@@ -78,10 +85,14 @@ public class OrderServiceImpl implements OrderService {
                 Booking booking = optionalBooking.get();
 
                 booking.setStatus(BookingStatus.PAID.toString());
+                order.setPayment_id(paymentId);
+                order.setUpdatedAt(Instant.now());
 
                 // DB Save
                 bookingRepository.save(booking);
                 orderRepository.save(order);
+
+                applicationEventPublisher.publishEvent(new BookingPaidEvent(order));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

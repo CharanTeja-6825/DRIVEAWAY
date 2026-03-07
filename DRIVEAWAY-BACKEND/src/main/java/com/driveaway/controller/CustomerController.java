@@ -24,16 +24,12 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
-
 	@Autowired
 	private DealerApplicationService dealerApplicationService;
-
 	@Autowired
 	private CarService carService;
-
 	@Autowired
 	private BookingService bookingService;
-
 	@Autowired
 	private OrderService orderService;
     @Autowired
