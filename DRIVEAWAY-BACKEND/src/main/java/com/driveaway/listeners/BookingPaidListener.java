@@ -2,7 +2,7 @@ package com.driveaway.listeners;
 
 
 import com.driveaway.events.BookingPaidEvent;
-import com.driveaway.service.EmailService;
+import com.driveaway.service.integrations.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;

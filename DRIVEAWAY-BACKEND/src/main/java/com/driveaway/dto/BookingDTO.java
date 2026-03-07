@@ -1,6 +1,6 @@
 package com.driveaway.dto;
 
-import com.driveaway.entity.User;
+import com.driveaway.entity.users.User;
 
 import java.time.Instant;
 

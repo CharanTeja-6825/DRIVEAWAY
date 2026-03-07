@@ -1,9 +1,9 @@
 package com.driveaway.controller;
 
 import com.driveaway.dto.BookingDTO;
-import com.driveaway.entity.Car;
-import com.driveaway.service.BookingService;
-import com.driveaway.service.CarService;
+import com.driveaway.entity.bookings.Car;
+import com.driveaway.service.bookings.BookingService;
+import com.driveaway.service.bookings.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

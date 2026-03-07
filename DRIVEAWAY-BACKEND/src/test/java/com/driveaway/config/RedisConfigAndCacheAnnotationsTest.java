@@ -1,6 +1,7 @@
 package com.driveaway.config;
 
-import com.driveaway.service.CarServiceImpl;
+import com.driveaway.entity.bookings.Car;
+import com.driveaway.service.bookings.CarServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.cache.annotation.CacheEvict;
@@ -9,7 +10,8 @@ import org.springframework.cache.annotation.Cacheable;
 import java.lang.reflect.Method;
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RedisConfigAndCacheAnnotationsTest {
 
@@ -32,8 +34,8 @@ class RedisConfigAndCacheAnnotationsTest {
     @Test
     void carServiceCachingAnnotationsShouldBePresent() throws Exception {
         Method allCars = CarServiceImpl.class.getMethod("allCars");
-        Method addCar = CarServiceImpl.class.getMethod("addCar", com.driveaway.entity.Car.class);
-        Method updateCar = CarServiceImpl.class.getMethod("updateCar", com.driveaway.entity.Car.class);
+        Method addCar = CarServiceImpl.class.getMethod("addCar", Car.class);
+        Method updateCar = CarServiceImpl.class.getMethod("updateCar", Car.class);
         Method deleteCar = CarServiceImpl.class.getMethod("deleteCar", String.class);
 
         assertTrue(allCars.isAnnotationPresent(Cacheable.class));

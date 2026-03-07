@@ -1,12 +1,13 @@
 package com.driveaway.service;
 
-import com.driveaway.entity.Booking;
-import com.driveaway.entity.Order;
+import com.driveaway.entity.bookings.Booking;
+import com.driveaway.entity.bookings.Order;
 import com.driveaway.enumerations.BookingStatus;
 import com.driveaway.events.BookingPaidEvent;
 import com.driveaway.exception.BookingNotFoundException;
-import com.driveaway.repository.BookingRepository;
-import com.driveaway.repository.OrderRepository;
+import com.driveaway.repository.bookings.BookingRepository;
+import com.driveaway.repository.bookings.OrderRepository;
+import com.driveaway.service.bookings.OrderService;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
