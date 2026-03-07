@@ -18,6 +18,6 @@ public class BookingRejectedListener implements ApplicationListener<BookingRejec
     @EventListener
     @Override
     public void onApplicationEvent(BookingRejectedEvent event) {
-
+        emailService.sendRejectionMail(event.getBooking());
     }
 }

@@ -184,7 +184,6 @@ public class BookingServiceImpl implements BookingService {
         carRepository.save(car);
 
         applicationEventPublisher.publishEvent(new BookingCancelledEvent(b));
-
         return "Booking Cancelled Successfully";
     }
 

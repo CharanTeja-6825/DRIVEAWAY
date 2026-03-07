@@ -18,6 +18,6 @@ public class BookingConfirmedListener implements ApplicationListener<BookingConf
     @EventListener
     @Async
     public void onApplicationEvent(BookingConfirmedEvent event) {
-
+        emailService.sendBookingApprovedEmail(event.getBooking());
     }
 }

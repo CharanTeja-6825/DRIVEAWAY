@@ -18,7 +18,7 @@ public class BookingCancelledListener implements ApplicationListener<BookingCanc
     @Async
     @Override
     public void onApplicationEvent(BookingCancelledEvent bookingCancelledEvent){
-
+        emailService.sendCancellationMail(bookingCancelledEvent.getBooking());
     }
 
 }

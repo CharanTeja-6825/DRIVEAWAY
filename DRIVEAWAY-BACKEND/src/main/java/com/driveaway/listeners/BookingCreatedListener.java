@@ -18,7 +18,6 @@ public class BookingCreatedListener implements ApplicationListener<BookingCreate
     @EventListener
     @Async
     public void onApplicationEvent(BookingCreatedEvent bookingCreatedEvent){
-        emailService.sendBookingApprovedEmail(bookingCreatedEvent.getBooking());
-        System.out.println(bookingCreatedEvent.getBooking().toString());
+        emailService.sendBookingCreationEmail(bookingCreatedEvent.getBooking());
     }
 }

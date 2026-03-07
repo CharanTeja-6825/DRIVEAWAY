@@ -37,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
     private RestTemplate restTemplate;
 
     private final String url = "https://api.brevo.com/v3/smtp/email";
+    private final String apiHeader = "api-key";
 
     @Autowired
     private SpringTemplateEngine springTemplateEngine;
@@ -51,7 +52,33 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendBookingApprovedEmail(Booking booking) {
+        User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
 
+        /// Defining Context For Spring Thymeleaf Template
+        Context context = getContext(booking, user, car);
+
+        /// Setting Thymeleaf Variable using the Map properties
+        String htmlContent = springTemplateEngine.process("booking-confirmation", context);
+
+        /// Headers of Mail Request
+        HttpHeaders httpHeaders = new org.springframework.http.HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.set(apiHeader, mailApiKey);
+
+        /// Sender Details
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(user, htmlContent, httpHeaders);
+
+        /// Sending POST using RestTemplate
+        restTemplate.postForEntity(
+                url,
+                request,
+                String.class
+        );
+    }
+
+    @Override
+    public void sendBookingCreationEmail(Booking booking) {
         User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
         Car car = carRepository.findById(booking.getCarId()).orElseThrow();
 
@@ -64,7 +91,7 @@ public class EmailServiceImpl implements EmailService {
         /// Headers of Mail Request
         HttpHeaders httpHeaders = new org.springframework.http.HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.set("api-key", mailApiKey);
+        httpHeaders.set(apiHeader, mailApiKey);
 
         /// Sender Details
         HttpEntity<Map<String, Object>> request = getMapHttpEntity(user, htmlContent, httpHeaders);
@@ -80,15 +107,64 @@ public class EmailServiceImpl implements EmailService {
         System.out.println(response.getBody().toString());
     }
 
+
     @Override
-    public void sendValidationMail(Booking booking, boolean validate) {
+    public void sendRejectionMail(Booking booking) {
+        User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+
+        /// Defining Context For Spring Thymeleaf Template
+        Context context = getContext(booking, user, car);
+
+        /// Setting Thymeleaf Variable using the Map properties
+        String htmlContent = springTemplateEngine.process("booking-rejection", context);
+
+        /// Headers of Mail Request
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.set(apiHeader, mailApiKey);
+
+        /// Sender Details
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(user, htmlContent, httpHeaders);
+
+        /// Sending POST using RestTemplate
+        restTemplate.postForEntity(
+                url,
+                request,
+                String.class
+        );
 
     }
+
 
     @Override
     public void sendCancellationMail(Booking booking) {
+        User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+
+        /// Defining Context For Spring Thymeleaf Template
+        Context context = getContext(booking, user, car);
+
+        /// Setting Thymeleaf Variable using the Map properties
+        String htmlContent = springTemplateEngine.process("booking-cancellation", context);
+
+        /// Headers of Mail Request
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.set(apiHeader, mailApiKey);
+
+        /// Sender Details
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(user, htmlContent, httpHeaders);
+
+        /// Sending POST using RestTemplate
+        restTemplate.postForEntity(
+                url,
+                request,
+                String.class
+        );
 
     }
+
 
     @Override
     public void sendPaymentConfirmationMail(Order order) {
@@ -96,7 +172,21 @@ public class EmailServiceImpl implements EmailService {
         Booking booking = bookingRepository.findById(order.getBooking_id()).orElseThrow();
         Car car = carRepository.findById(booking.getCarId()).orElseThrow();
 
-        
+        Context paymentContext = getContext(booking, user, car, order);
+
+        String htmlContent = springTemplateEngine.process("booking-paid", paymentContext);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(apiHeader, mailApiKey);
+
+        HttpEntity<Map<String, Object>> mapHttpEntity = getMapHttpEntity(user, htmlContent, headers);
+
+        restTemplate.postForEntity(
+                url,
+                mapHttpEntity,
+                String.class
+        );
     }
 
     private HttpEntity<Map<String, Object>> getMapHttpEntity(User user, String htmlContent, HttpHeaders httpHeaders) {
@@ -129,10 +219,31 @@ public class EmailServiceImpl implements EmailService {
                 "name", user.getUserName(),
                 "bookingId", booking.getBookingId(),
                 "carName", car.getBrand()+" "+ car.getModel(),
-                "startDate", booking.getStartDate(),
-                "endDate", booking.getEndDate(),
+                "startDate", booking.getStartDate().toString().substring(0, 10),
+                "endDate", booking.getEndDate().toString().substring(0, 10),
                 "totalAmount", booking.getTotalAmount()
         );
+        context.setVariables(variables);
+        return context;
+    }
+
+    private static @NonNull Context getContext(Booking booking, User user, Car car, Order order) {
+        Context context = new Context();
+
+        // Defining the Properties of the Map
+        Map<String, Object> variables = Map.of(
+                "name", user.getUserName(),
+                "bookingId", booking.getBookingId(),
+                "carName", car.getBrand()+" "+ car.getModel(),
+                "startDate", booking.getStartDate().toString().substring(0, 10),
+                "endDate", booking.getEndDate().toString().substring(0, 10),
+                "totalAmount", booking.getTotalAmount(),
+                "paymentStatus", order.getStatus(),
+                "orderId", order.getOrder_id(),
+                "paymentId", order.getPayment_id(),
+                "paymentDate", order.getUpdatedAt().toString().substring(0, 10)
+        );
+
         context.setVariables(variables);
         return context;
     }
