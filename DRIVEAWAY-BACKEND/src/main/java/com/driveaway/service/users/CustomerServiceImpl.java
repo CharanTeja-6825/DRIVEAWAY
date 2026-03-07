@@ -2,7 +2,7 @@ package com.driveaway.service.users;
 
 import com.driveaway.entity.analytics.DealerApplications;
 import com.driveaway.entity.users.User;
-import com.driveaway.repository.DealerApplicationRepository;
+import com.driveaway.repository.analytics.DealerApplicationRepository;
 import com.driveaway.repository.bookings.BookingRepository;
 import com.driveaway.repository.bookings.CarRepository;
 import com.driveaway.repository.users.UserRepository;

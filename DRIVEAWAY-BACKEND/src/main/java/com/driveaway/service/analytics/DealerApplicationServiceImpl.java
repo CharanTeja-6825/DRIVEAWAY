@@ -6,7 +6,7 @@ import com.driveaway.entity.users.Dealer;
 import com.driveaway.entity.users.User;
 import com.driveaway.enumerations.Approval;
 import com.driveaway.enumerations.Roles;
-import com.driveaway.repository.DealerApplicationRepository;
+import com.driveaway.repository.analytics.DealerApplicationRepository;
 import com.driveaway.repository.DealerRepository;
 import com.driveaway.repository.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
