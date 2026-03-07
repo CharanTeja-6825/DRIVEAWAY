@@ -265,6 +265,7 @@ export default function BookingCard({ booking, onCancel, statusColorMap, reloadB
             color="primary.main"
             fontWeight={700}
           ></Typography>
+          {!isBookingApproved && <p className="font-bold">₹ {booking.totalAmount}</p>}
           {isBookingApproved && <PaymentButton reloadBookings={reloadBookings} booking={booking} />}
         </Stack>
       </CardContent>

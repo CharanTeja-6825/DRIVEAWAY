@@ -43,6 +43,7 @@ public class Booking implements Serializable{
     private Instant createdAt;
     private Instant approvedAt;
 
+
     public String getCarId() {
         return carId;
     }
