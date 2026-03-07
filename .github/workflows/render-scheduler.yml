@@ -1,0 +1,109 @@
+name: Render Service Scheduler
+
+on:
+  schedule:
+    # 09:30 AM IST = 04:00 UTC
+    - cron: "0 4 * * *"
+    # 11:30 PM IST = 18:00 UTC
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "Choose whether to resume or suspend services"
+        type: choice
+        options:
+          - resume
+          - suspend
+        default: resume
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-scheduler-${{ github.workflow }}-${{ github.event.schedule || github.event.inputs.operation || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  resume-services:
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.operation == 'resume') || (github.event_name == 'schedule' && github.event.schedule == '0 4 * * *') }}
+    name: Resume Render services
+    runs-on: ubuntu-latest
+    environment: DOCKER
+    steps:
+      - name: Resume services on Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          BACKEND_SERVICE_ID: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+          FRONTEND_SERVICE_ID: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
+        run: |
+          set -euo pipefail
+          services=("$BACKEND_SERVICE_ID" "$FRONTEND_SERVICE_ID")
+
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "RENDER_API_KEY is not configured"
+            exit 1
+          fi
+
+          for service in "${services[@]}"; do
+            if [ -z "$service" ]; then
+              echo "Service ID is missing. Check secrets in the DOCKER environment."
+              exit 1
+            fi
+
+            tmpfile=$(mktemp)
+            status=$(curl -s -o "$tmpfile" -w "%{http_code}" -X POST \
+              "https://api.render.com/v1/services/${service}/resume" \
+              -H "Authorization: Bearer ${RENDER_API_KEY}" \
+              -H "Content-Type: application/json")
+
+            if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+              echo "✅ Service ${service} resumed successfully"
+              cat "$tmpfile"
+            else
+              echo "❌ Failed to resume service ${service} (status: $status)"
+              cat "$tmpfile"
+              exit 1
+            fi
+          done
+
+  suspend-services:
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.operation == 'suspend') || (github.event_name == 'schedule' && github.event.schedule == '0 18 * * *') }}
+    name: Suspend Render services
+    runs-on: ubuntu-latest
+    environment: DOCKER
+    steps:
+      - name: Suspend services on Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          BACKEND_SERVICE_ID: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+          FRONTEND_SERVICE_ID: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
+        run: |
+          set -euo pipefail
+          services=("$BACKEND_SERVICE_ID" "$FRONTEND_SERVICE_ID")
+
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "RENDER_API_KEY is not configured"
+            exit 1
+          fi
+
+          for service in "${services[@]}"; do
+            if [ -z "$service" ]; then
+              echo "Service ID is missing. Check secrets in the DOCKER environment."
+              exit 1
+            fi
+
+            tmpfile=$(mktemp)
+            status=$(curl -s -o "$tmpfile" -w "%{http_code}" -X POST \
+              "https://api.render.com/v1/services/${service}/suspend" \
+              -H "Authorization: Bearer ${RENDER_API_KEY}" \
+              -H "Content-Type: application/json")
+
+            if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+              echo "✅ Service ${service} suspended successfully"
+              cat "$tmpfile"
+            else
+              echo "❌ Failed to suspend service ${service} (status: $status)"
+              cat "$tmpfile"
+              exit 1
+            fi
+          done
