@@ -1,10 +1,8 @@
 package com.driveaway.controller;
 
-import com.driveaway.dto.LoginDTO;
 import com.driveaway.dto.ResponseDTO;
-import com.driveaway.entity.User;
-import com.driveaway.service.UserService;
-import jakarta.servlet.http.Cookie;
+import com.driveaway.entity.users.User;
+import com.driveaway.service.users.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

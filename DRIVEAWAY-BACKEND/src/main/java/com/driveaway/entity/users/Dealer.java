@@ -1,0 +1,83 @@
+package com.driveaway.entity.users;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
+import java.time.Instant;
+
+@Document(collection = "dealers")
+public class Dealer implements Serializable{
+
+    @Id
+    private String id;
+
+    private String userId;
+
+    private String dealershipName;
+    private String ownerName;
+	private String phone;
+
+    @Indexed(unique = true)
+    private String gstIn;
+
+    private String location;
+    private Instant createdAt;
+    private String approvalStatus;
+    
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getUser() {
+		return userId;
+	}
+	public void setUser(String userId) {
+		this.userId = userId;
+	}
+	public String getDealershipName() {
+		return dealershipName;
+	}
+	public void setDealershipName(String dealershipName) {
+		this.dealershipName = dealershipName;
+	}
+	public String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+	public String getGstIn() {
+		return gstIn;
+	}
+	public void setGstIn(String gstIn) {
+		this.gstIn = gstIn;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+}

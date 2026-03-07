@@ -1,6 +1,6 @@
 package com.driveaway.events;
 
-import com.driveaway.entity.Order;
+import com.driveaway.entity.bookings.Order;
 import org.springframework.context.ApplicationEvent;
 
 public class BookingPaidEvent extends ApplicationEvent {

@@ -1,19 +1,17 @@
 package com.driveaway.controller;
 
-import java.util.List;
-import com.driveaway.entity.DealerApplications;
-import com.driveaway.service.DealerApplicationService;
+import com.driveaway.entity.analytics.DealerApplications;
+import com.driveaway.entity.users.User;
+import com.driveaway.enumerations.Roles;
+import com.driveaway.service.analytics.DealerApplicationService;
+import com.driveaway.service.users.AdminService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.driveaway.entity.User;
-import com.driveaway.enumerations.Roles;
-import com.driveaway.service.AdminService;
-
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")

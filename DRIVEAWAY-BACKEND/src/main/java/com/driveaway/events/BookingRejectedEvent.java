@@ -1,6 +1,6 @@
 package com.driveaway.events;
 
-import com.driveaway.entity.Booking;
+import com.driveaway.entity.bookings.Booking;
 import org.springframework.context.ApplicationEvent;
 
 public class BookingRejectedEvent extends ApplicationEvent {
