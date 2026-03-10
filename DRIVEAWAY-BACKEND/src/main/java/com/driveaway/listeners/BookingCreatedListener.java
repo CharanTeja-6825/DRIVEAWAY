@@ -19,5 +19,6 @@ public class BookingCreatedListener implements ApplicationListener<BookingCreate
     @Async
     public void onApplicationEvent(BookingCreatedEvent bookingCreatedEvent){
         emailService.sendBookingCreationEmail(bookingCreatedEvent.getBooking());
+        emailService.sendDealerNewBookingEmail(bookingCreatedEvent.getBooking());
     }
 }

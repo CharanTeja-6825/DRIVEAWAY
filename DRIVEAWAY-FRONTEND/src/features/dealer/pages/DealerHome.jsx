@@ -474,73 +474,75 @@ function DealerHome() {
 			</Box>
 
 			{/* KPI Stats Row */}
-			<Grid container spacing={3} sx={{ mb: 3 }}>
-				<Grid item xs={12} sm={6} lg={2.4}>
-					<StatCard
-						icon={RevenueIcon}
-						title="Total Revenue"
-						value={`₹${stats.totalRevenue.toLocaleString("en-IN")}`}
-						helper="from completed bookings"
-						color="primary.main"
-						bgColor={(theme) =>
-							alpha(theme.palette.primary.main, 0.12)
-						}
-						trend={revenueTrend.percentChange}
-					/>
-				</Grid>
-				<Grid item xs={12} sm={6} lg={2.4}>
-					<StatCard
-						icon={BookingIcon}
-						title="Total Bookings"
-						value={stats.totalBookings}
-						helper={`${stats.completedCount} completed`}
-						color="info.main"
-						bgColor={(theme) =>
-							alpha(theme.palette.info.main, 0.12)
-						}
-					/>
-				</Grid>
-				<Grid item xs={12} sm={6} lg={2.4}>
-					<StatCard
-						icon={PendingIcon}
-						title="Active Rentals"
-						value={stats.activeCount}
-						helper={`${stats.pendingCount} pending approval`}
-						color="warning.main"
-						bgColor={(theme) =>
-							alpha(theme.palette.warning.main, 0.12)
-						}
-					/>
-				</Grid>
-				<Grid item xs={12} sm={6} lg={2.4}>
-					<StatCard
-						icon={UtilizationIcon}
-						title="Fleet Utilization"
-						value={`${stats.fleetUtilization}%`}
-						helper={`${stats.bookedCars} of ${stats.totalCars} cars in use`}
-						color="success.main"
-						bgColor={(theme) =>
-							alpha(theme.palette.success.main, 0.12)
-						}
-					/>
-				</Grid>
-				<Grid item xs={12} sm={6} lg={2.4}>
-					<StatCard
-						icon={FleetIcon}
-						title="Avg. Booking Value"
-						value={`₹${stats.avgBookingValue.toLocaleString("en-IN")}`}
-						helper="per completed booking"
-						color="secondary.main"
-						bgColor={(theme) =>
-							alpha(theme.palette.secondary.main, 0.12)
-						}
-					/>
-				</Grid>
-			</Grid>
+			<Box
+				sx={{
+					display: "grid",
+					gridTemplateColumns: {
+						xs: "1fr",
+						sm: "repeat(2, 1fr)",
+						md: "repeat(3, 1fr)",
+						lg: "repeat(5, 1fr)"
+					},
+					gap: 3,
+					mb: 3
+				}}
+			>
+				<StatCard
+					icon={RevenueIcon}
+					title="Total Revenue"
+					value={`₹${stats.totalRevenue.toLocaleString("en-IN")}`}
+					helper="from completed bookings"
+					color="primary.main"
+					bgColor={(theme) =>
+						alpha(theme.palette.primary.main, 0.12)
+					}
+					trend={revenueTrend.percentChange}
+				/>
+				<StatCard
+					icon={BookingIcon}
+					title="Total Bookings"
+					value={stats.totalBookings}
+					helper={`${stats.completedCount} completed`}
+					color="info.main"
+					bgColor={(theme) =>
+						alpha(theme.palette.info.main, 0.12)
+					}
+				/>
+				<StatCard
+					icon={PendingIcon}
+					title="Active Rentals"
+					value={stats.activeCount}
+					helper={`${stats.pendingCount} pending approval`}
+					color="warning.main"
+					bgColor={(theme) =>
+						alpha(theme.palette.warning.main, 0.12)
+					}
+				/>
+				<StatCard
+					icon={UtilizationIcon}
+					title="Fleet Utilization"
+					value={`${stats.fleetUtilization}%`}
+					helper={`${stats.bookedCars} of ${stats.totalCars} cars in use`}
+					color="success.main"
+					bgColor={(theme) =>
+						alpha(theme.palette.success.main, 0.12)
+					}
+				/>
+				<StatCard
+					icon={FleetIcon}
+					title="Avg. Booking Value"
+					value={`₹${stats.avgBookingValue.toLocaleString("en-IN")}`}
+					helper="per completed booking"
+					color="secondary.main"
+					bgColor={(theme) =>
+						alpha(theme.palette.secondary.main, 0.12)
+					}
+				/>
+			</Box>
 
 			{/* Revenue Trend & Booking Status */}
 			<Grid container spacing={3} sx={{ mb: 3 }}>
-				<Grid item xs={12} md={8}>
+				<Grid size={{ xs: 12, md: 8 }}>
 					<Card
 						elevation={0}
 						sx={{
@@ -697,7 +699,7 @@ function DealerHome() {
 						</CardContent>
 					</Card>
 				</Grid>
-				<Grid item xs={12} md={4}>
+				<Grid size={{ xs: 12, md: 4 }}>
 					<Stack spacing={3} sx={{ height: "100%" }}>
 						{/* Booking Status Distribution */}
 						<Card
@@ -916,7 +918,7 @@ function DealerHome() {
 
 			{/* Top Cars & Recent Bookings */}
 			<Grid container spacing={3} sx={{ mb: 3 }}>
-				<Grid item xs={12} md={5}>
+				<Grid size={{ xs: 12, md: 6 }}>
 					<Card
 						elevation={0}
 						sx={{
@@ -1073,7 +1075,7 @@ function DealerHome() {
 						</CardContent>
 					</Card>
 				</Grid>
-				<Grid item xs={12} md={7}>
+				<Grid size={{ xs: 12, md: 6 }}>
 					<Card
 						elevation={0}
 						sx={{
@@ -1220,8 +1222,8 @@ function DealerHome() {
 			</Grid>
 
 			{/* Quick Actions */}
-			<Grid container spacing={2}>
-				<Grid item xs={12} sm={4}>
+			<Grid container spacing={3}>
+				<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 					<QuickActionCard
 						icon={AddIcon}
 						title="Add a New Car"
@@ -1229,7 +1231,7 @@ function DealerHome() {
 						onClick={() => navigate("/dealer/addCar")}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={4}>
+				<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 					<QuickActionCard
 						icon={FleetIcon}
 						title="Manage Cars"
@@ -1237,7 +1239,7 @@ function DealerHome() {
 						onClick={() => navigate("/dealer/allCars")}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={4}>
+				<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 					<QuickActionCard
 						icon={BookingIcon}
 						title="Bookings"

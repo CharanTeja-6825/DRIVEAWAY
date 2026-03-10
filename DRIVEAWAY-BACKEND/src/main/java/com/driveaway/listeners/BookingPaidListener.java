@@ -21,5 +21,6 @@ public class BookingPaidListener implements ApplicationListener<BookingPaidEvent
     @Override
     public void onApplicationEvent(BookingPaidEvent event) {
         emailService.sendPaymentConfirmationMail(event.getOrder());
+        emailService.sendDealerPaymentReceivedEmail(event.getOrder());
     }
 }

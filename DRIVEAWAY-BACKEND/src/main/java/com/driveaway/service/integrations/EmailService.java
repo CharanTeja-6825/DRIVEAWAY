@@ -9,4 +9,8 @@ public interface EmailService {
     void sendRejectionMail(Booking booking);
     void sendCancellationMail(Booking booking);
     void sendPaymentConfirmationMail(Order order);
+
+    void sendDealerNewBookingEmail(Booking booking);
+    void sendDealerBookingCancelledEmail(Booking booking);
+    void sendDealerPaymentReceivedEmail(Order order);
 }
