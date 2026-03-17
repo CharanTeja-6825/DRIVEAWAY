@@ -147,7 +147,7 @@ function UserLogin() {
         background: "linear-gradient(135deg, #224C98 0%, #4682B4 100%)",
         position: "relative",
         overflow: "hidden",
-        py: 4,
+        py: { xs: 2, sm: 4 },
       }}
     >
       {/* Background Pattern */}
@@ -165,7 +165,7 @@ function UserLogin() {
         }}
       />
 
-      <Container maxWidth="sm" sx={{ position: "relative", zIndex: 1 }}>
+      <Container maxWidth="sm" sx={{ position: "relative", zIndex: 1, px: { xs: 1.5, sm: 2 } }}>
         <Paper
           elevation={8}
           sx={{
@@ -178,14 +178,14 @@ function UserLogin() {
             sx={{
               background: "linear-gradient(135deg, #224C98 0%, #4682B4 100%)",
               color: "white",
-              p: 4,
+              p: { xs: 2.5, sm: 4 },
               textAlign: "center",
             }}
           >
             <Box
               sx={{
-                width: 64,
-                height: 64,
+                width: { xs: 54, sm: 64 },
+                height: { xs: 54, sm: 64 },
                 borderRadius: "50%",
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
                 display: "flex",
@@ -198,16 +198,16 @@ function UserLogin() {
             >
               <DirectionsCar sx={{ fontSize: 32 }} />
             </Box>
-            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-              Welcome Back
-            </Typography>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, fontSize: { xs: '1.65rem', sm: '2.125rem' } }}>
+                Welcome Back
+              </Typography>
             <Typography variant="body1" sx={{ opacity: 0.9 }}>
               Sign in to access your DriveAway account
             </Typography>
           </Box>
 
           {/* Form */}
-          <Box sx={{ p: 4 }}>
+          <Box sx={{ p: { xs: 2.5, sm: 4 } }}>
             <form onSubmit={handleSubmit} noValidate>
               <Stack spacing={3}>
                 {/* Email Field */}

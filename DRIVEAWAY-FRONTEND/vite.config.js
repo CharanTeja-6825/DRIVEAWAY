@@ -14,4 +14,10 @@ export default defineConfig({
       '@': path.resolve(process.cwd(), 'src')
     }
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+    css: true,
+  },
 })

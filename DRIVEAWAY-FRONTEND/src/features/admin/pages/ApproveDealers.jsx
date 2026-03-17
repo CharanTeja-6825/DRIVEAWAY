@@ -109,9 +109,12 @@ function ApproveDealers() {
     }
 
     return (
-        <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 1400, mx: 'auto' }}>
-            <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 600 }}>
+        <Box sx={{ p: { xs: 1.5, sm: 3 }, maxWidth: 1400, mx: 'auto' }}>
+            <Typography variant="h4" sx={{ mb: 0.5, color: 'primary.main', fontWeight: 600 }}>
                 Dealer Applications
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                Review onboarding requests and approve or reject dealer access.
             </Typography>
 
             {loading ? (
@@ -120,7 +123,7 @@ function ApproveDealers() {
                 </Box>
             ) : (
                 <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 3, overflowX: 'auto' }}>
-                    <Table sx={{ minWidth: 900 }}>
+                    <Table sx={{ minWidth: { xs: 760, md: 980 } }}>
                         <TableHead>
                             <TableRow sx={{ bgcolor: 'primary.main' }}>
                                 <TableCell align="center" sx={{ color: 'white', fontWeight: 600, py: 2 }}>S.No</TableCell>
@@ -160,7 +163,16 @@ function ApproveDealers() {
                                                 : 'N/A'}
                                         </TableCell>
                                         <TableCell align="center">
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexDirection: { xs: 'row', md: 'column' },
+                                                    gap: 1,
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexWrap: 'wrap'
+                                                }}
+                                            >
                                                 <Button
                                                     variant="contained"
                                                     size="small"

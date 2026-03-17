@@ -222,7 +222,7 @@ function CustomerHome() {
 				</Stack>
 				<Divider sx={{ my: 1.5 }} />
 				<Grid container spacing={2}>
-					<Grid item xs={6}>
+					<Grid size={{ xs: 6 }}>
 						<Typography variant="caption" color="text.secondary" display="block">
 							Start Date
 						</Typography>
@@ -230,7 +230,7 @@ function CustomerHome() {
 							{new Date(booking.startDate).toLocaleDateString()}
 						</Typography>
 					</Grid>
-					<Grid item xs={6}>
+					<Grid size={{ xs: 6 }}>
 						<Typography variant="caption" color="text.secondary" display="block">
 							End Date
 						</Typography>
@@ -238,7 +238,7 @@ function CustomerHome() {
 							{new Date(booking.endDate).toLocaleDateString()}
 						</Typography>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid size={{ xs: 12 }}>
 						<Typography variant="caption" color="text.secondary" display="block">
 							Total Amount
 						</Typography>
@@ -296,7 +296,7 @@ function CustomerHome() {
 
 			{/* Stats Cards */}
 			<Grid container spacing={3} mb={4}>
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 					<StatCard
 						icon={BookingIcon}
 						title="Total Bookings"
@@ -305,7 +305,7 @@ function CustomerHome() {
 						bgColor={(theme) => alpha(theme.palette.primary.main, 0.1)}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 					<StatCard
 						icon={ScheduleIcon}
 						title="Upcoming"
@@ -314,7 +314,7 @@ function CustomerHome() {
 						bgColor={(theme) => alpha(theme.palette.info.main, 0.1)}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 					<StatCard
 						icon={CheckIcon}
 						title="Completed"
@@ -323,7 +323,7 @@ function CustomerHome() {
 						bgColor={(theme) => alpha(theme.palette.success.main, 0.1)}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 					<StatCard
 						icon={CancelIcon}
 						title="Cancelled"
@@ -340,7 +340,7 @@ function CustomerHome() {
 					Quick Actions
 				</Typography>
 				<Grid container spacing={3}>
-					<Grid item xs={12} sm={6} md={4}>
+					<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 						<QuickActionCard
 							icon={CarIcon}
 							title="Browse Cars"
@@ -349,7 +349,7 @@ function CustomerHome() {
 							color="#1E3A8A"
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6} md={4}>
+					<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 						<QuickActionCard
 							icon={BookingIcon}
 							title="My Bookings"
@@ -358,7 +358,7 @@ function CustomerHome() {
 							color="#10B981"
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6} md={4}>
+					<Grid size={{ xs: 12, sm: 6, md: 4 }}>
 						<QuickActionCard
 							icon={TrendingIcon}
 							title="Profile"
@@ -437,7 +437,7 @@ function CustomerHome() {
 				) : (
 					<Grid container spacing={3}>
 						{upcomingBookings.map((booking) => (
-							<Grid item xs={12} md={6} lg={4} key={booking.bookingId}>
+							<Grid size={{ xs: 12, md: 6, lg: 4 }} key={booking.bookingId}>
 								<BookingCard booking={booking} />
 							</Grid>
 						))}

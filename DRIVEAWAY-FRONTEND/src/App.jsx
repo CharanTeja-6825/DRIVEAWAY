@@ -41,7 +41,7 @@ function App() {
         closeButton
         toastOptions={{
           style: {
-            fontFamily: '"Source Sans 3", sans-serif',
+            fontFamily: '"Inter", sans-serif',
             borderRadius: '12px',
           },
           className: 'driveaway-toast',

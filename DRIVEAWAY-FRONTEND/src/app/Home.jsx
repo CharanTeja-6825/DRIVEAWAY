@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -6,9 +6,9 @@ import {
   Typography,
   Button,
   Stack,
-  Card,
-  CardContent,
-  Chip,
+  Grid,
+  alpha,
+  useTheme,
 } from '@mui/material';
 import {
   DirectionsCar,
@@ -18,632 +18,571 @@ import {
   Handshake,
   TrendingUp,
   Search,
-  LocationOn,
   CheckCircle,
+  ArrowForward,
 } from '@mui/icons-material';
+import { gsap } from 'gsap';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { designGuardrails, userFacingCopy } from '@/theme/guardrails';
 
 function Home() {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const rootRef = useRef(null);
+  const heroRef = useRef(null);
 
   const features = [
     {
-      icon: <Search sx={{ fontSize: 48, color: 'primary.main' }} />,
-      title: 'Browse Premium Cars',
-      description: 'Explore our extensive collection of verified vehicles from trusted dealers across the region.',
+      icon: <Search sx={{ fontSize: 38, color: 'primary.main' }} />,
+      title: 'Curated premium fleet',
+      description:
+        'Browse trusted inventory from verified dealers with transparent availability and booking terms.',
     },
     {
-      icon: <CalendarMonth sx={{ fontSize: 48, color: 'primary.main' }} />,
-      title: 'Easy Booking',
-      description: 'Book your preferred car in minutes with our streamlined booking process and instant confirmation.',
+      icon: <CalendarMonth sx={{ fontSize: 38, color: 'primary.main' }} />,
+      title: 'Fast booking experience',
+      description:
+        'Reserve your car in minutes with clear steps, instant confirmation, and seamless follow-up.',
     },
     {
-      icon: <VerifiedUser sx={{ fontSize: 48, color: 'primary.main' }} />,
-      title: 'Verified Dealers',
-      description: 'All our dealers are thoroughly vetted and approved to ensure quality and reliability.',
+      icon: <VerifiedUser sx={{ fontSize: 38, color: 'primary.main' }} />,
+      title: 'Verified partners only',
+      description:
+        'DriveAway onboards and reviews each dealer application to keep rentals reliable and safe.',
     },
     {
-      icon: <Speed sx={{ fontSize: 48, color: 'primary.main' }} />,
-      title: 'Quick Approval',
-      description: 'Get your booking approved quickly with our automated verification system.',
+      icon: <Speed sx={{ fontSize: 38, color: 'primary.main' }} />,
+      title: 'Operationally efficient',
+      description:
+        'Real-time processing keeps customer requests and dealer approvals moving without delays.',
     },
   ];
 
-  const howItWorksCustomer = [
+  const customerJourney = [
     {
       step: '01',
-      title: 'Browse & Select',
-      description: 'Search through our curated collection of premium vehicles and choose your perfect ride.',
-      icon: <Search sx={{ fontSize: 40 }} />,
+      title: 'Discover',
+      description: 'Filter by location, class, and availability to find your best-fit ride quickly.',
+      icon: <Search sx={{ fontSize: 32 }} />,
     },
     {
       step: '02',
-      title: 'Book Instantly',
-      description: 'Select your dates, confirm availability, and complete your booking in just a few clicks.',
-      icon: <CalendarMonth sx={{ fontSize: 40 }} />,
+      title: 'Reserve',
+      description: 'Select dates and lock your booking through a guided, low-friction checkout flow.',
+      icon: <CalendarMonth sx={{ fontSize: 32 }} />,
     },
     {
       step: '03',
-      title: 'Drive Away',
-      description: 'Get approval from the dealer and pick up your car at the scheduled time. It\'s that simple!',
-      icon: <DirectionsCar sx={{ fontSize: 40 }} />,
+      title: 'Drive',
+      description: 'Get approval and collect your vehicle with clear pickup details and timelines.',
+      icon: <DirectionsCar sx={{ fontSize: 32 }} />,
     },
   ];
 
-  const howItWorksDealer = [
+  const dealerJourney = [
     {
       step: '01',
-      title: 'Register',
-      description: 'Sign up as a Customer and submit your business details for verification in the profile section.',
-      icon: <Handshake sx={{ fontSize: 40 }} />,
+      title: 'Apply',
+      description: 'Submit dealership details and compliance data in a structured onboarding flow.',
+      icon: <Handshake sx={{ fontSize: 32 }} />,
     },
     {
       step: '02',
-      title: 'Get Approved',
-      description: 'Our admin team reviews your application and approves qualified dealers.',
-      icon: <CheckCircle sx={{ fontSize: 40 }} />,
+      title: 'Get verified',
+      description: 'Our admin team reviews applications and tracks approval status transparently.',
+      icon: <CheckCircle sx={{ fontSize: 32 }} />,
     },
     {
       step: '03',
-      title: 'List & Earn',
-      description: 'Add your vehicles to the platform and start receiving booking requests instantly.',
-      icon: <TrendingUp sx={{ fontSize: 40 }} />,
+      title: 'Scale rentals',
+      description: 'List vehicles, receive requests, and grow utilization through the DriveAway network.',
+      icon: <TrendingUp sx={{ fontSize: 32 }} />,
     },
   ];
 
-  const metrics = [
-    { value: '500+', label: 'Premium Cars' },
-    { value: '150+', label: 'Verified Dealers' },
-    { value: '10K+', label: 'Happy Customers' },
-    { value: '25+', label: 'Cities Covered' },
+  const heroStats = [
+    { value: '500+', label: 'Cars ready to book' },
+    { value: '150+', label: 'Verified dealers' },
+    { value: '10K+', label: 'Customer trips' },
   ];
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return undefined;
+    }
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.fromTo(
+        '.hero-pill',
+        { y: 16, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: designGuardrails.motion.fast }
+      )
+        .fromTo(
+          '.hero-title',
+          { y: 40, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: designGuardrails.motion.medium },
+          '-=0.05'
+        )
+        .fromTo(
+          '.hero-subtitle',
+          { y: 30, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: designGuardrails.motion.medium },
+          '-=0.25'
+        )
+        .fromTo(
+          '.hero-cta',
+          { y: 20, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: designGuardrails.motion.medium,
+            stagger: designGuardrails.motion.stagger,
+          },
+          '-=0.25'
+        )
+        .fromTo(
+          '.hero-stat',
+          { y: 24, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: designGuardrails.motion.medium,
+            stagger: designGuardrails.motion.stagger,
+          },
+          '-=0.2'
+        )
+        .fromTo(
+          '.hero-visual',
+          { x: 42, autoAlpha: 0, rotate: -5 },
+          {
+            x: 0,
+            autoAlpha: 1,
+            rotate: 0,
+            duration: designGuardrails.motion.slow,
+          },
+          '-=0.55'
+        );
+
+      gsap.to('.floating-card', {
+        y: '+=12',
+        repeat: -1,
+        yoyo: true,
+        duration: 2.5,
+        stagger: 0.35,
+        ease: 'sine.inOut',
+      });
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <Box>
-      {/* Hero Section */}
+    <Box ref={rootRef} sx={{ bgcolor: 'background.default' }}>
       <Box
+        ref={heroRef}
         sx={{
-          background: 'linear-gradient(135deg, #224C98 0%, #4682B4 100%)',
+          background: `radial-gradient(circle at 15% 15%, ${alpha(theme.palette.primary.light, 0.35)} 0%, transparent 45%),
+            linear-gradient(140deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 70%)`,
+          color: 'common.white',
           position: 'relative',
           overflow: 'hidden',
-          pt: 12,
-          pb: 16,
+          pt: { xs: 10, md: 14 },
+          pb: { xs: 8, md: 12 },
         }}
       >
-        {/* Background Pattern */}
         <Box
           sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            opacity: 0.1,
-            backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
+            inset: 0,
+            opacity: 0.18,
+            backgroundImage: `linear-gradient(${alpha('#FFFFFF', 0.35)} 1px, transparent 1px),
+              linear-gradient(90deg, ${alpha('#FFFFFF', 0.35)} 1px, transparent 1px)`,
+            backgroundSize: { xs: '40px 40px', md: '58px 58px' },
           }}
         />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={6} alignItems="center">
-            {/* Left Side - Text Content */}
-            <Box flex={1}>
-              <Chip
-                label="Premium Car Rental Platform"
-                sx={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  color: 'white',
-                  backdropFilter: 'blur(10px)',
-                  mb: 3,
-                  fontWeight: 600,
-                }}
-              />
-              <Typography
-                variant="h1"
-                sx={{
-                  color: 'white',
-                  mb: 3,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
-                }}
-              >
-                Drive Your Dream Car Today
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  mb: 4,
-                  fontWeight: 400,
-                  lineHeight: 1.6,
-                }}
-              >
-                Connect with verified dealers and book premium vehicles in minutes. Your perfect ride is just a click away.
-              </Typography>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={() => navigate('/register')}
-                  sx={{
-                    backgroundColor: '#FF6B35',
-                    color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1.1rem',
-                    '&:hover': {
-                      backgroundColor: '#E55A2B',
-                    },
-                  }}
-                >
-                  Start Booking
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={() => navigate('/register')}
-                  sx={{
-                    borderColor: 'white',
-                    color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1.1rem',
-                    '&:hover': {
-                      borderColor: 'white',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    },
-                  }}
-                >
-                  Become a Dealer
-                </Button>
-              </Stack>
+          <Grid container spacing={{ xs: 5, md: 7 }} alignItems="center">
+            <Grid size={{ xs: 12, md: 7 }}>
+              <Stack spacing={3}>
+                <Box className="hero-pill" sx={{ opacity: 0 }}>
+                  <Badge className="bg-white/20 border-white/30 text-white px-3 py-1">
+                    User-first premium mobility platform
+                  </Badge>
+                </Box>
 
-              {/* Stats Row */}
-              <Stack direction="row" spacing={4} sx={{ mt: 6 }}>
-                {metrics.slice(0, 3).map((metric, index) => (
-                  <Box key={index}>
-                    <Typography
-                      variant="h3"
-                      sx={{
-                        color: 'white',
-                        fontWeight: 700,
-                        fontSize: { xs: '1.75rem', md: '2.5rem' },
-                      }}
-                    >
-                      {metric.value}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
-                    >
-                      {metric.label}
-                    </Typography>
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-
-            {/* Right Side - Visual Element */}
-            <Box
-              flex={1}
-              sx={{
-                display: { xs: 'none', md: 'flex' },
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                component="img"
-                src="https://images.unsplash.com/photo-1676886417721-2e180ff9adee?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwxMHx8bHV4dXJ5JTIwY2FyJTIwZGFzaGJvYXJkJTIwc3BlZWRvbWV0ZXIlMjBtb2Rlcm4lMjBoaWdoLXRlY2h8ZW58MHwwfHx8MTc2ODk3NDM2N3ww&ixlib=rb-4.1.0&q=85"
-                alt="Luxury car dashboard by Swansway Motor Group on Unsplash"
-                sx={{
-                  width: '100%',
-                  maxWidth: 500,
-                  height: 'auto',
-                  borderRadius: 4,
-                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-                }}
-              />
-            </Box>
-          </Stack>
-        </Container>
-      </Box>
-
-      {/* Features Section */}
-      <Container maxWidth="lg" sx={{ py: 12 }}>
-        <Stack spacing={2} alignItems="center" sx={{ mb: 8 }}>
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: 'center',
-              color: 'text.primary',
-              fontSize: { xs: '2rem', md: '2.75rem' },
-            }}
-          >
-            Why Choose DriveAway?
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: 'center',
-              color: 'text.secondary',
-              maxWidth: 600,
-              fontWeight: 400,
-            }}
-          >
-            Experience seamless car rentals with our trusted platform built for convenience and reliability.
-          </Typography>
-        </Stack>
-
-        <Box
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              elevation={0}
-              sx={{
-                height: '100%',
-                border: '1px solid',
-                borderColor: 'grey.200',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: 4,
-                  borderColor: 'primary.light',
-                },
-              }}
-            >
-              <CardContent className="p-8">
-                <Box sx={{ mb: 3 }}>{feature.icon}</Box>
-                <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                  {feature.title}
-                </Typography>
-                <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                  {feature.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
-      </Container>
-
-      {/* How It Works - Customer */}
-      <Box sx={{ backgroundColor: 'grey.50', py: 12 }}>
-        <Container maxWidth="lg">
-          <Stack spacing={2} alignItems="center" sx={{ mb: 8 }}>
-            <Typography
-              variant="h2"
-              sx={{
-                textAlign: 'center',
-                color: 'text.primary',
-                fontSize: { xs: '2rem', md: '2.75rem' },
-              }}
-            >
-              How It Works for Customers
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                textAlign: 'center',
-                color: 'text.secondary',
-                maxWidth: 600,
-                fontWeight: 400,
-              }}
-            >
-              Get behind the wheel in three simple steps
-            </Typography>
-          </Stack>
-
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={4}
-            sx={{ position: 'relative' }}
-          >
-            {howItWorksCustomer.map((step, index) => (
-              <Box
-                key={index}
-                flex={1}
-                sx={{ position: 'relative' }}
-              >
-                <Card
-                  elevation={0}
-                  sx={{
-                    height: '100%',
-                    textAlign: 'center',
-                    border: '1px solid',
-                    borderColor: 'grey.200',
-                    backgroundColor: 'white',
-                  }}
-                >
-                  <CardContent className="p-8">
-                    <Box
-                      sx={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: '50%',
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto',
-                        mb: 3,
-                      }}
-                    >
-                      {step.icon}
-                    </Box>
-                    <Typography
-                      variant="h2"
-                      sx={{
-                        fontSize: '3rem',
-                        fontWeight: 700,
-                        color: 'grey.200',
-                        mb: 2,
-                      }}
-                    >
-                      {step.step}
-                    </Typography>
-                    <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                      {step.title}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                      {step.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
-            ))}
-          </Stack>
-        </Container>
-      </Box>
-
-      {/* How It Works - Dealer */}
-      <Container maxWidth="lg" sx={{ py: 12 }}>
-        <Stack spacing={2} alignItems="center" sx={{ mb: 8 }}>
-          <Typography
-            variant="h2"
-            sx={{
-              textAlign: 'center',
-              color: 'text.primary',
-              fontSize: { xs: '2rem', md: '2.75rem' },
-            }}
-          >
-            How It Works for Dealers
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: 'center',
-              color: 'text.secondary',
-              maxWidth: 600,
-              fontWeight: 400,
-            }}
-          >
-            Join our network and grow your business
-          </Typography>
-        </Stack>
-
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={4}
-        >
-          {howItWorksDealer.map((step, index) => (
-            <Box
-              key={index}
-              flex={1}
-            >
-              <Card
-                elevation={0}
-                sx={{
-                  height: '100%',
-                  textAlign: 'center',
-                  border: '1px solid',
-                  borderColor: 'grey.200',
-                }}
-              >
-                <CardContent className="p-8">
-                  <Box
-                    sx={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      backgroundColor: 'secondary.main',
-                      color: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: '0 auto',
-                      mb: 3,
-                    }}
-                  >
-                    {step.icon}
-                  </Box>
-                  <Typography
-                    variant="h2"
-                    sx={{
-                      fontSize: '3rem',
-                      fontWeight: 700,
-                      color: 'grey.200',
-                      mb: 2,
-                    }}
-                  >
-                    {step.step}
-                  </Typography>
-                  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-                    {step.title}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {step.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Box>
-          ))}
-        </Stack>
-      </Container>
-
-      {/* Trust & Metrics Section */}
-      <Box
-        sx={{
-          backgroundColor: 'primary.main',
-          py: 10,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={6}
-            justifyContent="space-around"
-            alignItems="center"
-          >
-            {metrics.map((metric, index) => (
-              <Box key={index} sx={{ textAlign: 'center' }}>
                 <Typography
-                  variant="h2"
+                  className="hero-title"
+                  variant="h1"
                   sx={{
-                    color: 'white',
-                    fontWeight: 700,
-                    mb: 1,
-                    fontSize: { xs: '2.5rem', md: '3.5rem' },
+                    opacity: 0,
+                    color: 'common.white',
+                    fontSize: { xs: '2.2rem', sm: '2.8rem', md: '3.9rem' },
+                    maxWidth: 760,
                   }}
                 >
-                  {metric.value}
+                  Book your next drive with confidence.
                 </Typography>
+
                 <Typography
+                  className="hero-subtitle"
                   variant="h6"
                   sx={{
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    opacity: 0,
+                    color: alpha(theme.palette.common.white, 0.9),
+                    maxWidth: 640,
                     fontWeight: 400,
+                    lineHeight: 1.65,
                   }}
                 >
-                  {metric.label}
+                  {userFacingCopy.brandPromise} Discover high-quality listings, reserve instantly,
+                  and move from search to keys in a frictionless experience.
                 </Typography>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <Button
+                    className="hero-cta"
+                    variant="contained"
+                    size="large"
+                    onClick={() => navigate('/register')}
+                    endIcon={<ArrowForward />}
+                    sx={{
+                      opacity: 0,
+                      bgcolor: 'accent.main',
+                      color: 'common.white',
+                      px: 3.5,
+                      py: 1.25,
+                      '&:hover': { bgcolor: 'accent.dark' },
+                    }}
+                  >
+                    Start booking
+                  </Button>
+                  <Button
+                    className="hero-cta"
+                    variant="outlined"
+                    size="large"
+                    onClick={() => navigate('/register')}
+                    sx={{
+                      opacity: 0,
+                      borderColor: alpha(theme.palette.common.white, 0.8),
+                      color: 'common.white',
+                      px: 3.5,
+                      py: 1.25,
+                      '&:hover': {
+                        borderColor: 'common.white',
+                        bgcolor: alpha(theme.palette.common.white, 0.12),
+                      },
+                    }}
+                  >
+                    Become a dealer
+                  </Button>
+                </Stack>
+
+                <Grid container spacing={2} sx={{ pt: 1 }}>
+                  {heroStats.map((stat) => (
+                    <Grid key={stat.label} size={{ xs: 12, sm: 4 }}>
+                      <Box
+                        className="hero-stat"
+                        sx={{
+                          opacity: 0,
+                          p: 2.2,
+                          borderRadius: designGuardrails.radius.md,
+                          border: `1px solid ${alpha(theme.palette.common.white, 0.22)}`,
+                          bgcolor: alpha(theme.palette.common.white, 0.08),
+                          backdropFilter: 'blur(10px)',
+                        }}
+                      >
+                        <Typography variant="h4" sx={{ color: 'common.white', mb: 0.4 }}>
+                          {stat.value}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: alpha('#FFFFFF', 0.84) }}>
+                          {stat.label}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Stack>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 5 }}>
+              <Box
+                className="hero-visual"
+                sx={{
+                  opacity: 0,
+                  position: 'relative',
+                  minHeight: { xs: 320, sm: 380, md: 470 },
+                  borderRadius: designGuardrails.radius.lg,
+                  border: `1px solid ${alpha(theme.palette.common.white, 0.18)}`,
+                  bgcolor: alpha(theme.palette.common.white, 0.1),
+                  backdropFilter: 'blur(14px)',
+                  p: 3,
+                  boxShadow: designGuardrails.elevation.strong,
+                }}
+              >
+                <Stack spacing={2}>
+                  <Badge className="w-fit bg-emerald-500 text-white border-transparent">Live availability</Badge>
+                  <Typography variant="h5" sx={{ color: 'common.white' }}>
+                    Fleet readiness snapshot
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: alpha('#FFFFFF', 0.85), maxWidth: 300 }}>
+                    A modern booking surface designed for quick decisions on every screen size.
+                  </Typography>
+                </Stack>
+
+                <Stack spacing={1.6} sx={{ mt: 3 }}>
+                  {[
+                    { label: 'SUV', fill: 84 },
+                    { label: 'Sedan', fill: 73 },
+                    { label: 'Luxury', fill: 65 },
+                    { label: 'Electric', fill: 58 },
+                  ].map((item) => (
+                    <Box key={item.label}>
+                      <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="caption" sx={{ color: alpha('#FFFFFF', 0.8) }}>
+                          {item.label}
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: alpha('#FFFFFF', 0.8) }}>
+                          {item.fill}%
+                        </Typography>
+                      </Stack>
+                      <Box
+                        sx={{
+                          mt: 0.6,
+                          height: 7,
+                          borderRadius: 50,
+                          bgcolor: alpha(theme.palette.common.white, 0.2),
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: `${item.fill}%`,
+                            height: '100%',
+                            borderRadius: 50,
+                            bgcolor: 'accent.main',
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  ))}
+                </Stack>
+
+                <Box
+                  className="floating-card"
+                  sx={{
+                    position: 'absolute',
+                    right: -20,
+                    top: 48,
+                    px: 2,
+                    py: 1.2,
+                    borderRadius: 2,
+                    bgcolor: 'common.white',
+                    color: 'text.primary',
+                    boxShadow: designGuardrails.elevation.subtle,
+                  }}
+                >
+                  <Typography variant="subtitle2">+22% booking velocity</Typography>
+                </Box>
+
+                <Box
+                  className="floating-card"
+                  sx={{
+                    position: 'absolute',
+                    left: -22,
+                    bottom: 36,
+                    px: 2,
+                    py: 1.2,
+                    borderRadius: 2,
+                    bgcolor: 'common.white',
+                    color: 'text.primary',
+                    boxShadow: designGuardrails.elevation.subtle,
+                  }}
+                >
+                  <Typography variant="subtitle2">4.9 / 5 partner trust</Typography>
+                </Box>
               </Box>
-            ))}
-          </Stack>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
-      {/* CTA Section */}
-      <Container maxWidth="lg" sx={{ py: 12 }}>
-        <Card
-          elevation={0}
-          sx={{
-            background: 'linear-gradient(135deg, #224C98 0%, #4682B4 100%)',
-            borderRadius: 4,
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              opacity: 0.1,
-              backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-              backgroundSize: '30px 30px',
-            }}
-          />
-          <CardContent className="p-12" sx={{ position: 'relative', zIndex: 1 }}>
-            <Stack spacing={4} alignItems="center">
-              <Typography
-                variant="h2"
-                sx={{
-                  textAlign: 'center',
-                  color: 'white',
-                  fontSize: { xs: '2rem', md: '2.75rem' },
-                }}
-              >
-                Ready to Get Started?
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{
-                  textAlign: 'center',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  maxWidth: 700,
-                  fontWeight: 400,
-                }}
-              >
-                Join thousands of satisfied customers and dealers on DriveAway. Whether you're looking to rent a car or grow your dealership business, we've got you covered.
-              </Typography>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={() => navigate('/register')}
-                  sx={{
-                    backgroundColor: '#FF6B35',
-                    color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1.1rem',
-                    '&:hover': {
-                      backgroundColor: '#E55A2B',
-                    },
-                  }}
-                >
-                  Book a Car Now
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={() => navigate('/register')}
-                  sx={{
-                    borderColor: 'white',
-                    color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1.1rem',
-                    '&:hover': {
-                      borderColor: 'white',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    },
-                  }}
-                >
-                  Register as Dealer
-                </Button>
-              </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
+      <Container maxWidth="lg" sx={{ py: designGuardrails.layout.sectionY }}>
+        <Stack spacing={1} alignItems="center" sx={{ mb: 6 }}>
+          <Typography variant="overline" color="primary.main">
+            Experience architecture
+          </Typography>
+          <Typography variant="h2" sx={{ textAlign: 'center', fontSize: { xs: '1.9rem', md: '2.8rem' } }}>
+            Designed for confidence at every click
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ textAlign: 'center', maxWidth: 720 }}
+          >
+            We combine intuitive UX with operational clarity so customers and dealers complete actions faster.
+          </Typography>
+        </Stack>
+
+        <Grid container spacing={2.5}>
+          {features.map((feature) => (
+            <Grid key={feature.title} size={{ xs: 12, md: 6 }}>
+              <Card className="h-full border-slate-200 hover:border-blue-300 hover:shadow-lg">
+                <CardContent className="pt-6">
+                  <Box sx={{ mb: 2.5 }}>{feature.icon}</Box>
+                  <CardTitle className="mb-2 text-slate-900">{feature.title}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed text-slate-600">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </Container>
 
-      {/* Footer */}
-      <Box
-        sx={{
-          backgroundColor: 'grey.900',
-          color: 'white',
-          py: 6,
-        }}
-      >
+      <Box sx={{ bgcolor: 'grey.50', py: designGuardrails.layout.sectionY }}>
         <Container maxWidth="lg">
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={4}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-                DriveAway
+          <Grid container spacing={4}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="h4" sx={{ mb: 2 }}>
+                Customer journey
               </Typography>
-              <Typography variant="body2" sx={{ color: 'grey.400' }}>
-                Your trusted car rental platform
+              <Stack spacing={2}>
+                {customerJourney.map((item) => (
+                  <Card key={item.step} className="border-slate-200">
+                    <CardContent className="pt-6">
+                      <Stack direction="row" spacing={2} alignItems="flex-start">
+                        <Box
+                          sx={{
+                            width: 44,
+                            height: 44,
+                            flexShrink: 0,
+                            borderRadius: 2,
+                            bgcolor: alpha(theme.palette.primary.main, 0.12),
+                            color: 'primary.main',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {item.icon}
+                        </Box>
+                        <Box>
+                          <Typography variant="overline" color="primary.main">
+                            Step {item.step}
+                          </Typography>
+                          <Typography variant="h6">{item.title}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.description}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Stack>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="h4" sx={{ mb: 2 }}>
+                Dealer journey
               </Typography>
-            </Box>
-            <Stack direction="row" spacing={4}>
-              <Box>
-                <Typography variant="body2" sx={{ color: 'grey.400' }}>
-                  © 2024 DriveAway. All rights reserved.
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
+              <Stack spacing={2}>
+                {dealerJourney.map((item) => (
+                  <Card key={item.step} className="border-slate-200">
+                    <CardContent className="pt-6">
+                      <Stack direction="row" spacing={2} alignItems="flex-start">
+                        <Box
+                          sx={{
+                            width: 44,
+                            height: 44,
+                            flexShrink: 0,
+                            borderRadius: 2,
+                            bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                            color: 'secondary.main',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {item.icon}
+                        </Box>
+                        <Box>
+                          <Typography variant="overline" color="secondary.main">
+                            Step {item.step}
+                          </Typography>
+                          <Typography variant="h6">{item.title}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.description}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Stack>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
+
+      <Container maxWidth="lg" sx={{ py: designGuardrails.layout.sectionY }}>
+        <Card className="overflow-hidden border-0">
+          <Box
+            sx={{
+              p: { xs: 3, md: 5 },
+              background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+              color: 'common.white',
+            }}
+          >
+            <Grid container spacing={3} alignItems="center">
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Typography variant="h3" sx={{ color: 'common.white', mb: 1 }}>
+                  Ready to elevate your rental experience?
+                </Typography>
+                <Typography variant="body1" sx={{ color: alpha(theme.palette.common.white, 0.9) }}>
+                  Join DriveAway to access premium inventory, reliable partners, and a UX designed to keep every
+                  booking clear and fast.
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Stack direction={{ xs: 'column', sm: 'row', md: 'column' }} spacing={1.4}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => navigate('/register')}
+                    sx={{
+                      bgcolor: 'common.white',
+                      color: 'primary.main',
+                      '&:hover': { bgcolor: alpha(theme.palette.common.white, 0.9) },
+                    }}
+                  >
+                    Create account
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    onClick={() => navigate('/login')}
+                    sx={{
+                      borderColor: alpha(theme.palette.common.white, 0.75),
+                      color: 'common.white',
+                      '&:hover': {
+                        borderColor: 'common.white',
+                        bgcolor: alpha(theme.palette.common.white, 0.12),
+                      },
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </Box>
+        </Card>
+      </Container>
     </Box>
   );
 }
