@@ -20,6 +20,7 @@ import CustomerCars from './features/customer/pages/CustomerCars';
 import DealerBookings from './features/dealer/pages/DealerBookings';
 import CustomerBookings from './features/customer/pages/CustomerBookings';
 import CarDetailPage from './shared/components/CarDetailPage';
+import CookieConsentBanner from './shared/components/CookieConsentBanner';
 
 function App() {
   const { isLoggedIn, user } = useAuth();
@@ -48,6 +49,7 @@ function App() {
         }}
       />
       <Navbar />
+      <CookieConsentBanner />
       <Routes>
         <Route
           path="/"
