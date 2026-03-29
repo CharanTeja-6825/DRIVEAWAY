@@ -48,3 +48,20 @@ export const verfiyOrder = (orderId, paymentId, signature) => {
     signature: signature,
   });
 };
+
+// Review APIs
+export const submitReview = (reviewData) => {
+  return api.post("/api/customer/review", reviewData);
+};
+
+export const getCarReviews = (carId) => {
+  return api.get(`/api/customer/reviews/car/${carId}`);
+};
+
+export const canReviewBooking = (bookingId) => {
+  return api.get(`/api/customer/review/can-review/${bookingId}`);
+};
+
+export const hasReviewedBooking = (bookingId) => {
+  return api.get(`/api/customer/review/status/${bookingId}`);
+};

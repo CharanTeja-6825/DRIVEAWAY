@@ -5,7 +5,7 @@ import com.driveaway.entity.bookings.Car;
 import com.driveaway.entity.bookings.Order;
 import com.driveaway.entity.users.Dealer;
 import com.driveaway.entity.users.User;
-import com.driveaway.repository.DealerRepository;
+import com.driveaway.repository.users.DealerRepository;
 import com.driveaway.repository.bookings.BookingRepository;
 import com.driveaway.repository.bookings.CarRepository;
 import com.driveaway.repository.users.UserRepository;
@@ -320,6 +320,120 @@ public class EmailServiceImpl implements EmailService {
                 "paymentId", order.getPayment_id(),
                 "paymentDate", order.getUpdatedAt().toString().substring(0, 10)
         );
+        context.setVariables(variables);
+        return context;
+    }
+
+    // ── Ride lifecycle emails ──
+
+    @Override
+    public void sendRideStartedEmailToCustomer(Booking booking) {
+        User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+        Dealer dealer = dealerRepository.findById(booking.getDealerId()).orElseThrow();
+
+        Context context = getRideContext(booking, user, car, dealer);
+        String htmlContent = springTemplateEngine.process("customer/ride-started", context);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(apiHeader, mailApiKey);
+
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(
+                user.getUserName(), user.getUserEmail(),
+                "🚗 Your Ride Has Started! – " + car.getBrand() + " " + car.getModel(), htmlContent, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+    }
+
+    @Override
+    public void sendRideStartedEmailToDealer(Booking booking) {
+        Dealer dealer = dealerRepository.findById(booking.getDealerId()).orElseThrow();
+        User dealerUser = userRepository.findById(dealer.getUser()).orElseThrow();
+        User customer = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+
+        Context context = getDealerRideContext(booking, dealer, customer, car);
+        String htmlContent = springTemplateEngine.process("dealer/ride-started", context);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(apiHeader, mailApiKey);
+
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(
+                dealerUser.getUserName(), dealerUser.getUserEmail(),
+                "🚙 Rental Started – " + car.getBrand() + " " + car.getModel(), htmlContent, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+    }
+
+    @Override
+    public void sendRideCompletedEmailToCustomer(Booking booking) {
+        User user = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+        Dealer dealer = dealerRepository.findById(booking.getDealerId()).orElseThrow();
+
+        Context context = getRideContext(booking, user, car, dealer);
+        String htmlContent = springTemplateEngine.process("customer/ride-completed", context);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(apiHeader, mailApiKey);
+
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(
+                user.getUserName(), user.getUserEmail(),
+                "🎉 Ride Completed! Share Your Experience – " + car.getBrand() + " " + car.getModel(), htmlContent, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+    }
+
+    @Override
+    public void sendRideCompletedEmailToDealer(Booking booking) {
+        Dealer dealer = dealerRepository.findById(booking.getDealerId()).orElseThrow();
+        User dealerUser = userRepository.findById(dealer.getUser()).orElseThrow();
+        User customer = userRepository.findById(booking.getCustomerId()).orElseThrow();
+        Car car = carRepository.findById(booking.getCarId()).orElseThrow();
+
+        Context context = getDealerRideContext(booking, dealer, customer, car);
+        String htmlContent = springTemplateEngine.process("dealer/ride-completed", context);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(apiHeader, mailApiKey);
+
+        HttpEntity<Map<String, Object>> request = getMapHttpEntity(
+                dealerUser.getUserName(), dealerUser.getUserEmail(),
+                "✅ Rental Completed – ₹" + booking.getTotalAmount() + " Earned!", htmlContent, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+    }
+
+    // ── Context builders for ride emails ──
+
+    private static @NonNull Context getRideContext(Booking booking, User user, Car car, Dealer dealer) {
+        Context context = new Context();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("name", user.getUserName());
+        variables.put("bookingId", booking.getBookingId());
+        variables.put("carName", car.getBrand() + " " + car.getModel());
+        variables.put("dealershipName", dealer.getDealershipName());
+        variables.put("startDate", booking.getStartDate().toString().substring(0, 10));
+        variables.put("endDate", booking.getEndDate().toString().substring(0, 10));
+        variables.put("totalAmount", booking.getTotalAmount());
+        context.setVariables(variables);
+        return context;
+    }
+
+    private static @NonNull Context getDealerRideContext(Booking booking, Dealer dealer, User customer, Car car) {
+        Context context = new Context();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("dealerName", dealer.getDealershipName());
+        variables.put("customerName", customer.getUserName());
+        variables.put("bookingId", booking.getBookingId());
+        variables.put("carName", car.getBrand() + " " + car.getModel());
+        variables.put("startDate", booking.getStartDate().toString().substring(0, 10));
+        variables.put("endDate", booking.getEndDate().toString().substring(0, 10));
+        variables.put("totalAmount", booking.getTotalAmount());
         context.setVariables(variables);
         return context;
     }

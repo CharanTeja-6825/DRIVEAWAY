@@ -1,5 +1,6 @@
 package com.driveaway.controller;
 
+import com.driveaway.dto.AdminAnalyticsDTO;
 import com.driveaway.entity.analytics.DealerApplications;
 import com.driveaway.entity.users.User;
 import com.driveaway.enumerations.Roles;
@@ -49,5 +50,10 @@ public class AdminController {
 		List<DealerApplications> apps = dealerApplicationService.allApplications();
 		if(apps.size() == 0) return ResponseEntity.ok("No Applications");
 		return ResponseEntity.ok(apps);
+	}
+
+	@GetMapping("/analytics")
+	public ResponseEntity<AdminAnalyticsDTO> getAnalytics(){
+		return ResponseEntity.ok(adminService.getAnalytics());
 	}
 }

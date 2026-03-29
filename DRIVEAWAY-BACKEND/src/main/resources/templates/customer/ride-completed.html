@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ride Completed - Share Your Experience!</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0fdf4; font-family:'Segoe UI', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0; background:#f0fdf4;">
+    <tr>
+        <td align="center">
+            <table width="640" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff; border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1);">
+
+                <!-- Header with celebratory gradient -->
+                <tr>
+                    <td align="center"
+                        style="background:linear-gradient(135deg,#059669,#10b981,#34d399); padding:40px 30px; color:#ffffff;">
+                        <div style="font-size:48px; margin-bottom:12px;">🎉</div>
+                        <h1 style="margin:0; font-size:28px; letter-spacing:0.5px; font-weight:700;">Ride Completed!</h1>
+                        <p style="margin:12px 0 0; font-size:15px; opacity:0.95;">We hope you had an amazing journey</p>
+                    </td>
+                </tr>
+
+                <!-- Status Badge -->
+                <tr>
+                    <td align="center" style="padding:0;">
+                        <table cellpadding="0" cellspacing="0" style="margin-top:-18px;">
+                            <tr>
+                                <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6); padding:10px 28px; border-radius:50px; box-shadow:0 4px 15px rgba(99,102,241,0.4);">
+                                    <span style="color:#ffffff; font-weight:700; font-size:13px; letter-spacing:1px;">✓ COMPLETED</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 40px 10px; color:#1f2937;">
+
+                        <h2 style="margin:16px 0 20px; font-size:22px; font-weight:600;">
+                            Hello <span th:text="${name}" style="color:#059669;">Customer</span>! 👋
+                        </h2>
+
+                        <p style="font-size:16px; line-height:1.8; color:#374151; margin-bottom:24px;">
+                            Your rental period for
+                            <strong th:text="${carName}" style="color:#047857;">Car Name</strong>
+                            has ended. Thank you for choosing Driveaway for your journey!
+                        </p>
+
+                        <!-- Trip Summary Card -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#ecfdf5,#d1fae5); border:1px solid #a7f3d0; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:24px;">
+                                    <h3 style="margin:0 0 16px; font-size:16px; color:#065f46;">📋 Trip Summary</h3>
+                                    <table width="100%" cellpadding="8" cellspacing="0">
+                                        <tr>
+                                            <td width="50%" style="font-size:14px; color:#047857;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">🚙 Vehicle</strong>
+                                                <span th:text="${carName}" style="font-weight:600;">Car Name</span>
+                                            </td>
+                                            <td width="50%" style="font-size:14px; color:#047857;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">🏢 Dealership</strong>
+                                                <span th:text="${dealershipName}" style="font-weight:600;">Dealership</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:14px; color:#047857; padding-top:12px;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">📅 Start Date</strong>
+                                                <span th:text="${startDate}" style="font-weight:600;">2026-03-10</span>
+                                            </td>
+                                            <td style="font-size:14px; color:#047857; padding-top:12px;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">📅 End Date</strong>
+                                                <span th:text="${endDate}" style="font-weight:600;">2026-03-15</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Booking Details -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">Booking ID</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${bookingId}">BK12345</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">💰 Total Paid</td>
+                                            <td align="right" style="font-size:18px; font-weight:700; color:#059669;">₹ <span th:text="${totalAmount}">0</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Review CTA Section -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#fef3c7,#fde68a); border:2px solid #f59e0b; border-radius:16px; margin:24px 0;">
+                            <tr>
+                                <td style="padding:28px; text-align:center;">
+                                    <div style="font-size:36px; margin-bottom:12px;">⭐</div>
+                                    <h3 style="margin:0 0 12px; font-size:20px; color:#92400e;">How was your experience?</h3>
+                                    <p style="margin:0 0 20px; font-size:14px; color:#78350f; line-height:1.6;">
+                                        Your feedback helps other customers make better decisions and helps us improve our service!
+                                    </p>
+                                    
+                                    <!-- Star Rating Visual -->
+                                    <div style="margin-bottom:20px;">
+                                        <span style="font-size:32px; color:#fbbf24;">★ ★ ★ ★ ★</span>
+                                    </div>
+                                    
+                                    <a href="#"
+                                       style="background:linear-gradient(135deg,#f59e0b,#d97706); color:#ffffff; text-decoration:none; padding:16px 40px; border-radius:12px; font-size:16px; font-weight:700; display:inline-block; box-shadow:0 4px 15px rgba(245,158,11,0.4);">
+                                        ✍️ Write a Review
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Thank You Message -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#ede9fe,#ddd6fe); border:1px solid #c4b5fd; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:24px; text-align:center;">
+                                    <p style="margin:0; font-size:16px; color:#5b21b6; line-height:1.6;">
+                                        🙏 <strong>Thank you for choosing Driveaway!</strong><br>
+                                        <span style="font-size:14px; color:#7c3aed;">We look forward to serving you again soon.</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CTA -->
+                        <div style="text-align:center; margin:32px 0 20px;">
+                            <a href="#"
+                               style="background:linear-gradient(135deg,#059669,#10b981); color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:12px; font-size:15px; font-weight:600; display:inline-block; box-shadow:0 4px 15px rgba(16,185,129,0.4);">
+                                Book Another Ride
+                            </a>
+                        </div>
+
+                        <p style="font-size:14px; line-height:1.7; color:#6b7280; text-align:center;">
+                            Need help? Contact our support team anytime.
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background:linear-gradient(135deg,#1e293b,#334155); padding:28px; text-align:center;">
+                        <p style="margin:0 0 8px; font-size:16px; font-weight:600; color:#ffffff;">Driveaway</p>
+                        <p style="margin:0; font-size:12px; color:#94a3b8;">
+                            © 2026 Driveaway. All rights reserved.<br>
+                            This is an automated email. Please do not reply.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

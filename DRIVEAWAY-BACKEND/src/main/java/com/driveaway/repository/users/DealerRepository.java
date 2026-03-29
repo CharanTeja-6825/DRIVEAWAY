@@ -1,4 +1,4 @@
-package com.driveaway.repository;
+package com.driveaway.repository.users;
 
 import com.driveaway.entity.users.Dealer;
 import org.springframework.data.mongodb.repository.MongoRepository;

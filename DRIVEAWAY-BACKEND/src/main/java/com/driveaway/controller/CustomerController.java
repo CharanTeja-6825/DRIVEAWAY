@@ -122,12 +122,31 @@ public class CustomerController {
 
 	@PostMapping("/review")
 	public ResponseEntity<String> addReview(@RequestBody Review review){
+		// Check if booking has already been reviewed
+		if (reviewService.hasBookingBeenReviewed(review.getBookingId())) {
+			return ResponseEntity.badRequest().body("This booking has already been reviewed");
+		}
 		return ResponseEntity.status(201).body(carService.addReviewCar(review));
 	}
 
 	@GetMapping("/reviews/{carId}")
 	public ResponseEntity<List<Review>> getReviewsByCar(@PathVariable String carId){
 		return ResponseEntity.ok(reviewService.getReviewsByCar(carId));
+	}
+
+	@GetMapping("/reviews/enriched/{carId}")
+	public ResponseEntity<?> getEnrichedReviewsByCar(@PathVariable String carId){
+		return ResponseEntity.ok(reviewService.getEnrichedReviewsByCar(carId));
+	}
+
+	@GetMapping("/review/can-review")
+	public ResponseEntity<Boolean> canReviewBooking(@RequestParam String bookingId, @RequestParam String customerId) {
+		return ResponseEntity.ok(reviewService.canUserReviewBooking(bookingId, customerId));
+	}
+
+	@GetMapping("/review/status/{bookingId}")
+	public ResponseEntity<Boolean> hasBookingBeenReviewed(@PathVariable String bookingId) {
+		return ResponseEntity.ok(reviewService.hasBookingBeenReviewed(bookingId));
 	}
 
 }

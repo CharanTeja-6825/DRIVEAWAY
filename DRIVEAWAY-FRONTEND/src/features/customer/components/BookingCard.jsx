@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -7,6 +7,7 @@ import {
   Stack,
   Box,
   IconButton,
+  Button,
 } from "@mui/material";
 import {
   EventNote,
@@ -16,6 +17,8 @@ import {
   CalendarToday,
   Cancel,
   Store,
+  RateReview,
+  CheckCircle,
 } from "@mui/icons-material";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -30,7 +33,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import PaymentButton from "./Payment";
+import ReviewModal from "./ReviewModal";
 import { useAuth } from "../../../shared/hooks/AuthProvider";
+import { hasReviewedBooking } from "../services";
 
 const statusBadgeVariant = {
   PENDING: "warning",
@@ -46,6 +51,33 @@ const statusBadgeVariant = {
 export default function BookingCard({ booking, onCancel, statusColorMap, reloadBookings }) {
 
   const {getStatusLabel} = useAuth();
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [checkingReview, setCheckingReview] = useState(false);
+
+  const isCompleted = (booking?.status || "").toUpperCase() === "COMPLETED";
+
+  // Check if user has already reviewed this booking
+  useEffect(() => {
+    if (isCompleted && booking?._id) {
+      setCheckingReview(true);
+      hasReviewedBooking(booking._id)
+        .then((res) => {
+          setHasReviewed(res.data === true);
+        })
+        .catch(() => {
+          setHasReviewed(false);
+        })
+        .finally(() => {
+          setCheckingReview(false);
+        });
+    }
+  }, [isCompleted, booking?._id]);
+
+  const handleReviewSubmitted = () => {
+    setHasReviewed(true);
+    reloadBookings?.();
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -268,7 +300,59 @@ export default function BookingCard({ booking, onCancel, statusColorMap, reloadB
           {!isBookingApproved && <p className="font-bold">₹ {booking.totalAmount}</p>}
           {isBookingApproved && <PaymentButton reloadBookings={reloadBookings} booking={booking} />}
         </Stack>
+
+        {/* Write Review Button - Only for COMPLETED bookings */}
+        {isCompleted && !checkingReview && (
+          <>
+            <Divider sx={{ my: 2 }} />
+            {hasReviewed ? (
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                  py: 1.5,
+                  px: 2,
+                  bgcolor: "success.lighter",
+                  borderRadius: 2,
+                }}
+              >
+                <CheckCircle sx={{ fontSize: 20, color: "success.main" }} />
+                <Typography variant="body2" color="success.main" fontWeight={600}>
+                  Review Submitted
+                </Typography>
+              </Stack>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<RateReview />}
+                onClick={() => setReviewModalOpen(true)}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.2,
+                  fontWeight: 600,
+                  background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                  "&:hover": {
+                    background: "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+                  },
+                }}
+              >
+                Write a Review
+              </Button>
+            )}
+          </>
+        )}
       </CardContent>
+
+      {/* Review Modal */}
+      <ReviewModal
+        open={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+        booking={booking}
+        onReviewSubmitted={handleReviewSubmitted}
+      />
     </Card>
   );
 }

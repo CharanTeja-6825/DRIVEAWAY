@@ -5,7 +5,9 @@ import com.driveaway.dto.CustomerBookingDTO;
 import com.driveaway.entity.bookings.Booking;
 import com.driveaway.entity.bookings.Car;
 import com.driveaway.enumerations.BookingStatus;
+import com.driveaway.events.BookingActiveEvent;
 import com.driveaway.events.BookingCancelledEvent;
+import com.driveaway.events.BookingCompletedEvent;
 import com.driveaway.events.BookingConfirmedEvent;
 import com.driveaway.events.BookingCreatedEvent;
 import com.driveaway.events.BookingRejectedEvent;
@@ -235,7 +237,20 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
 
 
-        bookingRepository.activateBooking(currentDate, startCars);
-        bookingRepository.completeBooking(currentDate, endCars);
+        // Activate bookings and get the list of activated bookings
+        List<Booking> activatedBookings = bookingRepository.activateBooking(currentDate, startCars);
+        
+        // Publish events for each activated booking
+        for (Booking booking : activatedBookings) {
+            applicationEventPublisher.publishEvent(new BookingActiveEvent(this, booking));
+        }
+
+        // Complete bookings and get the list of completed bookings
+        List<Booking> completedBookings = bookingRepository.completeBooking(currentDate, endCars);
+        
+        // Publish events for each completed booking
+        for (Booking booking : completedBookings) {
+            applicationEventPublisher.publishEvent(new BookingCompletedEvent(this, booking));
+        }
     }
 }

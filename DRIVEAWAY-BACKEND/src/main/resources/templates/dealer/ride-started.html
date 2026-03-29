@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rental Period Started</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0f4f8; font-family:'Segoe UI', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0; background:#f0f4f8;">
+    <tr>
+        <td align="center">
+            <table width="640" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff; border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1);">
+
+                <!-- Header -->
+                <tr>
+                    <td align="center"
+                        style="background:linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6); padding:40px 30px; color:#ffffff;">
+                        <div style="font-size:48px; margin-bottom:12px;">🚙</div>
+                        <h1 style="margin:0; font-size:28px; letter-spacing:0.5px; font-weight:700;">Rental Period Started</h1>
+                        <p style="margin:12px 0 0; font-size:15px; opacity:0.95;">Your vehicle is now in use</p>
+                    </td>
+                </tr>
+
+                <!-- Status Badge -->
+                <tr>
+                    <td align="center" style="padding:0;">
+                        <table cellpadding="0" cellspacing="0" style="margin-top:-18px;">
+                            <tr>
+                                <td style="background:linear-gradient(135deg,#22c55e,#16a34a); padding:10px 28px; border-radius:50px; box-shadow:0 4px 15px rgba(34,197,94,0.4);">
+                                    <span style="color:#ffffff; font-weight:700; font-size:13px; letter-spacing:1px;">🟢 ACTIVE</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 40px 10px; color:#1f2937;">
+
+                        <h2 style="margin:16px 0 20px; font-size:22px; font-weight:600;">
+                            Hello <span th:text="${dealerName}" style="color:#1e3a8a;">Dealer</span>! 👋
+                        </h2>
+
+                        <p style="font-size:16px; line-height:1.8; color:#374151; margin-bottom:24px;">
+                            The rental period for your vehicle
+                            <strong th:text="${carName}" style="color:#1e3a8a;">Car Name</strong>
+                            has officially started. Customer
+                            <strong th:text="${customerName}" style="color:#059669;">Customer Name</strong>
+                            now has the keys.
+                        </p>
+
+                        <!-- Vehicle & Customer Info -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #bfdbfe; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:24px;">
+                                    <table width="100%" cellpadding="10" cellspacing="0">
+                                        <tr>
+                                            <td width="50%" style="font-size:14px; color:#1e40af;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">🚗 Vehicle</strong>
+                                                <span th:text="${carName}" style="font-weight:600;">Car Name</span>
+                                            </td>
+                                            <td width="50%" style="font-size:14px; color:#1e40af;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">👤 Customer</strong>
+                                                <span th:text="${customerName}" style="font-weight:600;">Customer Name</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Booking Details -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">Booking ID</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${bookingId}">BK12345</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📅 Start Date</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#16a34a;" th:text="${startDate}">2026-03-10</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📅 End Date</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#dc2626;" th:text="${endDate}">2026-03-15</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">💰 Rental Amount</td>
+                                            <td align="right" style="font-size:18px; font-weight:700; color:#1e40af;">₹ <span th:text="${totalAmount}">0</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Info Box -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#fef3c7,#fde68a); border:1px solid #fcd34d; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <h3 style="margin:0 0 12px; font-size:15px; color:#92400e;">📢 What's Next?</h3>
+                                    <p style="margin:0; color:#78350f; font-size:14px; line-height:1.8;">
+                                        The vehicle will be returned by the customer on the end date. You'll receive another notification when the rental period ends. Payment has already been secured.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CTA -->
+                        <div style="text-align:center; margin:32px 0 20px;">
+                            <a href="#"
+                               style="background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:12px; font-size:15px; font-weight:600; display:inline-block; box-shadow:0 4px 15px rgba(37,99,235,0.4);">
+                                View Dashboard
+                            </a>
+                        </div>
+
+                        <p style="font-size:14px; line-height:1.7; color:#6b7280; text-align:center;">
+                            If you have any questions, contact our dealer support team.
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background:linear-gradient(135deg,#1e293b,#334155); padding:28px; text-align:center;">
+                        <p style="margin:0 0 8px; font-size:16px; font-weight:600; color:#ffffff;">Driveaway</p>
+                        <p style="margin:0; font-size:12px; color:#94a3b8;">
+                            © 2026 Driveaway. All rights reserved.<br>
+                            This is an automated email. Please do not reply.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

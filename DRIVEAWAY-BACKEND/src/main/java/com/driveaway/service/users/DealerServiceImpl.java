@@ -4,7 +4,7 @@ import com.driveaway.dto.DealerRequestDTO;
 import com.driveaway.entity.users.Dealer;
 import com.driveaway.entity.users.User;
 import com.driveaway.enumerations.Approval;
-import com.driveaway.repository.DealerRepository;
+import com.driveaway.repository.users.DealerRepository;
 import com.driveaway.repository.bookings.CarRepository;
 import com.driveaway.repository.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

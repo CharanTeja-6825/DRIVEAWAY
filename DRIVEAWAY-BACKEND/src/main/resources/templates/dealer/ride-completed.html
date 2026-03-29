@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rental Completed Successfully</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0fdf4; font-family:'Segoe UI', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0; background:#f0fdf4;">
+    <tr>
+        <td align="center">
+            <table width="640" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff; border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1);">
+
+                <!-- Header -->
+                <tr>
+                    <td align="center"
+                        style="background:linear-gradient(135deg,#059669,#10b981,#34d399); padding:40px 30px; color:#ffffff;">
+                        <div style="font-size:48px; margin-bottom:12px;">✅</div>
+                        <h1 style="margin:0; font-size:28px; letter-spacing:0.5px; font-weight:700;">Rental Completed!</h1>
+                        <p style="margin:12px 0 0; font-size:15px; opacity:0.95;">Your vehicle is now available again</p>
+                    </td>
+                </tr>
+
+                <!-- Status Badge -->
+                <tr>
+                    <td align="center" style="padding:0;">
+                        <table cellpadding="0" cellspacing="0" style="margin-top:-18px;">
+                            <tr>
+                                <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6); padding:10px 28px; border-radius:50px; box-shadow:0 4px 15px rgba(99,102,241,0.4);">
+                                    <span style="color:#ffffff; font-weight:700; font-size:13px; letter-spacing:1px;">✓ COMPLETED</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 40px 10px; color:#1f2937;">
+
+                        <h2 style="margin:16px 0 20px; font-size:22px; font-weight:600;">
+                            Hello <span th:text="${dealerName}" style="color:#059669;">Dealer</span>! 👋
+                        </h2>
+
+                        <p style="font-size:16px; line-height:1.8; color:#374151; margin-bottom:24px;">
+                            Great news! The rental period for your vehicle
+                            <strong th:text="${carName}" style="color:#047857;">Car Name</strong>
+                            has been completed. Customer
+                            <strong th:text="${customerName}" style="color:#1e40af;">Customer Name</strong>
+                            has returned the car.
+                        </p>
+
+                        <!-- Earnings Summary -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#ecfdf5,#d1fae5); border:2px solid #10b981; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:28px; text-align:center;">
+                                    <p style="margin:0 0 8px; font-size:14px; color:#065f46;">💰 Earnings from this rental</p>
+                                    <p style="margin:0; font-size:36px; font-weight:700; color:#059669;">
+                                        ₹ <span th:text="${totalAmount}">0</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Trip Details -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">Booking ID</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${bookingId}">BK12345</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">🚗 Vehicle</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${carName}">Car Name</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">👤 Customer</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${customerName}">Customer Name</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📅 Rental Period</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;">
+                                                <span th:text="${startDate}">2026-03-10</span> to <span th:text="${endDate}">2026-03-15</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📊 Status</td>
+                                            <td align="right">
+                                                <span style="background:#dcfce7; color:#166534; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600;">
+                                                    ✓ Successfully Completed
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Vehicle Available Notice -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #3b82f6; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <h3 style="margin:0 0 12px; font-size:15px; color:#1e40af;">🚗 Vehicle Status Updated</h3>
+                                    <p style="margin:0; color:#1e3a8a; font-size:14px; line-height:1.8;">
+                                        Your vehicle <strong th:text="${carName}">Car Name</strong> has been automatically marked as <strong>AVAILABLE</strong> and is now ready for new bookings.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Review Notice -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#fef3c7,#fde68a); border:1px solid #fcd34d; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <h3 style="margin:0 0 12px; font-size:15px; color:#92400e;">⭐ Customer Review Pending</h3>
+                                    <p style="margin:0; color:#78350f; font-size:14px; line-height:1.8;">
+                                        We've asked the customer to leave a review for your vehicle. Positive reviews help attract more customers to your dealership!
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CTA -->
+                        <div style="text-align:center; margin:32px 0 20px;">
+                            <a href="#"
+                               style="background:linear-gradient(135deg,#059669,#10b981); color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:12px; font-size:15px; font-weight:600; display:inline-block; box-shadow:0 4px 15px rgba(16,185,129,0.4);">
+                                View Dashboard
+                            </a>
+                        </div>
+
+                        <p style="font-size:15px; line-height:1.7; color:#4b5563; text-align:center;">
+                            Thank you for being a valued partner! 🤝
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background:linear-gradient(135deg,#1e293b,#334155); padding:28px; text-align:center;">
+                        <p style="margin:0 0 8px; font-size:16px; font-weight:600; color:#ffffff;">Driveaway</p>
+                        <p style="margin:0; font-size:12px; color:#94a3b8;">
+                            © 2026 Driveaway. All rights reserved.<br>
+                            This is an automated email. Please do not reply.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

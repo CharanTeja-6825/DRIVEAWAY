@@ -19,10 +19,14 @@ import {
   StorefrontOutlined as DealerIcon,
   ChevronLeft,
   ChevronRight,
+  Star,
 } from "@mui/icons-material";
 import { useAuth } from "../hooks/AuthProvider";
 import { brandsArray } from "../constants/brands";
 import BookingModal from "../../features/customer/components/BookingModal";
+import ReviewsList from "./ReviewsList";
+import StarRating from "./StarRating";
+import { getCarReviews } from "../../features/customer/services";
 
 const getBrandLogo = (brand) =>
   brandsArray.find((b) => b.value === brand)?.logo;
@@ -35,8 +39,28 @@ export default function CarDetailPage() {
 
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  // Fetch reviews for this car
+  useEffect(() => {
+    if (car?._id) {
+      setReviewsLoading(true);
+      getCarReviews(car._id)
+        .then((res) => {
+          setReviews(res.data || []);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch reviews:", err);
+          setReviews([]);
+        })
+        .finally(() => {
+          setReviewsLoading(false);
+        });
+    }
+  }, [car?._id]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -299,7 +323,7 @@ export default function CarDetailPage() {
                   />
                 </Box>
               )}
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <Typography
                   variant="h4"
                   fontWeight={700}
@@ -308,9 +332,37 @@ export default function CarDetailPage() {
                 >
                   {car.brand} {car.model}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {car.year}
-                </Typography>
+                <Stack direction="row" alignItems="center" spacing={1.5}>
+                  <Typography variant="body2" color="text.secondary">
+                    {car.year}
+                  </Typography>
+                  {car.rating > 0 && (
+                    <>
+                      <Box
+                        sx={{
+                          width: 4,
+                          height: 4,
+                          borderRadius: "50%",
+                          bgcolor: "text.disabled",
+                        }}
+                      />
+                      <Stack direction="row" alignItems="center" spacing={0.5}>
+                        <Star sx={{ fontSize: 16, color: "#fbbf24" }} />
+                        <Typography
+                          variant="body2"
+                          fontWeight={600}
+                          color="text.primary"
+                        >
+                          {car.rating?.toFixed(1)}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          ({car.totalRatingsCount || 0}{" "}
+                          {car.totalRatingsCount === 1 ? "review" : "reviews"})
+                        </Typography>
+                      </Stack>
+                    </>
+                  )}
+                </Stack>
               </Box>
             </Stack>
 
@@ -421,6 +473,17 @@ export default function CarDetailPage() {
               })}
             </Typography>
           </Box>
+        </Box>
+
+        {/* Reviews Section */}
+        <Box sx={{ mt: 6 }}>
+          <Divider sx={{ mb: 4 }} />
+          <ReviewsList
+            reviews={reviews}
+            loading={reviewsLoading}
+            averageRating={car.rating || 0}
+            totalCount={car.totalRatingsCount || 0}
+          />
         </Box>
       </Box>
 

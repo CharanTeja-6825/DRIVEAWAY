@@ -36,40 +36,61 @@ public class BookingRepositoryImpl implements BookingRepositoryCustom{
     }
 
     @Override
-    public void activateBooking(Instant currentDate, List<String> cars) {
+    public List<Booking> activateBooking(Instant currentDate, List<String> cars) {
 
-        Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.PAID.toString())
+        // First, find the bookings that will be activated
+        Query findQuery = Query.query(Criteria.where("status").is(BookingStatus.PAID.toString())
                 .and("startDate")
                 .lte(currentDate));
+        
+        List<Booking> bookingsToActivate = mongoTemplate.find(findQuery, Booking.class);
 
-        Update bookingUpdate = new Update().set("status", BookingStatus.ACTIVE.toString());
+        if (!bookingsToActivate.isEmpty()) {
+            Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.PAID.toString())
+                    .and("startDate")
+                    .lte(currentDate));
 
-        Query carQuery = Query.query(Criteria.where("_id").in(cars)
-                .and("carStatus")
-                .is(BookingStatus.BOOKED.toString()));
+            Update bookingUpdate = new Update().set("status", BookingStatus.ACTIVE.toString());
 
-        Update carUpdate = new Update().set("carStatus", BookingStatus.ACTIVE.toString());
+            Query carQuery = Query.query(Criteria.where("_id").in(cars)
+                    .and("carStatus")
+                    .is(BookingStatus.BOOKED.toString()));
 
-        mongoTemplate.updateMulti(bookingQuery, bookingUpdate, Booking.class);
-        mongoTemplate.updateMulti(carQuery, carUpdate, Car.class);
+            Update carUpdate = new Update().set("carStatus", BookingStatus.ACTIVE.toString());
 
+            mongoTemplate.updateMulti(bookingQuery, bookingUpdate, Booking.class);
+            mongoTemplate.updateMulti(carQuery, carUpdate, Car.class);
+        }
+
+        return bookingsToActivate;
     }
 
     @Override
-    public void completeBooking(Instant currentDate, List<String> cars) {
-        Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.ACTIVE.toString())
+    public List<Booking> completeBooking(Instant currentDate, List<String> cars) {
+        // First, find the bookings that will be completed
+        Query findQuery = Query.query(Criteria.where("status").is(BookingStatus.ACTIVE.toString())
                 .and("endDate")
                 .lte(currentDate));
+        
+        List<Booking> bookingsToComplete = mongoTemplate.find(findQuery, Booking.class);
 
-        Update bookingUpdate = new Update().set("status", BookingStatus.COMPLETED.toString());
+        if (!bookingsToComplete.isEmpty()) {
+            Query bookingQuery = Query.query(Criteria.where("status").is(BookingStatus.ACTIVE.toString())
+                    .and("endDate")
+                    .lte(currentDate));
 
-        Query carQuery = Query.query(Criteria.where("_id").in(cars)
-                .and("carStatus")
-                .in(BookingStatus.ACTIVE.toString(), BookingStatus.BOOKED.toString()));
+            Update bookingUpdate = new Update().set("status", BookingStatus.COMPLETED.toString());
 
-        Update carUpdate = new Update().set("carStatus", BookingStatus.AVAILABLE.toString());
+            Query carQuery = Query.query(Criteria.where("_id").in(cars)
+                    .and("carStatus")
+                    .in(BookingStatus.ACTIVE.toString(), BookingStatus.BOOKED.toString()));
 
-        mongoTemplate.updateMulti(bookingQuery, bookingUpdate, Booking.class);
-        mongoTemplate.updateMulti(carQuery, carUpdate, Car.class);
+            Update carUpdate = new Update().set("carStatus", BookingStatus.AVAILABLE.toString());
+
+            mongoTemplate.updateMulti(bookingQuery, bookingUpdate, Booking.class);
+            mongoTemplate.updateMulti(carQuery, carUpdate, Car.class);
+        }
+
+        return bookingsToComplete;
     }
 }

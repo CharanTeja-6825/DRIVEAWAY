@@ -13,4 +13,10 @@ public interface EmailService {
     void sendDealerNewBookingEmail(Booking booking);
     void sendDealerBookingCancelledEmail(Booking booking);
     void sendDealerPaymentReceivedEmail(Order order);
+
+    // Ride lifecycle emails
+    void sendRideStartedEmailToCustomer(Booking booking);
+    void sendRideStartedEmailToDealer(Booking booking);
+    void sendRideCompletedEmailToCustomer(Booking booking);
+    void sendRideCompletedEmailToDealer(Booking booking);
 }

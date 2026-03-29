@@ -15,13 +15,11 @@ public class BookingScheduler {
 
     @Scheduled(cron = "0 */5 * * * *")
     public void expirePendingBookings(){
-        System.out.println("cron exec");
         bookingService.expirePendingBookings();
     }
 
     @Scheduled(cron = "0 */5 * * * *")
     public void updateCarsAndBookings(){
-        System.out.println("Cars Updated");
         bookingService.updateBookingsAndCars(Instant.now());
     }
 }

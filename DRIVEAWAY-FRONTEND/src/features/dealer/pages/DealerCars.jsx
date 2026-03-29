@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress, Typography, Box } from "@mui/material";
-import { Car, Calendar, IndianRupee, Hash, Settings } from "lucide-react";
+import { Car, Calendar, IndianRupee, Hash, Settings, Star } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -144,7 +144,7 @@ export default function DealerCars() {
 											/>
 										</div>
 									)}
-									<div>
+									<div className="flex-1">
 										<h3 className="text-base font-bold text-white font-[Manrope] leading-tight">
 											{car.brand}
 										</h3>
@@ -152,6 +152,18 @@ export default function DealerCars() {
 											{car.model}
 										</p>
 									</div>
+									{/* Rating Display */}
+									{car.rating > 0 && (
+										<div className="flex items-center gap-1 bg-white/20 rounded-lg px-2 py-1">
+											<Star className="h-4 w-4 text-amber-400 fill-amber-400" />
+											<span className="text-sm font-semibold text-white">
+												{car.rating?.toFixed(1)}
+											</span>
+											<span className="text-xs text-white/70">
+												({car.totalRatingsCount || 0})
+											</span>
+										</div>
+									)}
 								</div>
 							</div>
 

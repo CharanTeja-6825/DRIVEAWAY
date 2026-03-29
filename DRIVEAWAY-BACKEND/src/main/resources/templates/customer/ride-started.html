@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Ride Has Started!</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0f4f8; font-family:'Segoe UI', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0; background:#f0f4f8;">
+    <tr>
+        <td align="center">
+            <table width="640" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff; border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1);">
+
+                <!-- Header with animated gradient feel -->
+                <tr>
+                    <td align="center"
+                        style="background:linear-gradient(135deg,#1e40af,#3b82f6,#60a5fa); padding:40px 30px; color:#ffffff;">
+                        <div style="font-size:48px; margin-bottom:12px;">🚗</div>
+                        <h1 style="margin:0; font-size:28px; letter-spacing:0.5px; font-weight:700;">Your Ride Has Started!</h1>
+                        <p style="margin:12px 0 0; font-size:15px; opacity:0.95;">Time to hit the road with your rental car</p>
+                    </td>
+                </tr>
+
+                <!-- Status Badge -->
+                <tr>
+                    <td align="center" style="padding:0;">
+                        <table cellpadding="0" cellspacing="0" style="margin-top:-18px;">
+                            <tr>
+                                <td style="background:linear-gradient(135deg,#22c55e,#16a34a); padding:10px 28px; border-radius:50px; box-shadow:0 4px 15px rgba(34,197,94,0.4);">
+                                    <span style="color:#ffffff; font-weight:700; font-size:13px; letter-spacing:1px;">🟢 ACTIVE</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 40px 10px; color:#1f2937;">
+
+                        <h2 style="margin:16px 0 20px; font-size:22px; font-weight:600;">
+                            Hello <span th:text="${name}" style="color:#3b82f6;">Customer</span>! 👋
+                        </h2>
+
+                        <p style="font-size:16px; line-height:1.8; color:#374151; margin-bottom:24px;">
+                            Great news! Your rental period for
+                            <strong th:text="${carName}" style="color:#1e40af;">Car Name</strong>
+                            has officially begun. The keys are yours – enjoy every mile!
+                        </p>
+
+                        <!-- Car Info Card -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #bfdbfe; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:24px;">
+                                    <table width="100%" cellpadding="8" cellspacing="0">
+                                        <tr>
+                                            <td width="50%" style="font-size:14px; color:#1e40af;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">🚙 Vehicle</strong>
+                                                <span th:text="${carName}" style="font-weight:600;">Car Name</span>
+                                            </td>
+                                            <td width="50%" style="font-size:14px; color:#1e40af;">
+                                                <strong style="display:block; color:#64748b; font-size:12px; margin-bottom:4px;">🏢 Dealership</strong>
+                                                <span th:text="${dealershipName}" style="font-weight:600;">Dealership</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Booking Details -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">Booking ID</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#1e293b;" th:text="${bookingId}">BK12345</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📅 Start Date</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#16a34a;" th:text="${startDate}">2026-03-10</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px; border-bottom:1px solid #e2e8f0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">📅 End Date</td>
+                                            <td align="right" style="font-size:14px; font-weight:600; color:#dc2626;" th:text="${endDate}">2026-03-15</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="font-size:14px; color:#64748b;">💰 Total Amount</td>
+                                            <td align="right" style="font-size:18px; font-weight:700; color:#1e40af;">₹ <span th:text="${totalAmount}">0</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Tips Section -->
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#fef3c7,#fde68a); border:1px solid #fcd34d; border-radius:16px; margin:20px 0;">
+                            <tr>
+                                <td style="padding:20px 24px;">
+                                    <h3 style="margin:0 0 12px; font-size:15px; color:#92400e;">💡 Quick Tips for Your Journey</h3>
+                                    <ul style="margin:0; padding-left:20px; color:#78350f; font-size:14px; line-height:1.8;">
+                                        <li>Check fuel levels before starting</li>
+                                        <li>Take photos of the car's current condition</li>
+                                        <li>Save the dealer's contact for emergencies</li>
+                                        <li>Return the car on time to avoid extra charges</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CTA -->
+                        <div style="text-align:center; margin:32px 0 20px;">
+                            <a href="#"
+                               style="background:linear-gradient(135deg,#1e40af,#3b82f6); color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:12px; font-size:15px; font-weight:600; display:inline-block; box-shadow:0 4px 15px rgba(59,130,246,0.4);">
+                                View Booking Details
+                            </a>
+                        </div>
+
+                        <p style="font-size:15px; line-height:1.7; color:#4b5563; text-align:center;">
+                            Drive safe and enjoy your journey! 🛣️
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background:linear-gradient(135deg,#1e293b,#334155); padding:28px; text-align:center;">
+                        <p style="margin:0 0 8px; font-size:16px; font-weight:600; color:#ffffff;">Driveaway</p>
+                        <p style="margin:0; font-size:12px; color:#94a3b8;">
+                            © 2026 Driveaway. All rights reserved.<br>
+                            This is an automated email. Please do not reply.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

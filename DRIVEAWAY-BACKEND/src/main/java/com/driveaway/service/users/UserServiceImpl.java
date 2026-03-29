@@ -5,7 +5,7 @@ import com.driveaway.dto.ResponseDTO;
 import com.driveaway.entity.users.Dealer;
 import com.driveaway.entity.users.User;
 import com.driveaway.enumerations.Roles;
-import com.driveaway.repository.DealerRepository;
+import com.driveaway.repository.users.DealerRepository;
 import com.driveaway.repository.users.UserRepository;
 import com.driveaway.service.integrations.CloudinaryService;
 import com.driveaway.service.security.JWTService;

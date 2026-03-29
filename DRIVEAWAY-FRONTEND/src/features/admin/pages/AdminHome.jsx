@@ -11,6 +11,7 @@ import {
   Stack,
   Typography,
   alpha,
+  Avatar,
 } from '@mui/material';
 import {
   Assignment as RequestsIcon,
@@ -21,11 +22,15 @@ import {
   TrendingUp,
   Insights,
   Place,
+  Star,
+  RateReview,
+  AttachMoney,
+  DirectionsCar,
 } from '@mui/icons-material';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { isHtmlResponse } from '../../../shared/utils/responseUtils';
-import { getAllApplications, getAllUsers } from '../services';
+import { getAllApplications, getAllUsers, getAdminAnalytics } from '../services';
 import { buildAdminAnalytics } from '../utils/analytics';
 import { designGuardrails } from '@/theme/guardrails';
 
@@ -212,14 +217,16 @@ function AdminHome() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [serverAnalytics, setServerAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const [usersResponse, applicationsResponse] = await Promise.all([
+        const [usersResponse, applicationsResponse, analyticsResponse] = await Promise.all([
           getAllUsers(),
           getAllApplications(),
+          getAdminAnalytics().catch(() => ({ data: null })),
         ]);
 
         const usersData = usersResponse?.data;
@@ -244,6 +251,10 @@ function AdminHome() {
           setApplications([]);
         } else {
           setApplications([]);
+        }
+
+        if (analyticsResponse?.data) {
+          setServerAnalytics(analyticsResponse.data);
         }
       } catch {
         toast.error('Failed to load admin dashboard data. Please try again later.');
@@ -429,6 +440,253 @@ function AdminHome() {
           </Card>
         </Grid>
       </Grid>
+
+      {/* Review & Revenue Analytics Section */}
+      {serverAnalytics && (
+        <Grid container spacing={2.3} sx={{ mb: 2.3 }}>
+          {/* Revenue Card */}
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 3,
+                height: '100%',
+                background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+              }}
+            >
+              <CardContent sx={{ p: 2.8 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                  <Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+                      Total Revenue
+                    </Typography>
+                    <Typography variant="h4" sx={{ color: 'white', mt: 0.5 }}>
+                      ₹{(serverAnalytics.totalRevenue || 0).toLocaleString('en-IN')}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                      From all paid bookings
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                    }}
+                  >
+                    <AttachMoney sx={{ color: 'white', fontSize: 28 }} />
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Active Bookings */}
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 3,
+                height: '100%',
+                background: 'linear-gradient(135deg, #1E3A8A 0%, #3b82f6 100%)',
+              }}
+            >
+              <CardContent sx={{ p: 2.8 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                  <Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+                      Active Bookings
+                    </Typography>
+                    <Typography variant="h4" sx={{ color: 'white', mt: 0.5 }}>
+                      {serverAnalytics.activeBookings || 0}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                      {serverAnalytics.totalBookings || 0} total bookings
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                    }}
+                  >
+                    <DirectionsCar sx={{ color: 'white', fontSize: 28 }} />
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Average Rating */}
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 3,
+                height: '100%',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+              }}
+            >
+              <CardContent sx={{ p: 2.8 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                  <Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>
+                      Avg Rating
+                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 0.5 }}>
+                      <Typography variant="h4" sx={{ color: 'white' }}>
+                        {(serverAnalytics.averageRating || 0).toFixed(1)}
+                      </Typography>
+                      <Star sx={{ color: 'white', fontSize: 24 }} />
+                    </Stack>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+                      {serverAnalytics.totalReviews || 0} total reviews
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                    }}
+                  >
+                    <RateReview sx={{ color: 'white', fontSize: 28 }} />
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Reviews This Month */}
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 3,
+                height: '100%',
+                background: 'linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)',
+              }}
+            >
+              <CardContent sx={{ p: 2.8 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                  <Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+                      Reviews This Month
+                    </Typography>
+                    <Typography variant="h4" sx={{ color: 'white', mt: 0.5 }}>
+                      {serverAnalytics.reviewsThisMonth || 0}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                      {serverAnalytics.completedBookings || 0} completed rides
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                    }}
+                  >
+                    <Star sx={{ color: 'white', fontSize: 28 }} />
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      )}
+
+      {/* Recent Reviews Section */}
+      {serverAnalytics?.recentReviews?.length > 0 && (
+        <Grid container spacing={2.3} sx={{ mb: 2.3 }}>
+          <Grid size={{ xs: 12 }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+              <CardContent sx={{ p: 2.8 }}>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                  <RateReview color="primary" />
+                  <Typography variant="h6">Recent Customer Reviews</Typography>
+                </Stack>
+                <Stack spacing={2}>
+                  {serverAnalytics.recentReviews.map((review, index) => (
+                    <Box key={review.reviewId || index}>
+                      <Stack direction="row" spacing={2} alignItems="flex-start">
+                        <Avatar
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            bgcolor: 'primary.main',
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          {(review.customerName || 'U').charAt(0)}
+                        </Avatar>
+                        <Box sx={{ flex: 1 }}>
+                          <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Typography variant="subtitle2" fontWeight={600}>
+                              {review.customerName || 'Anonymous'}
+                            </Typography>
+                            <Stack direction="row" alignItems="center" spacing={0.5}>
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  sx={{
+                                    fontSize: 16,
+                                    color: star <= review.starRating ? '#fbbf24' : '#d1d5db',
+                                  }}
+                                />
+                              ))}
+                            </Stack>
+                          </Stack>
+                          <Typography variant="caption" color="text.secondary">
+                            {review.carBrand} {review.carModel}
+                          </Typography>
+                          {review.review && (
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ mt: 0.5, fontStyle: 'italic' }}
+                            >
+                              "{review.review}"
+                            </Typography>
+                          )}
+                        </Box>
+                      </Stack>
+                      {index !== serverAnalytics.recentReviews.length - 1 && (
+                        <Divider sx={{ mt: 2 }} />
+                      )}
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      )}
 
       <Grid container spacing={2.3}>
         <Grid size={{ xs: 12, lg: 8 }}>

@@ -11,3 +11,7 @@ export const getAllApplications = () => {
 export const approveDealer = (id, approval) => {
     return api.post(`/api/admin/approve/${id}?approval=${approval}`);
 }
+
+export const getAdminAnalytics = () => {
+    return api.get("/api/admin/analytics");
+}
