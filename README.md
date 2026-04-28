@@ -10,7 +10,7 @@
 
 &nbsp;
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-driveaway--jhee.onrender.com-1E3A8A?style=for-the-badge)](https://driveaway-jhee.onrender.com/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-driveaway--jhee.onrender.com-1E3A8A?style=for-the-badge)](https://driveaway.charantejadev.com)
 
 &nbsp;
 
